@@ -37,8 +37,10 @@ $time = time();
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<link href="style.css" rel="stylesheet" type="text/css" />
+	<head>
+		<!-- CSS FILES -->
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css">
+<!--<link href="style.css" rel="stylesheet" type="text/css" />-->
 <link href="css/jquery.cluetip.css" rel="stylesheet" type="text/css" />
 <script src="jquery.min.js"></script>
 <script src="abcjs_editor_1.7-min.js" type="text/javascript"></script>
@@ -194,6 +196,7 @@ $time = time();
 <? createRightHeader() ?>
 <div id="popup" style="display:none; "><div id="popupclose" onClick="tgldiv('popup');"><strong>X</strong></div><div id="popupcontent"></div></div>
 <div id="board_messages" style="display: none;"></div>
+<div class="uk-container">
 <?
 
 if ( isset($_GET['id']) ) {
@@ -366,15 +369,15 @@ if ( isset($_GET['id']) ) {
 
 	?>
 	
-	<div style="margin-left:20px;"><br><?=TOPIC_TEXT_HELLO?> <strong><?=$username?></strong><?=TOPIC_TEXT_WELCOME?></div>	<br />
-	<hr style="width:50%"/>
-	<div id="placeholder" style="margin-left:20px; margin-right:20px; display:none;border:thin;border-style:dashed;padding:10px"></div><br>	
+	<div><br><?=TOPIC_TEXT_HELLO?> <strong><?=$username?></strong><?=TOPIC_TEXT_WELCOME?></div>
+	<hr>
+	<div id="placeholder" style="display:none;border:thin;border-style:dashed;padding:10px"></div><br>	
 <?
     	// create a topic
 	if (in_array('CREATE_TOPICS', $user_rights) ) {
 ?>
     <div id="newTopicRespond" style="display:none; "></div>
-    <div id="createNewTopic" style="margin-left:20px; margin-right:20px;"><input type="button" onClick="javascript:tgldivnow('createNewTopic');javascript:tgldiv('newTopic2');" value="<?=TOPIC_TEXT_NEW_TOPIC?>"></div>
+    <div id="createNewTopic" class="uk-margin"><div><input class="uk-button uk-button-primary" type="button" onClick="javascript:tgldivnow('createNewTopic');javascript:tgldiv('newTopic2');" value="<?=TOPIC_TEXT_NEW_TOPIC?>"></div>
     <div id="newTopic2" style="display:none"><div id="panel-header"><?=TOPIC_TEXT_NEW_TOPIC?></div>
     <div id="newTopic" style="margin-left:20px; margin-right:20px;border:thin;border-style:dashed;padding: 10px;"><form action="newtopic.php" method="post" enctype="multipart/form-data"><?=TOPIC_TEXT_TOPIC_TITLE?>:<br>
 <input type="text" id="t_topic_title" name="t_topic_title"><br>
@@ -420,8 +423,9 @@ if ( isset($_GET['id']) ) {
 $no_topics = $db->query_one("select count(*) from ((select t.topic_id from elo_topic as t, elo_topic_group as tg, elo_group_user as gu, elo_group as g where gu.user_id='".$userid."' and gu.group_id=g.group_id and g.group_id=tg.group_id and tg.topic_id=t.topic_id)
 UNION all
 (select t.topic_id from elo_topic as t, elo_topic_user as tu where tu.user_id='".$userid."' and tu.topic_id=t.topic_id) ) as ta");
-
-   
+?>
+<div class="uk-width-1-1" uk-grid>
+<?php  
    include("loadtopic.php");
    
    ?>
@@ -431,12 +435,18 @@ UNION all
    <div id="loadmoreajaxloader" style="display:none;"><center><img src="ajax-loader.gif" /></center></div>
 </div>
 
-<?
+</div>
+
+<?php
 }
 
 
 $db->close();
 
 ?>
+</div>
+		<!-- JS FILES -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit-icons.min.js"></script>
 </body>
 </html>

@@ -68,44 +68,72 @@ $langcode = "en";
 require_once('includes/languages/'.$langcode.'.php');
 ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<link href="style.css" rel="stylesheet" type="text/css" />
-
-</head>
-
-<body><br />
-<?
+<html lang="en" class="uk-height-1-1">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title><?=LOGIN_INFO?></title>
+		<link rel="icon" href="img/favicon.ico">
+		<!-- CSS FILES -->
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css">
+	</head>
+	<body class="uk-height-1-1">
+		<div class="uk-flex uk-flex-center uk-flex-middle uk-background-muted uk-height-viewport">
+			<div class="uk-position-bottom-center uk-position-small uk-visible@m">
+				<span class="uk-text-small uk-text-muted"><a href="http://www.jakob-wankel.de">Created by Jakob Wankel</a> | Built with <a href="http://getuikit.com" title="Visit UIkit 3 site" target="_blank" data-uk-tooltip><span data-uk-icon="uikit"></span></a></span>
+			</div>
+			<div class="uk-width-medium uk-padding-small">
+				<?php
+				
 	if( strlen($error)) 
 		echo $error;
 	
 	if ( strlen($success ) )
 		echo $success;
-		
-		?>
-<div id="panel-header"><?=LOGIN_INFO?></div>
-<div id="panel-box">
-<?
+				
 	if ( isset($_GET['pass']) && $_GET['pass'] == 'forgotten') {
 
 		echo LOGIN_PASSFORGOTTEN_TEXT;
 ?>
-<br>
-<br>
+
 <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
 Email: <input type="text" name="t_email" /><br />
 <input type="submit" value="<?=LOGIN_PASSFORGOTTEN_BUTTON?>" name="action_passforgotten" />
 </form>
-<?		
+<?php		
 	} else {
 			 	
 ?>
-<form action="<?=$_SERVER['PHP_SELF']?>" method="post">
-Email: <input type="text" name="t_email" /><br />
-Password: <input type="password" name="t_pass" /><br />
-<input type="submit" value="<?=LOGIN_BUTTON?>" name="action_login" />
-<input type="hidden" value="<?=$ref?>" name="ref" />
-
-</form><br>
-<a href="<?=$_SERVER['PHP_SELF']?>?pass=forgotten"><?=LOGIN_PASSWORD_FORGOTTEN?></a><? } ?>
-</div></body></html>
+				<form action="<?=$_SERVER['PHP_SELF']?>" method="POST">
+					<input type="hidden" name="action" value="login">
+					<input type="hidden" name="action_login" value="1">
+					<input type="hidden" value="<?=$ref?>" name="ref" />
+					<fieldset class="uk-fieldset">
+						<legend class="uk-legend"><?=LOGIN_INFO?></legend>
+						<div class="uk-margin">
+							<div class="uk-inline uk-width-1-1">
+								<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: user"></span>
+								<input class="uk-input uk-form-large" required placeholder="Email" type="text" name="t_email">
+							</div>
+						</div>
+						<div class="uk-margin">
+							<div class="uk-inline uk-width-1-1">
+								<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
+								<input class="uk-input uk-form-large" required placeholder="Passwort" type="password" name="t_pass">
+							</div>
+						</div>
+						<div class="uk-margin">
+							<button type="submit" class="uk-button uk-button-primary uk-button-primary uk-button-large uk-width-1-1"><?=LOGIN_BUTTON?></button>
+						</div>
+					</fieldset>
+				</form>
+				<a href="<?=$_SERVER['PHP_SELF']?>?pass=forgotten"><?=LOGIN_PASSWORD_FORGOTTEN?></a>
+				<?php } ?>
+			</div>
+		</div>
+		
+		<!-- JS FILES -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit-icons.min.js"></script>
+	</body>
+</html>
