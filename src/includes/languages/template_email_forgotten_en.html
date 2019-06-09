@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style type="text/css">
+#topic {
+	border:thin;
+	border-style:dashed;
+	padding:10px;
+	border-top:none;
+}
+#reply-header {
+	padding: 16px;
+	border:thin;
+	border-style:dashed;
+	border-top:hidden;
+}
+body {
+	font-family: Arial, helvetica, sans-serif;
+	background: white;
+	margin: 20px;
+}
+A:link {
+	color: blue
+}
+A:visited {
+	color: darkblue
+}
+A:active {
+	color: green
+}
+
+#event {
+	border:thin;border-style:dashed;border-top:hidden;padding:10px;
+}
+#topictitle {
+	border:thin;border-style:dashed;padding:10px;background-color:#FCF;
+}
+#small {
+	font-size:12px;
+}
+#titlediv {
+	font-size: 18px;
+	color: darkblue;
+	font-weight: bold;
+}
+</style>
+   </head><body>
+<div id="topictitle">Hello <strong>{user_name}</strong></div>
+
+<div id="topic">On ELO it was requested to reset your password. If this action was triggered by you, please click on following link to receive a new password:<br><br><a href="{url}">{url}</a><br><br>The new password will be send to you after that step. If you do not want to reset your password, please igonore this email.<br><br>Best regards.
+</div>
+<div id="small" align="center"></div>
+</body></html>

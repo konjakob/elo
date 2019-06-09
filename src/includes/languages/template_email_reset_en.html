@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style type="text/css">
+#topic {
+	border:thin;
+	border-style:dashed;
+	padding:10px;
+	border-top:none;
+}
+#reply-header {
+	padding: 16px;
+	border:thin;
+	border-style:dashed;
+	border-top:hidden;
+}
+body {
+	font-family: Arial, helvetica, sans-serif;
+	background: white;
+	margin: 20px;
+}
+A:link {
+	color: blue
+}
+A:visited {
+	color: darkblue
+}
+A:active {
+	color: green
+}
+
+#event {
+	border:thin;border-style:dashed;border-top:hidden;padding:10px;
+}
+#topictitle {
+	border:thin;border-style:dashed;padding:10px;background-color:#FCF;
+}
+#small {
+	font-size:12px;
+}
+#titlediv {
+	font-size: 18px;
+	color: darkblue;
+	font-weight: bold;
+}
+</style>
+   </head><body>
+<div id="topictitle">Hello <strong>{user_name}</strong></div>
+
+<div id="topic">On ELO it was requested to reset your password. Your new password is:<br>
+  <br>
+  <strong>{new_password}</strong>
+<br>
+<br>
+Please log into:<br>
+<br><a href="{url}">{url}</a><br>
+<br>
+We recommend that you change this password as soon as possible to a new password choosen by yourself.<br><br>Best regards.
+</div>
+<div id="small" align="center"></div>
+</body></html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style type="text/css">
+#topic {
+	border:thin;
+	border-style:dashed;
+	padding:10px;
+	border-top:none;
+}
+#reply-header {
+	padding: 16px;
+	border:thin;
+	border-style:dashed;
+	border-top:hidden;
+}
+body {
+	font-family: Arial, helvetica, sans-serif;
+	background: white;
+	margin: 20px;
+}
+A:link {
+	color: blue
+}
+A:visited {
+	color: darkblue
+}
+A:active {
+	color: green
+}
+
+#event {
+	border:thin;border-style:dashed;border-top:hidden;padding:10px;
+}
+#topictitle {
+	border:thin;border-style:dashed;padding:10px;background-color:#FCF;
+}
+#small {
+	font-size:12px;
+}
+#titlediv {
+	font-size: 18px;
+	color: darkblue;
+	font-weight: bold;
+}
+</style>
+   </head><body><div id="topictitle">Hallo <strong>{user_name}</strong></div>
+   <div id="topic">Du wurdest bei ELO von {admin_name} angemeldet. Bitte melde dich auf <br><br><a href="{url}">{url}</a><br>
+<br>
+an. Deine Benutzerdaten zum anmelden sind:<br>
+<br>
+Emailadresse: {user_email}<br>
+Passwort: {user_passwort}<br>
+<br>
+Nach dem anmelden kannst du deine pers&ouml;nlichen Informationen, wie deinen Namen, dein Passwort oder deine Spracheinstellungen &auml;ndern.
+<br>
+<br>
+Mit freundlichen Gr&uuml;&szlig;en.<br>
+<i>{admin_name}</i>
+<br>
+</div>
+<div id="small" align="center">Falls du {admin_name} nicht kennst, ignoriere bitte diese Email.</div>
+</body></html>
