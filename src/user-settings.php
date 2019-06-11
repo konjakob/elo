@@ -39,14 +39,21 @@ while ( $res2 = $db->fetch_array($query_lang) )
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link href="style.css" rel="stylesheet" type="text/css" />
+		<!-- CSS FILES -->
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css">
 </head>
 <body>
-<div id="linksoben"><a href="topic.php"><?=TOPIC_TEXT_BACK?></a></div>
-<? createRightHeader() ?><br>
-<br>
-<br>
-   <?
+<? createRightHeader() ?>
+
+<div class="uk-container">
+
+<ul class="uk-breadcrumb">
+    <li><a href="topics.php">Topics</a></li>
+    <li class="uk-disabled">User settings</li>
+</ul>
+
+
+   <?php
    if (isset($_POST['action'])) {
 		$sql_pass = "";
 		
@@ -67,12 +74,21 @@ while ( $res2 = $db->fetch_array($query_lang) )
 	if( isset($_GET['saved']))
 		echo "<div id='correct'>".USER_SETTINGS_SAVED."</div>";
 	?>
-   <div id="panel-header"><?=USER_SETTINGS_HEADER?></div>
-<div id="panel-box"><form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+   <h1><?=USER_SETTINGS_HEADER?></h1>
+
+   <form action="<?=$_SERVER['PHP_SELF']?>" method="post" class="uk-form-stacked">
+   
+    <div class="uk-margin">
+        <label class="uk-form-label" for="form-element1"><?=USER_SETTINGS_USERNAME?></label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="form-element1" type="text" name="t_name" value="<?=stripslashes($user_res['user_name'])?>">
+        </div>
+    </div>
+	
         <table width="100%" border="0" cellspacing="2" cellpadding="3">
   <tr>
-    <td><?=USER_SETTINGS_USERNAME?></td>
-    <td><input type="text" name="t_name" value="<?=stripslashes($user_res['user_name'])?>"></td>
+    <td></td>
+    <td></td>
   </tr>
   <tr>
     <td><?=USER_SETTINGS_EMAIL?></td>
@@ -93,11 +109,15 @@ while ( $res2 = $db->fetch_array($query_lang) )
 		}
 	?></select></td>
   </tr>
-</table><div align="center"><input type="submit" value="<?=TOPIC_TEXT_SAVE?>" name="action"></div></form></div>
-<?
+</table><div align="center"><input type="submit" value="<?=TOPIC_TEXT_SAVE?>" name="action"></div></form>
+<?php
 
 $db->close();
 
 ?>
+</div>
+		<!-- JS FILES -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit-icons.min.js"></script>
 </body>
 </html>

@@ -184,37 +184,10 @@ function createReply() {
 * 
 */
 function createTopic() {
-	global $res,$conf,$topicoddeven;
-	if ( !isset($topicoddeven) ) {
-		$topicoddeven = 1;
-	} else {
-		$topicoddeven++;	
-	}
-		
-	$oddeventext = "odd";
-	if ( $topicoddeven % 2 == 0 )
-		$oddeventext = "even";
+	global $res,$conf;
+
 	?>
-<div class="uk-width-1-2">
-<div class="uk-card uk-card-default">
-    <div class="uk-card-header">
 
-                <h3 class="uk-card-title uk-margin-remove-bottom"><?=stripslashes($res['topic_title'])?></h3>
-                <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2016</time></p>
-
-    </div>
-    <div class="uk-card-body">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-    </div>
-    <div class="uk-card-footer">
-        <p class="uk-text-meta uk-margin-remove-top"><? echo intval($res['no'])-1; ?> <?=TOPIC_TEXT_TOPIC_ANSWERS?> | <?=TOPIC_TEXT_TOPIC_CREATED?> <?
-        	echo date($conf['date_format'],$res['reply_date'])." ".TOPIC_TEXT_TOPIC_BY." ".$res['username'];
-			if ($res['reply_date'] != $res['last_reply_date']) {
-				?> | <?=TOPIC_TEXT_TOPIC_LAST_RESPONSE?>: <?=date("d.m.Y, H:i",$res['last_reply_date'])?>
-                <? } ?></p><!--<a href="<?=$conf['url']?>topic.php?id=<?=$res['topic_id']?>" class="uk-button uk-button-text"><?=TOPIC_TEXT_TOPIC_VIEW?></a>-->
-    </div>
-</div>
-</div>
     <!--
     <div id="topic" class="<?=$oddeventext?>">
 		<? echo stripslashes($res['topic_title']); ?><hr /><div id="small">

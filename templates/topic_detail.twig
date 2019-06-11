@@ -1,0 +1,63 @@
+{% extends 'default.twig' %}
+
+{% block vars %}
+{% endblock %}
+
+{% block default %}
+
+	<h1>{{ page_title }}</h1>
+	
+	{% if 'IS_ADMIN' in user_rights|keys %}
+		<div id='topicinfo'>
+		{% if ar_user_see_topic|length %}
+			TOPIC_USER_OF_TOPIC<ul>
+			{% for u in ar_user_see_topic %}
+				{{ u }}
+			{% endfor %}
+			</ul><div style='clear:both'></div>
+		{% endif %}
+		
+		{% if ar_group_see_topic|length %}
+			TOPIC_GROUP_OF_TOPIC<ul>
+			{% for g in ar_group_see_topic %}
+				{{ g }}
+			{% endfor %}
+			</ul><div style='clear:both'></div>
+		{% endif %}
+		</div>
+	{% endif %}
+	
+
+	<div id="newReplyRespond<?=$topicid?>" style="display:none; "></div>
+    <div id="newReply<?=$topicid?>" style="border:thin;border-style:dashed;padding: 10px;margin-left:20px; margin-right:20px"><form action="addreply.php" method="post" enctype="multipart/form-data"><input type="hidden" value="<?=$topicid?>" name="id"><div style="float:left"><textarea name="text" id="newReplyText<?=$topicid?>" rows="10" cols="50"></textarea></div><div style="float:left"><span class="formInfo"><a rel="faq.php?fid=1" href="faq.php?fid=1&width=475" class="jt" title="<?=TOPIC_TEXT_RULES?>">?</a></span></div><div style="clear:both"></div><?
+    
+	{% if 'CREATE_SHEETS' in user_rights|keys %}
+		{% include 'partials/cheatsheet.twig' %}
+	{% endif %}
+
+	{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
+		echo TOPIC_TEXT_ATTACHMENTS.':<br><input type="file" name="t_file"><span class="formInfo"><a href="faq.php?fid=2&width=475" rel="faq.php?fid=2&width=475" class="jt" title="'.TOPIC_TEXT_RULES_ATTACHMENT.'">?</a></span>';	
+	{% else %}
+
+	{% endif %}
+	<br><div style="float:left"><input type="submit" value="TOPIC_TEXT_SAVE"></div>
+	
+	?><div style="float:left"><span class="formInfo"><a rel="faq.php?fid=4" href="faq.php?fid=4" class="jt" title="<?=TOPIC_TEXT_RULES?>">?</a></span></div><div style="clear:both"></div></form></div>
+
+{% endblock %}		  
+
+{% block footerInjection %}
+	<script type="text/javascript">
+	window.onload = function() {
+		<?
+		foreach ( $sheets as $s)
+			foreach ( $s as $a)
+				if ( !in_array($a['rm_id'],$musicsheets))
+					echo 'abc_editor'.$a['rm_id'].' = new ABCJS.Editor("abc'.$a['rm_id'].'", { paper_id: "paper0'.$a['rm_id'].'"});';
+		if ( in_array('CREATE_SHEETS', $user_rights) ) {
+		?>
+		
+		abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
+	}
+	</script>		
+{% endblock %}	

@@ -5,6 +5,16 @@ $user = "db16731_5";
 $pass = "VjQ3abF81P";
 $dbname = "db16731_5";
 */
+
+require_once 'ext/Twig/Autoloader.php';
+Twig_Autoloader::register();
+
+$loader = new Twig_Loader_Filesystem('C:\\wamp\www\\elo\\templates'); 
+
+$twig = new Twig_Environment($loader); /*, array(
+		'cache' => 'ext/twig-cache',
+	));*/
+
   define('DB_SERVER', 'localhost');
   define('DB_SERVER_USERNAME', 'root');
   define('DB_SERVER_PASSWORD', '');

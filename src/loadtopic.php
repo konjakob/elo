@@ -46,6 +46,16 @@ UNION
 			
 	foreach ( $topics as $res ) 
 	*/
+	$topics = array();
 	while ( $res = $db->fetch_array($query) ) {
-		createTopic();
+		$topics[] = array(	'topic_title' => $res['topic_title'],
+							'no_replies' => intval($res['no'])-1,
+							'reply_date' => $res['reply_date'],
+							'username' => $res['username'],
+							'last_reply_date' => $res['last_reply_date'],
+							'topic_id' => $res['topic_id'],
+							'href' => $conf['url']."topic.php?id=".$res['topic_id']
+						);
 	}
+	
+	$twig_data['topics'] = $topics;
