@@ -44,6 +44,14 @@
 
   <main>
 	<div class="uk-container">
+		{% if breadcrumb|length %}
+		<ul class="uk-breadcrumb">
+			{% for b in breadcrumb %}
+			<li><a href="{{ b.href }}">{{ b.text }}</a></li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	
 		{% block default %}
 		{% endblock %}
 	</div>

@@ -10,10 +10,15 @@ require_once 'ext/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
 $loader = new Twig_Loader_Filesystem('C:\\wamp\www\\elo\\templates'); 
-
 $twig = new Twig_Environment($loader); /*, array(
 		'cache' => 'ext/twig-cache',
 	));*/
+// $function = new \Twig\TwigFunction('function_name', function () {
+    // $calcFrom = $from;
+	// $calcTo = $to;
+	// $now->diff($calcFrom)->format("%a")
+// });
+// $twig->addFunction($function);
 
   define('DB_SERVER', 'localhost');
   define('DB_SERVER_USERNAME', 'root');

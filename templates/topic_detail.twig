@@ -10,7 +10,7 @@
 	{% if 'IS_ADMIN' in user_rights|keys %}
 		<div id='topicinfo'>
 		{% if ar_user_see_topic|length %}
-			TOPIC_USER_OF_TOPIC<ul>
+			{{ constant('TOPIC_USER_OF_TOPIC') }}<ul>
 			{% for u in ar_user_see_topic %}
 				{{ u }}
 			{% endfor %}
@@ -18,7 +18,7 @@
 		{% endif %}
 		
 		{% if ar_group_see_topic|length %}
-			TOPIC_GROUP_OF_TOPIC<ul>
+			{{ constant('TOPIC_GROUP_OF_TOPIC') }}<ul>
 			{% for g in ar_group_see_topic %}
 				{{ g }}
 			{% endfor %}
@@ -27,37 +27,93 @@
 		</div>
 	{% endif %}
 	
+	<ul class="uk-comment-list">
+	{% for reply in replies %}
+		<li>
+			<article class="uk-comment uk-comment-primary uk-visible-toggle" tabindex="-1">
+				<header class="uk-comment-header uk-position-relative">
+					<div class="uk-grid-medium uk-flex-middle" uk-grid>
+						<div class="uk-width-auto">
+							<!--<img class="uk-comment-avatar" src="images/avatar.jpg" width="80" height="80" alt="">-->
+						</div>
+						<div class="uk-width-expand">
+							<h4 class="uk-comment-title uk-margin-remove"><a class="uk-link-reset" href="#">{{ reply.user_name }}</a></h4>
+							<p class="uk-comment-meta uk-margin-remove-top"><a class="uk-link-reset" href="#">{{ reply.reply_date|date("d.m.Y") }}</a>
+							</p>
+						</div>
+					</div>
+					<div class="uk-position-top-right uk-position-small uk-hidden-hover">
+						{% if reply.can_edit %}
+							<a class="uk-link-muted" href='edit_reply.php?id={{ reply.reply_id }}'>{{ constant('TOPIC_EDIT') }}</a> | <a href='delete_reply.php?id={{ reply.reply_id }}' class="uk-link-muted">{{ constant('TOPIC_DELETE') }}</a>
+						{% endif %}
+					</div>
+				</header>
+				<div class="uk-comment-body">
+					<p>
+						{{ reply.reply_text|raw }}
+	
+						{% if reply.sheets|length > 0 %}
+							<hr>
+							{% for s in reply.sheets %}
+								{% if s.img %}
+									<div><img src="{{ s.img }}" {{ a.img_data }}></div>
+								{% else %}
+									<div style="display:none"><textarea name="abc{{ a.rm_id }}" id="abc{{ a.rm_id }}" cols="80" rows="15">{{ a.music_text }}</textarea></div>
+									<div id="midi{{ a.rm_id }}"></div><div id="paper0{{ a.rm_id }}"></div><div id="music{{ a.rm_id }}"></div>
+								{% endif %}
+								{{ constant('TOPIC_TEXT_DOWNLOADS') }}: <a href="download.php?type=abc&mid={{ a.music_id }}">ABC</a> | <a href="download.php?type=pdf&mid={{ a.music_id }}">PDF</a> | <a href="download.php?type=midi&mid={{ a.music_id }}">MIDI</a>
+							{% endfor %}
+						{% endif %}
+					
+						{% if reply.attachments|length > 0 %}
+							<hr><strong>{{ constant('TOPIC_TEXT_ATTACHMENTS') }}:</strong><br>
+							{% for a in reply.attachments %}
+								{% if a.img %}
+									<img src="{{ a.img }}" {{ a.img_data }}><br>
+								{% endif %}
+								{{ a.attachment_filename }} (<a href='download.php?aid={{ a.attachment_id }}'>{{ constant('TOPIC_TEXT_DOWNLOAD') }}</a>, {{ a.filesize }})<br>
+							{% endfor %}
+						{% endif %}
+					</p>
+				</div>
+			</article>
+		</li>
+	
+	{% endfor %}
+	</ul>
 
-	<div id="newReplyRespond<?=$topicid?>" style="display:none; "></div>
-    <div id="newReply<?=$topicid?>" style="border:thin;border-style:dashed;padding: 10px;margin-left:20px; margin-right:20px"><form action="addreply.php" method="post" enctype="multipart/form-data"><input type="hidden" value="<?=$topicid?>" name="id"><div style="float:left"><textarea name="text" id="newReplyText<?=$topicid?>" rows="10" cols="50"></textarea></div><div style="float:left"><span class="formInfo"><a rel="faq.php?fid=1" href="faq.php?fid=1&width=475" class="jt" title="<?=TOPIC_TEXT_RULES?>">?</a></span></div><div style="clear:both"></div><?
+	<div id="newReplyRespond{{ topicid }}" style="display:none; "></div>
+    <div id="newReply{{ topicid }}" style="border:thin;border-style:dashed;padding: 10px;margin-left:20px; margin-right:20px"><form action="addreply.php" method="post" enctype="multipart/form-data"><input type="hidden" value="{{ topicid }}" name="id"><div style="float:left"><textarea name="text" id="newReplyText{{ topicid }}" rows="10" cols="50"></textarea></div><div style="float:left"><span class="formInfo"><a rel="faq.php?fid=1" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></span></div><div style="clear:both"></div><?
     
 	{% if 'CREATE_SHEETS' in user_rights|keys %}
 		{% include 'partials/cheatsheet.twig' %}
 	{% endif %}
 
 	{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
-		echo TOPIC_TEXT_ATTACHMENTS.':<br><input type="file" name="t_file"><span class="formInfo"><a href="faq.php?fid=2&width=475" rel="faq.php?fid=2&width=475" class="jt" title="'.TOPIC_TEXT_RULES_ATTACHMENT.'">?</a></span>';	
+		{{ constant('TOPIC_TEXT_ATTACHMENTS') }}:<br><input type="file" name="t_file"><span class="formInfo"><a href="faq.php?fid=2&width=475" rel="faq.php?fid=2&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES_ATTACHMENT') }}">?</a></span>	
 	{% else %}
 
 	{% endif %}
-	<br><div style="float:left"><input type="submit" value="TOPIC_TEXT_SAVE"></div>
+	<br><div style="float:left"><input type="submit" value="{{ constant('TOPIC_TEXT_SAVE') }}"></div>
 	
-	?><div style="float:left"><span class="formInfo"><a rel="faq.php?fid=4" href="faq.php?fid=4" class="jt" title="<?=TOPIC_TEXT_RULES?>">?</a></span></div><div style="clear:both"></div></form></div>
+	?><div style="float:left"><span class="formInfo"><a rel="faq.php?fid=4" href="faq.php?fid=4" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></span></div><div style="clear:both"></div></form></div>
 
 {% endblock %}		  
 
 {% block footerInjection %}
 	<script type="text/javascript">
 	window.onload = function() {
-		<?
-		foreach ( $sheets as $s)
-			foreach ( $s as $a)
+		{% for reply in replies %}
+			{% for a in reply.sheets %}
+
 				if ( !in_array($a['rm_id'],$musicsheets))
 					echo 'abc_editor'.$a['rm_id'].' = new ABCJS.Editor("abc'.$a['rm_id'].'", { paper_id: "paper0'.$a['rm_id'].'"});';
-		if ( in_array('CREATE_SHEETS', $user_rights) ) {
-		?>
-		
-		abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
+			{% endfor %}
+		{% endfor %}
+		{% if 'CREATE_SHEETS' in user_rights|keys %}
+	
+			abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
+		{% endif %}
 	}
 	</script>		
 {% endblock %}	
