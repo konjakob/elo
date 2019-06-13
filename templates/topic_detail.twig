@@ -8,29 +8,27 @@
 	<h1>{{ page_title }}</h1>
 	
 	{% if 'IS_ADMIN' in user_rights|keys %}
-		<div id='topicinfo'>
-		{% if ar_user_see_topic|length %}
-			{{ constant('TOPIC_USER_OF_TOPIC') }}<ul>
-			{% for u in ar_user_see_topic %}
-				{{ u }}
-			{% endfor %}
-			</ul><div style='clear:both'></div>
-		{% endif %}
+		<div class="uk-child-width-1-2@s" uk-grid>		
+			<div>
+				<div class="uk-card uk-card-default uk-card-primary uk-card-small uk-card-body">
+					<h4 class="uk-card-title">{{ constant('TOPIC_USER_OF_TOPIC') }}</h4>
+					<p>{% if ar_user_see_topic|length %}{{ ar_user_see_topic|join(', ', ' and ') }}{% else %}No users.{% endif %}</p>
+				</div>
+			</div>
 		
-		{% if ar_group_see_topic|length %}
-			{{ constant('TOPIC_GROUP_OF_TOPIC') }}<ul>
-			{% for g in ar_group_see_topic %}
-				{{ g }}
-			{% endfor %}
-			</ul><div style='clear:both'></div>
-		{% endif %}
-		</div>
-	{% endif %}
-	
-	<ul class="uk-comment-list">
+			<div>
+				<div class="uk-card uk-card-default uk-card-primary uk-card-small uk-card-body">
+					<h4 class="uk-card-title">{{ constant('TOPIC_GROUP_OF_TOPIC') }}</h4>
+					<p>{% if ar_group_see_topic|length %}{{ ar_group_see_topic|join(', ', ' and ') }}{% else %}No groups.{% endif %}</p>
+				</div>
+			</div>	
+	</div>
+	{% endif %}	
+
+	<ul class="uk-comment-list uk-margin-top">
 	{% for reply in replies %}
-		<li>
-			<article class="uk-comment uk-comment-primary uk-visible-toggle" tabindex="-1">
+		<li class="uk-margin">
+			<article class="uk-card-default uk-padding uk-comment uk-visible-toggle" tabindex="-1">
 				<header class="uk-comment-header uk-position-relative">
 					<div class="uk-grid-medium uk-flex-middle" uk-grid>
 						<div class="uk-width-auto">

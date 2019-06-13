@@ -21,9 +21,14 @@
 	{% if 'CREATE_TOPICS' in user_rights|keys %}
 
     <div id="newTopicRespond" style="display:none; "></div>
-    <div id="createNewTopic" class="uk-margin"><div><input class="uk-button uk-button-primary" type="button" onClick="javascript:tgldivnow('createNewTopic');javascript:tgldiv('newTopic2');" value="{{ constant('TOPIC_TEXT_NEW_TOPIC') }}"></div>
-    <div id="newTopic2" style="display:none"><div id="panel-header">{{ constant('TOPIC_TEXT_NEW_TOPIC') }}</div>
-    <div id="newTopic" style="margin-left:20px; margin-right:20px;border:thin;border-style:dashed;padding: 10px;"><form action="newtopic.php" method="post" enctype="multipart/form-data">{{ constant('TOPIC_TEXT_TOPIC_TITLE') }}:<br>
+    <div id="createNewTopic" class="uk-margin">
+		<div>
+			<input class="uk-button uk-button-primary" type="button" id="btnCreateTopic" value="{{ constant('TOPIC_TEXT_NEW_TOPIC') }}">
+		</div>
+		<div id="newTopic2" style="display:none">
+			<div id="panel-header">{{ constant('TOPIC_TEXT_NEW_TOPIC') }}</div>
+			<div id="newTopic" style="margin-left:20px; margin-right:20px;border:thin;border-style:dashed;padding: 10px;">
+				<form action="newtopic.php" method="post" enctype="multipart/form-data">{{ constant('TOPIC_TEXT_TOPIC_TITLE') }}:<br>
 <input type="text" id="t_topic_title" name="t_topic_title"><br>
 {{ constant('TOPIC_TEXT_TOPIC_TEXT') }}:<br>
 <div style="float:left"><textarea id="newTopicText" rows="10" name="t_topic" cols="50"></textarea></div><div style="float:left"><span class="formInfo"><a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></span></div><div style="clear:both"></div>
@@ -32,7 +37,7 @@
 		{% include 'partials/cheatsheet.twig' %}
 	{% endif %}
 	{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
-		TOPIC_TEXT_ATTACHMENTS:<br><input type="file" name="t_file"><span class="formInfo"><a href="faq.php?fid=2&width=475" rel="faq.php?fid=2&width=475" class="jt" title="'.TOPIC_TEXT_RULES_ATTACHMENT.'">?</a></span><br><div style="float:left"><input type="submit" value="'.TOPIC_TEXT_SAVE.'"></div>
+		TOPIC_TEXT_ATTACHMENTS:<br><input type="file" name="t_file"><span class="formInfo"><a href="faq.php?fid=2&width=475" rel="faq.php?fid=2&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES_ATTACHMENT') }}">?</a></span><br><div style="float:left"><input type="submit" value="{{ constant('TOPIC_TEXT_SAVE') }}"></div>
 	{% else %}
 		<div style="float:left"><input type="button" value="'.TOPIC_TEXT_SAVE.'" onclick="javascript:addTopic();"></div>
 	{% endif %}
@@ -82,7 +87,7 @@
 			
 {% endblock %}		  
 
-{% block footerInjection %}
+{% block headerInjection %}
 
 <link href="css/jquery.cluetip.css" rel="stylesheet" type="text/css" />
 <script src="jquery.min.js"></script>
@@ -91,55 +96,53 @@
 <script src="js/general.js"></script>
 	<script type="text/javascript">
 
-  function getIdText(itemid,dbid){
-	  
-	$(document).ready(function(){
-    	eval($("#div"+itemid).load("getIdText.php?dbid="+dbid+"&itemid="+itemid));
-		$("#div"+itemid).slideToggle("slow");
-	  });
-  };
+$(document).ready(function(){
+  $("#btnCreateTopic").click(function(){
+    //$("#createNewTopic").toggle();
+	$("#newTopic2").toggle();
+	$(this).toggle();
+  });
+});	
+	
+		function getIdText(itemid,dbid){
+			eval($("#div"+itemid).load("getIdText.php?dbid="+dbid+"&itemid="+itemid));
+			$("#div"+itemid).slideToggle("slow");
+		}
   
-  function getRevs(itemid,langid){
-	  
-	$(document).ready(function(){
-   		eval($("#divrevs"+itemid).load("getRevs.php?id="+langid));
-		$("#divrevs"+itemid).slideToggle("slow");
-	  });
-  };
+		function getRevs(itemid,langid){
+			eval($("#divrevs"+itemid).load("getRevs.php?id="+langid));
+			$("#divrevs"+itemid).slideToggle("slow");
+		}
   
-  function addrevs(itemid){
-	  
-	$(document).ready(function(){
-		$("#divaddrevs"+itemid).slideToggle("slow");
-	  });
-  };
+		function addrevs(itemid){
+			$("#divaddrevs"+itemid).slideToggle("slow");
+		}
   
-  function tgldiv(divname){
-	$(document).ready(function(){
-		$("#"+divname).slideToggle("slow");
-	  });
-  };
+		function tgldiv(divname){
+			$("#"+divname).slideToggle("slow");
+		}
   
-  function tgldivnow(divname){
-	$(document).ready(function(){
-		$("#"+divname).hide();
-	  });
-  };
+		function tgldivnow(divname){
+			$("#"+divname).hide();
+		}
   
-  function addReply(topicid){
-	var t;
-	$(document).ready(function(){
+	function addReply(topicid){
+		var t;
 		t = $("#newReplyText"+topicid).val();
 		if ( t.length < 1 ) {
 			$("#newReplyText"+topicid).css('background-color','#F96');
 			$("#newReplyText"+topicid).focus();
 			return;
 		}
-		<? if ( in_array('CREATE_SHEETS', $user_rights) ) {	echo 't2 = $("#abc").val();'; } ?>
-		
+		{% if 'CREATE_SHEETS' in user_rights|keys %}
+		t2 = $("#abc").val();
+		{% endif %}
+
 		$.post("addReply.php",
 		{
-		  <? if ( in_array('CREATE_SHEETS', $user_rights) ) { echo "abc:t2,"; } ?>
+			{% if 'CREATE_SHEETS' in user_rights|keys %}
+			abc:t2,
+			{% endif %}
 		  
 		  id:topicid,
 		  text:t,
@@ -150,14 +153,13 @@
 			$("#newReply"+topicid).slideToggle("slow");
 			$("#newReplyRespond"+topicid).text(data);
 		});
-	  });
-  };
+	}
   
-  <? if (in_array('CREATE_TOPICS', $user_rights) ) { ?>
+  {% if 'CREATE_TOPICS' in user_rights|keys %}
   function addTopic(){
 	var t;
 	var t2;
-	$(document).ready(function(){
+
 		t = $("#newTopicText").val();
 		t2 = $("#t_topic_title").val();
 		if ( t.length < 1 ) {
@@ -170,11 +172,15 @@
 			$("#t_topic_title").focus();
 			return;
 		}
-		<? if ( in_array('CREATE_SHEETS', $user_rights) ) {	echo 't3 = $("#abc").val();'; } ?>
+		{% if 'CREATE_SHEETS' in user_rights|keys %}
+			t3 = $("#abc").val();
+		{% endif %}
 		
 		$.post("newTopic.php",
 		{
-		   <? if ( in_array('CREATE_SHEETS', $user_rights) ) { echo "abc:t3,"; } ?>
+			{% if 'CREATE_SHEETS' in user_rights|keys %}
+				abc:t3,
+			{% endif %}
 			
 		  t_topic:t,
 		  t_topic_title:t2,
@@ -185,9 +191,8 @@
 			$("#createNewTopic").show();
 			$("#newTopic").hide();
 		});
-	  });
-  };
-  <? } ?>
+  }
+  {% endif %}
   var start = 10;
   var stopscrol = 0;
   $(window).scroll(function()
@@ -198,26 +203,27 @@
 			{
 				$('div#loadmoreajaxloader').show();
 				$.ajax({
-				url: "loadtopic.php?start="+start,
-				success: function(html)
-				{
-					if(html)
+					url: "loadtopic.php?start="+start,
+					success: function(html)
 					{
-						$("#postswrapper").append(html);
-						$('div#loadmoreajaxloader').hide();
-						start = start + 10;
-					}else
-					{
-						stopscrol = 1;
-						$("#postswrapper").append('<div style="border:thin;border-style:dashed;align:center;border-right:none;border-left:none;border-bottom:none"><center><?=NO_MORE_POSTS?></center></div>');
-						$('div#loadmoreajaxloader').hide();
-						//$('div#loadmoreajaxloader').html('<center>No more posts to show.</center>');
+						if(html) 
+						{
+							$("#postswrapper").append(html);
+							$('div#loadmoreajaxloader').hide();
+							start = start + 10;
+						} else {
+							stopscrol = 1;
+							$("#postswrapper").append('<div style="border:thin;border-style:dashed;align:center;border-right:none;border-left:none;border-bottom:none"><center>NO_MORE_POSTS</center></div>');
+							$('div#loadmoreajaxloader').hide();
+							//$('div#loadmoreajaxloader').html('<center>No more posts to show.</center>');
+						}
 					}
-				}
 				});
 			}
 		}
+	
 	});
+		  
 	$(document).ready(function() {
 		$('a.jt').cluetip({
 		  cluetipClass: 'jtip',
@@ -231,6 +237,8 @@
 		  closeText: '<img src="includes/images/cross.png" alt="close" />'
 		});
 	});
+	
+
 
   </script>
 

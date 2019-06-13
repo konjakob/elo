@@ -45,9 +45,9 @@
   <main>
 	<div class="uk-container">
 		{% if breadcrumb|length %}
-		<ul class="uk-breadcrumb">
+		<ul class="uk-breadcrumb uk-margin-top">
 			{% for b in breadcrumb %}
-			<li><a href="{{ b.href }}">{{ b.text }}</a></li>
+				<li><a href="{{ b.href }}">{{ b.text }}</a></li>
 			{% endfor %}
 		</ul>
 		{% endif %}
