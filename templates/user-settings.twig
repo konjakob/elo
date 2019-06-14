@@ -1,0 +1,52 @@
+{% extends 'default.twig' %}
+
+{% block vars %}
+{% endblock %}
+
+{% block default %}
+
+   <h1><?=USER_SETTINGS_HEADER?></h1>
+
+   <form action="<?=$_SERVER['PHP_SELF']?>" method="post" class="uk-form-stacked">
+   
+    <div class="uk-margin">
+        <label class="uk-form-label" for="form-element1">{{ constant('USER_SETTINGS_USERNAME') }}</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="form-element1" type="text" name="t_name" value="{{ user_res.user_name }}">
+        </div>
+    </div>
+	
+	<div class="uk-margin">
+        <label class="uk-form-label" for="form-element2">{{ constant('USER_SETTINGS_EMAIL') }}</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="form-element2" type="text" name="t_email" value="{{ user_res.user_email }}">
+        </div>
+    </div>
+	
+	<div class="uk-margin">
+        <label class="uk-form-label" for="form-element3">{{ constant('USER_SETTINGS_PASSWORD') }}</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="form-element3" type="text" name="t_pass" value=""><small>{{ constant('USER_SETTINGS_PASSWORD_NOT_CHANGE') }}</small>
+        </div>
+    </div>
+	
+	<div class="uk-margin">
+        <label class="uk-form-label" for="form-element3">{{ constant('USER_SETTINGS_LANGUAGE') }}</label>
+        <div class="uk-form-controls">
+            <select class="uk-select" name="t_lang">
+			{% for l in saved_languages %}
+				<option value="{{ l.lang_id }}" {% if l.lang_id == user_res.lang_id %}selected{% endif %}>{{ l.lang_name }}</option>
+			{% endfor %}
+			</select>
+        </div>
+    </div>
+
+		
+<div class="uk-text-right"><input class="uk-button uk-button-primary" type="submit" value="{{ constant('TOPIC_TEXT_SAVE') }}" name="action"></div>
+</form>
+		
+{% endblock %}		  
+
+{% block footerInjection %}
+			
+{% endblock %}	

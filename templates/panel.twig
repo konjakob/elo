@@ -8,59 +8,61 @@
 <div id="popup" style="display:none; "><div id="popupclose" onClick="tgldiv('popup');"><strong>X</strong></a></div><div id="popupcontent"></div></div>
 
 
+<div class="uk-child-width-1-2@m uk-child-width-1-1@s uk-margin-top" uk-grid>
 {% if 'CREATE_NEW_USER' in user_rights|keys %}
-<div id="panel-header"></div>
-<div id="panel-box">
-<h2>New user</h2>
-<form class="uk-form-stacked" action="<?=$_SERVER['PHP_SELF']?>" method="post">
 
-    <div class="uk-margin">
-        <label class="uk-form-label" for="user_name">Name</label>
-        <div class="uk-form-controls">
-            <input class="uk-input" id="user_name" type="text" name="t_name" placeholder="Name">
-        </div>
-    </div>
-    <div class="uk-margin">
-        <label class="uk-form-label" for="user_email">Email</label>
-        <div class="uk-form-controls">
-            <input class="uk-input" id="user_name" type="text" name="t_email" placeholder="Email">
-        </div>
-    </div>
-	<div class="uk-margin">
-        <label class="uk-form-label" for="user_pass">Password</label>
-        <div class="uk-form-controls">
-		
+<div>
+	<div class="uk-card uk-card-default uk-card-body">
+		<h2 class="uk-card-title">New user</h2>
+		<form class="uk-form-stacked" action="{{ current_url }}" method="post">
+
 			<div class="uk-margin">
-				<div class="uk-inline">
-					<span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-					<input class="uk-input" id="user_name" type="text" name="t_pass" placeholder="Password">
+				<label class="uk-form-label" for="user_name">Name</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="user_name" type="text" name="t_name" placeholder="Name">
 				</div>
 			</div>
-             PANEL_EXAMPLE_PASSWORD createCode(8)
-        </div>
-    </div>
-	<div class="uk-margin">
-        <label class="uk-form-label" for="user_reg_email">Send registration email</label>
-        <div class="uk-form-controls">
-            <input class="uk-checkbox" id="user_reg_email" type="checkbox" name="t_send_email">
-        </div>
-    </div>
-	<div class="uk-margin">
-        <label class="uk-form-label" for="user_lang">Language</label>
-        <div class="uk-form-controls">
-            <select name="t_lang" class="uk-select" id="user_lang">
-{% for l in langs %}
-	<option value="{{ l.lang_id }}">{{ l.lang_name }}</option>
-{% endfor %}
-</select>
-        </div>
-    </div>
-	<div class="uk-text-right">
-		<input type="submit" value="Save" name="new_user" class="uk-button uk-button-primary" />
+			<div class="uk-margin">
+				<label class="uk-form-label" for="user_email">Email</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="user_name" type="text" name="t_email" placeholder="Email">
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="user_pass">Password</label>
+				<div class="uk-form-controls">
+				
+					<div class="uk-margin">
+						<div class="uk-inline">
+							<span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
+							<input class="uk-input" id="user_name" type="text" name="t_pass" placeholder="Password">
+						</div>
+					</div>
+					 {{ constant('PANEL_EXAMPLE_PASSWORD') }} {{ exampleCode }}
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="user_reg_email">Send registration email</label>
+				<div class="uk-form-controls">
+					<input class="uk-checkbox" id="user_reg_email" type="checkbox" name="t_send_email">
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="user_lang">Language</label>
+				<div class="uk-form-controls">
+					<select name="t_lang" class="uk-select" id="user_lang">
+		{% for l in langs %}
+			<option value="{{ l.lang_id }}">{{ l.lang_name }}</option>
+		{% endfor %}
+		</select>
+				</div>
+			</div>
+			<div class="uk-text-right">
+				<input type="submit" value="Save" name="new_user" class="uk-button uk-button-primary" />
+			</div>
+		</form>
 	</div>
-</form>
 </div>
-
 {% endif %}
 
 {% if 'CREATE_NEW_RIGHT' in user_rights|keys %}
@@ -69,69 +71,89 @@
 <div id='correct'>Saved the new right.</div>
 {% endif %}
 
-
-<div id="panel-box">
-<h2>New right</h2>
-<form action="<?=$_SERVER['PHP_SELF']?>" class="uk-form-stacked" method="post">
-    <div class="uk-margin">
-        <label class="uk-form-label" for="right_name">Name</label>
-        <div class="uk-form-controls">
-            <input class="uk-input" id="right_name" type="text" name="t_name" placeholder="Name">
-        </div>
-    </div>
-	    <div class="uk-margin">
-        <label class="uk-form-label" for="right_key">Key</label>
-        <div class="uk-form-controls">
-            <input class="uk-input" id="right_key" type="text" name="t_key" placeholder="Key">
-        </div>
-    </div>
-	<div class="uk-text-right">
-		<input type="submit" value="Save" name="new_right" class="uk-button uk-button-primary" />
+<div>
+	<div class="uk-card uk-card-default uk-card-body uk-margin">
+		<h2 class="uk-card-title">New right</h2>
+		<form action="{{ current_url }}" class="uk-form-stacked" method="post">
+			<div class="uk-margin">
+				<label class="uk-form-label" for="right_name">Name</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="right_name" type="text" name="t_name" placeholder="Name">
+				</div>
+			</div>
+				<div class="uk-margin">
+				<label class="uk-form-label" for="right_key">Key</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="right_key" type="text" name="t_key" placeholder="Key">
+				</div>
+			</div>
+			<div class="uk-text-right">
+				<input type="submit" value="Save" name="new_right" class="uk-button uk-button-primary" />
+			</div>
+		</form>
 	</div>
-</form>
 </div>
 {% endif %}
 
 {{ msg_group }}
 
-<div id="panel-box">
+
 {% if 'CREATE_GROUPS' in user_rights|keys %}	
-	<h2>New Group</h2>
-    <form action="<?=$_SERVER['PHP_SELF']?>" class="uk-form-stacked" method="post">
-	    <div class="uk-margin">
-			<label class="uk-form-label" for="group_name">Name</label>
-			<div class="uk-form-controls">
-				<input class="uk-input" id="group_name" type="text" name="t_group" placeholder="Name">
+<div>
+	<div class="uk-card uk-card-default uk-card-body uk-margin">
+		<h2 class="uk-card-title">New Group</h2>
+		<form action="{{ current_url }}" class="uk-form-stacked" method="post">
+			<div class="uk-margin">
+				<label class="uk-form-label" for="group_name">Name</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="group_name" type="text" name="t_group" placeholder="Name">
+				</div>
 			</div>
-		</div>
-		<div class="uk-text-right">
-			<input type="submit" value="Save" name="new_group" class="uk-button uk-button-primary" />
-		</div>
-    </form>
+			<div class="uk-text-right">
+				<input type="submit" value="Save" name="new_group" class="uk-button uk-button-primary" />
+			</div>
+		</form>
+	</div>
+</div>
 {% endif %}
 
-<h2>Groups</h2>
+<div>
+	<div class="uk-card uk-card-default uk-card-body uk-margin">
+		<h2 class="uk-card-title">Groups</h2>
 {% for g in groups %}
 	<a onclick="javascript:loadGroupData({{ g.group_id }});javascript:tgldiv('popup');">{{ g.group_name }}</a>
 	(<a href='{{ current_url }}?delete_group={{ g.group_id }}'>Delete</a> | <a onclick="javascript:changeGroupData({{ g.group_id }});javascript:tgldiv('popup');">Modify</a>)<br>
 
 {% endfor %}
-			
-
-<h2>Edit users</h2>
-
-
-<div id="panel-box">
-	{% for u in users %}
-		<a onclick="javascript:loadUserData({{ u.user_id }});javascript:tgldiv('popup');">{{ u.user_name }}</a><br>
-	{% endfor %}
+	</div>			
 </div>
-<br />
-		
+<div>
+	<div class="uk-card uk-card-default uk-card-body uk-margin">
+		<h2 class="uk-card-title">Edit users</h2>
+		<div class="uk-column-1-2">
+			<ul class="uk-list">
+			{% for u in users %}
+				<li><a onclick="javascript:loadUserData({{ u.user_id }});javascript:tgldiv('popup');">{{ u.user_name }}</a></li>
+			{% endfor %}
+			</ul>
+		</div>
+</div></div>
 
-<h2>New topic</h2>
-<div id="panel-box">
-<form action="<?=$_SERVER['PHP_SELF']?>" method="post" class="uk-form-stacked" enctype="multipart/form-data"  onsubmit="selectAllOptions('t_user');selectAllOptions('t_group');">
+</div>
+		
+{% for m in msgs %}
+
+<div class="uk-alert-{% if m.state == 'ok' %}scucess{% else %}danger{% endif %}" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>{{ m.text }}</p>
+</div>
+
+{% endfor %}
+
+	<div class="uk-card uk-card-default uk-card-body uk-margin">
+		<h2 class="uk-card-title">New topic</h2>
+
+<form action="{{ current_url }}" method="post" class="uk-form-stacked" enctype="multipart/form-data"  onsubmit="selectAllOptions('t_user');selectAllOptions('t_group');">
 Users: 
 
 <table><tr><td>Existing user:</td><td></td><td>User for this topic:</td></tr><tr><td>
@@ -144,7 +166,7 @@ Users:
 	
 <br />
 Groups:
-<? 
+
 	$select_group = "";
 	foreach ( $groups as $g ) 
 		$select_group .= "";	
@@ -157,10 +179,10 @@ Groups:
 
 	<br />
 Title: <input type="text" name="t_topic_title" /><br>
-Text: <br><textarea name="t_topic" rows="10" cols="50"><?=$default_text?></textarea><br />
+Text: <br><textarea name="t_topic" rows="10" cols="50">default_text</textarea><br />
 
 	{% if 'CREATE_SHEETS' in user_rights|keys %}
-		showCreateSheet();
+		{% include 'partials/cheatsheet.twig' %}
 	{% endif %}
 	{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
 		Attachments:<br><input type="file" name="t_file">

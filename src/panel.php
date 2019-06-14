@@ -163,6 +163,8 @@ while ( $res = $db->fetch_array($query_user) ) {
 }
 $twig_data['users'] = $users;
 
+$msgs = array();
+
 $default_text = "";
 if ( isset($_POST['new_topic']) ) {
 
@@ -188,20 +190,22 @@ if ( isset($_POST['new_topic']) ) {
 		if ( in_array('CREATE_SHEETS', $user_rights) && isset($_POST['abc']) && strlen($_POST['abc'])) {
 			processMusic();
 		}
-		echo "<div id='correct'>New topic was created.</div>";
+		$msgs[] = array('state' => 'ok', 'text' => 'New topic was created.');
 	} else {
 		$default_text = $_POST['t_topic'];
 		if ( isset($_POST['abc']) && strlen($_POST['abc']) ) {
 			$default_text .= " # Please add this text to the music box: ".$_POST['abc'];
 		}
-		echo "<div id='error'>Please enter a title.</div>";
-		
+		$msgs[] = array('state' => 'nok', 'text' => 'Please enter a title.');
+	
 	}
 }
 
 
 $db->close();
+$twig_data['exampleCode'] = createCode(8);
 $twig_data['breadcrumb'] = $breadcrumb;
+$twig_data['msgs'] = $msgs;
 echo $twig->render("panel.twig", $twig_data);
 
 

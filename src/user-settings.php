@@ -24,6 +24,7 @@ $query = $db->query("select elo_user.*, elo_lang.lang_code from elo_user left jo
 $user_res = $db->fetch_array($query);
 $username = $user_res['user_name'];
 $langcode = $user_res['lang_code'];
+$twig_data['user_res'] = $user_res;
 
 if ( strlen($langcode) <1 )
 	$langcode = "en";
@@ -35,25 +36,12 @@ $query_lang = $db->query("select * from elo_lang order by lang_name desc");
 while ( $res2 = $db->fetch_array($query_lang) )
 	$saved_languages[] = $res2;
 
-?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-		<!-- CSS FILES -->
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css">
-</head>
-<body>
-<? createRightHeader() ?>
+$twig_data['saved_languages'] = $saved_languages;
 
-<div class="uk-container">
-
-<ul class="uk-breadcrumb">
-    <li><a href="topics.php">Topics</a></li>
-    <li class="uk-disabled">User settings</li>
-</ul>
+$breadcrumb[] = array('href' => 'topic.php', 'text' => 'Topics');
+$breadcrumb[] = array('href' => '', 'text' => 'User settings');
 
 
-   <?php
    if (isset($_POST['action'])) {
 		$sql_pass = "";
 		
@@ -73,51 +61,10 @@ while ( $res2 = $db->fetch_array($query_lang) )
 	}
 	if( isset($_GET['saved']))
 		echo "<div id='correct'>".USER_SETTINGS_SAVED."</div>";
-	?>
-   <h1><?=USER_SETTINGS_HEADER?></h1>
-
-   <form action="<?=$_SERVER['PHP_SELF']?>" method="post" class="uk-form-stacked">
-   
-    <div class="uk-margin">
-        <label class="uk-form-label" for="form-element1"><?=USER_SETTINGS_USERNAME?></label>
-        <div class="uk-form-controls">
-            <input class="uk-input" id="form-element1" type="text" name="t_name" value="<?=stripslashes($user_res['user_name'])?>">
-        </div>
-    </div>
-	
-        <table width="100%" border="0" cellspacing="2" cellpadding="3">
-  <tr>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><?=USER_SETTINGS_EMAIL?></td>
-    <td><input type="text" name="t_email" value="<?=stripslashes($user_res['user_email'])?>"></td>
-  </tr>
-  <tr>
-    <td><?=USER_SETTINGS_PASSWORD?></td>
-    <td><input type="text" name="t_pass" value=""> <span id="small"><?=USER_SETTINGS_PASSWORD_NOT_CHANGE?></span></td>
-  </tr>
-  <tr>
-    <td><?=USER_SETTINGS_LANGUAGE?></td>
-    <td><select name="t_lang"><?
-    	foreach ($saved_languages as $l) {
-			echo '<option value="'.$l['lang_id'].'"';
-			if ($l['lang_id'] == $user_res['lang_id']) 
-				echo " selected";
-			echo '>'.$l['lang_name'].'</option>';
-		}
-	?></select></td>
-  </tr>
-</table><div align="center"><input type="submit" value="<?=TOPIC_TEXT_SAVE?>" name="action"></div></form>
-<?php
 
 $db->close();
 
-?>
-</div>
-		<!-- JS FILES -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit-icons.min.js"></script>
-</body>
-</html>
+$twig_data['breadcrumb'] = $breadcrumb;
+echo $twig->render("user-settings.twig", $twig_data);
+
+
