@@ -46,12 +46,15 @@ if ( $fid == 1 ) {
 	}
 	
 	echo "<hr>".TOPIC_TEXT_BBCODES."<ul>";	
+	?>
+	<div class="uk-column-1-6">
+	<?php
 	
 	$ubbParser = new SBBCodeParser_Document();
 	foreach ( $ubbParser->list_bbcodes() as $c ) 
 		echo "<li>".$c;
 	
-	echo "</ul>";
+	echo "</ul></div>";
 	}
 else if ( $fid == 2 ) {
 	echo TOPIC_MAX_FILESIZE;

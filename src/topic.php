@@ -35,7 +35,7 @@ require_once('includes/languages/'.$langcode.'.php');
 require_once('SBBCodeParser.php');
 
 $time = time();
-$breadcrumb = array();
+
 $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 
 	if ( isset($_GET['id']) ) {

@@ -5,7 +5,7 @@ $user = "db16731_5";
 $pass = "VjQ3abF81P";
 $dbname = "db16731_5";
 */
-
+$breadcrumb = array();
 require_once 'ext/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
@@ -19,6 +19,8 @@ $twig = new Twig_Environment($loader); /*, array(
 	// $now->diff($calcFrom)->format("%a")
 // });
 // $twig->addFunction($function);
+
+$twig_data['current_url'] = $_SERVER['PHP_SELF'];
 
   define('DB_SERVER', 'localhost');
   define('DB_SERVER_USERNAME', 'root');

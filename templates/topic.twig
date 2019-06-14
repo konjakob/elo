@@ -28,18 +28,34 @@
 		<div id="newTopic2" style="display:none">
 			<div id="panel-header">{{ constant('TOPIC_TEXT_NEW_TOPIC') }}</div>
 			<div id="newTopic" style="margin-left:20px; margin-right:20px;border:thin;border-style:dashed;padding: 10px;">
-				<form action="newtopic.php" method="post" enctype="multipart/form-data">{{ constant('TOPIC_TEXT_TOPIC_TITLE') }}:<br>
-<input type="text" id="t_topic_title" name="t_topic_title"><br>
-{{ constant('TOPIC_TEXT_TOPIC_TEXT') }}:<br>
-<div style="float:left"><textarea id="newTopicText" rows="10" name="t_topic" cols="50"></textarea></div><div style="float:left"><span class="formInfo"><a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></span></div><div style="clear:both"></div>
+				<form action="newtopic.php" method="post" enctype="multipart/form-data" class="uk-form-stacked">
+				
+				    <div class="uk-margin">
+						<label class="uk-form-label" for="form-topic-title">{{ constant('TOPIC_TEXT_TOPIC_TITLE') }}</label>
+						<div class="uk-form-controls">
+							<input class="uk-input" id="form-topic-title" type="text" name="t_topic_title" placeholder="Some text...">
+						</div>
+					</div>
+					
+					<div class="uk-margin">
+						<label class="uk-form-label" for="form-topic-title">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }}</label>
+						<div class="uk-form-controls">
+							<textarea id="newTopicText" class="uk-textarea" name="t_topic"></textarea>
+						</div>
+					</div>
+
+
+<div style="float:left"><span class="formInfo"><a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></span></div><div style="clear:both"></div>
 
     {% if 'CREATE_SHEETS' in user_rights|keys %}
 		{% include 'partials/cheatsheet.twig' %}
 	{% endif %}
 	{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
-		TOPIC_TEXT_ATTACHMENTS:<br><input type="file" name="t_file"><span class="formInfo"><a href="faq.php?fid=2&width=475" rel="faq.php?fid=2&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES_ATTACHMENT') }}">?</a></span><br><div style="float:left"><input type="submit" value="{{ constant('TOPIC_TEXT_SAVE') }}"></div>
+		{{ constant('TOPIC_TEXT_ATTACHMENTS') }}<br>
+		<input type="file" name="t_file"><span class="formInfo"><a href="faq.php?fid=2&width=475" rel="faq.php?fid=2&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES_ATTACHMENT') }}">?</a></span><br>
+		<div class="uk-text-right"><input type="submit" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}"></div>
 	{% else %}
-		<div style="float:left"><input type="button" value="'.TOPIC_TEXT_SAVE.'" onclick="javascript:addTopic();"></div>
+		<div style="float:left"><input type="button" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}" onclick="javascript:addTopic();"></div>
 	{% endif %}
 	<div style="float:left"><span class="formInfo"><a rel="faq.php?fid=4" href="faq.php?fid=4" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></span></div><div style="clear:both"></div></form><br></div></div>
 	{% if 'CREATE_SHEETS' in user_rights|keys %}

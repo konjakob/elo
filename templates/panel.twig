@@ -1,0 +1,274 @@
+{% extends 'default.twig' %}
+
+{% block vars %}
+{% endblock %}
+
+{% block default %}
+
+<div id="popup" style="display:none; "><div id="popupclose" onClick="tgldiv('popup');"><strong>X</strong></a></div><div id="popupcontent"></div></div>
+
+
+{% if 'CREATE_NEW_USER' in user_rights|keys %}
+<div id="panel-header"></div>
+<div id="panel-box">
+<h2>New user</h2>
+<form class="uk-form-stacked" action="<?=$_SERVER['PHP_SELF']?>" method="post">
+
+    <div class="uk-margin">
+        <label class="uk-form-label" for="user_name">Name</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="user_name" type="text" name="t_name" placeholder="Name">
+        </div>
+    </div>
+    <div class="uk-margin">
+        <label class="uk-form-label" for="user_email">Email</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="user_name" type="text" name="t_email" placeholder="Email">
+        </div>
+    </div>
+	<div class="uk-margin">
+        <label class="uk-form-label" for="user_pass">Password</label>
+        <div class="uk-form-controls">
+		
+			<div class="uk-margin">
+				<div class="uk-inline">
+					<span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
+					<input class="uk-input" id="user_name" type="text" name="t_pass" placeholder="Password">
+				</div>
+			</div>
+             PANEL_EXAMPLE_PASSWORD createCode(8)
+        </div>
+    </div>
+	<div class="uk-margin">
+        <label class="uk-form-label" for="user_reg_email">Send registration email</label>
+        <div class="uk-form-controls">
+            <input class="uk-checkbox" id="user_reg_email" type="checkbox" name="t_send_email">
+        </div>
+    </div>
+	<div class="uk-margin">
+        <label class="uk-form-label" for="user_lang">Language</label>
+        <div class="uk-form-controls">
+            <select name="t_lang" class="uk-select" id="user_lang">
+{% for l in langs %}
+	<option value="{{ l.lang_id }}">{{ l.lang_name }}</option>
+{% endfor %}
+</select>
+        </div>
+    </div>
+	<div class="uk-text-right">
+		<input type="submit" value="Save" name="new_user" class="uk-button uk-button-primary" />
+	</div>
+</form>
+</div>
+
+{% endif %}
+
+{% if 'CREATE_NEW_RIGHT' in user_rights|keys %}
+
+{% if saved_new_right %}
+<div id='correct'>Saved the new right.</div>
+{% endif %}
+
+
+<div id="panel-box">
+<h2>New right</h2>
+<form action="<?=$_SERVER['PHP_SELF']?>" class="uk-form-stacked" method="post">
+    <div class="uk-margin">
+        <label class="uk-form-label" for="right_name">Name</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="right_name" type="text" name="t_name" placeholder="Name">
+        </div>
+    </div>
+	    <div class="uk-margin">
+        <label class="uk-form-label" for="right_key">Key</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" id="right_key" type="text" name="t_key" placeholder="Key">
+        </div>
+    </div>
+	<div class="uk-text-right">
+		<input type="submit" value="Save" name="new_right" class="uk-button uk-button-primary" />
+	</div>
+</form>
+</div>
+{% endif %}
+
+{{ msg_group }}
+
+<div id="panel-box">
+{% if 'CREATE_GROUPS' in user_rights|keys %}	
+	<h2>New Group</h2>
+    <form action="<?=$_SERVER['PHP_SELF']?>" class="uk-form-stacked" method="post">
+	    <div class="uk-margin">
+			<label class="uk-form-label" for="group_name">Name</label>
+			<div class="uk-form-controls">
+				<input class="uk-input" id="group_name" type="text" name="t_group" placeholder="Name">
+			</div>
+		</div>
+		<div class="uk-text-right">
+			<input type="submit" value="Save" name="new_group" class="uk-button uk-button-primary" />
+		</div>
+    </form>
+{% endif %}
+
+<h2>Groups</h2>
+{% for g in groups %}
+	<a onclick="javascript:loadGroupData({{ g.group_id }});javascript:tgldiv('popup');">{{ g.group_name }}</a>
+	(<a href='{{ current_url }}?delete_group={{ g.group_id }}'>Delete</a> | <a onclick="javascript:changeGroupData({{ g.group_id }});javascript:tgldiv('popup');">Modify</a>)<br>
+
+{% endfor %}
+			
+
+<h2>Edit users</h2>
+
+
+<div id="panel-box">
+	{% for u in users %}
+		<a onclick="javascript:loadUserData({{ u.user_id }});javascript:tgldiv('popup');">{{ u.user_name }}</a><br>
+	{% endfor %}
+</div>
+<br />
+		
+
+<h2>New topic</h2>
+<div id="panel-box">
+<form action="<?=$_SERVER['PHP_SELF']?>" method="post" class="uk-form-stacked" enctype="multipart/form-data"  onsubmit="selectAllOptions('t_user');selectAllOptions('t_group');">
+Users: 
+
+<table><tr><td>Existing user:</td><td></td><td>User for this topic:</td></tr><tr><td>
+	<select id='ex_users' size='5' multiple='multiple'>
+		{% for u in users %}
+			<option value='{{ u.user_id }}'>{{ u.user_name }}</option>
+		{% endfor %}
+	</select></td>
+	<td><input type="button" value=">>" onClick="javascript:addUserTopic();"><br><input type="button" value="<<" onClick="javascript:removeUserTopic();"></td><td><select id='t_user' size='5' multiple='multiple' name='t_user[]'></select></td></tr></table>
+	
+<br />
+Groups:
+<? 
+	$select_group = "";
+	foreach ( $groups as $g ) 
+		$select_group .= "";	
+
+	<table><tr><td>Existing groups:</td><td></td><td>Groups for this topic:</td></tr><tr><td><select id='ex_groups' size='5' multiple='multiple'>
+	{% for g in groups %}
+	<option value='{{ g.group_id }}'>{{ g.group_name }}</option>
+	{% endfor %}</select></td>
+	<td><input type="button" value=">>" onClick="javascript:addGroupTopic();"><br><input type="button" value="<<" onClick="javascript:removeGroupTopic();"></td><td><select id='t_group' size='5' multiple='multiple' name='t_group[]'></select></td></tr></table>
+
+	<br />
+Title: <input type="text" name="t_topic_title" /><br>
+Text: <br><textarea name="t_topic" rows="10" cols="50"><?=$default_text?></textarea><br />
+
+	{% if 'CREATE_SHEETS' in user_rights|keys %}
+		showCreateSheet();
+	{% endif %}
+	{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
+		Attachments:<br><input type="file" name="t_file">
+	{% endif %}
+    ?><br />
+    <input type="submit" value="Save" name="new_topic" />
+</form>
+</div>
+		
+{% endblock %}		  
+
+{% block footerInjection %}
+
+
+<script language="javascript">  
+
+function tgldiv(divname){
+	$(document).ready(function(){
+		$("#"+divname).slideToggle("slow");
+	  });
+  };
+  
+  function loadUserData(id) {
+	  $.ajax({
+				url: "actions.php?action=getUser&userid="+id,
+				success: function(respond)
+				{
+					$("#popupcontent").html(respond);
+					$("#popupcontent").find("script").each(function(i) {
+                    	eval($(this).text());
+                	});
+				}
+		});
+  }
+  
+  function loadGroupData(id) {
+	  $.ajax({
+				url: "actions.php?action=getGroupUser&group_id="+id,
+				success: function(respond)
+				{
+					$("#popupcontent").html(respond);
+					$("#popupcontent").find("script").each(function(i) {
+                    	eval($(this).text());
+                	});
+				}
+		});
+  }
+  
+  function changeGroupData(id) {
+	  $.ajax({
+				url: "actions.php?action=getGroup&group_id="+id,
+				success: function(respond)
+				{
+					$("#popupcontent").html(respond);
+					$("#popupcontent").find("script").each(function(i) {
+                    	eval($(this).text());
+                	});
+				}
+		});
+  }
+  
+     function removeUserTopic() {
+		$(document).ready(function(){
+			$('#t_user option:selected').each(function(){
+				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#ex_users");
+				$("#t_user option[value="+$(this).val()+"]").remove();
+			});
+		});
+	}
+	function addUserTopic() {
+		$(document).ready(function(){
+			$('#ex_users option:selected').each(function(){
+				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#t_user");
+				$("#ex_users option[value="+$(this).val()+"]").remove();
+			});
+		});
+	}
+	function removeGroupTopic() {
+		$(document).ready(function(){
+			$('#t_group option:selected').each(function(){
+				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#ex_groups");
+				$("#t_group option[value="+$(this).val()+"]").remove();
+			});
+		});
+	}
+	function addGroupTopic() {
+		$(document).ready(function(){
+			$('#ex_groups option:selected').each(function(){
+				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#t_group");
+				$("#ex_groups option[value="+$(this).val()+"]").remove();
+			});
+	  });
+	}
+	function selectAllOptions(selStr)
+	{
+	  var selObj = document.getElementById(selStr);
+	  for (var i=0; i<selObj.options.length; i++) {
+		selObj.options[i].selected = true;
+	  }
+	}
+</script>
+
+	{% if 'CREATE_SHEETS' in user_rights|keys %}
+	<script type="text/javascript">
+		window.onload = function() {	
+			abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
+		}
+		</script>
+	{% endif %}
+			
+{% endblock %}	
