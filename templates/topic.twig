@@ -12,7 +12,7 @@
 <div id="board_messages" style="display: none;"></div>
 
 	
-	<div><br>{{ constant('TOPIC_TEXT_HELLO') }} <strong>{{ user_name }}</strong>{{ constant('TOPIC_TEXT_WELCOME') }}></div>
+	<div><br>{{ constant('TOPIC_TEXT_HELLO') }} <strong>{{ user_name }}</strong>{{ constant('TOPIC_TEXT_WELCOME') }}</div>
 	<hr>
 	<div id="placeholder" style="display:none;border:thin;border-style:dashed;padding:10px"></div>
 	
@@ -21,50 +21,64 @@
 	{% if 'CREATE_TOPICS' in user_rights|keys %}
 
     <div id="newTopicRespond" style="display:none; "></div>
+	
+
     <div id="createNewTopic" class="uk-margin">
 		<div>
-			<input class="uk-button uk-button-primary" type="button" id="btnCreateTopic" value="{{ constant('TOPIC_TEXT_NEW_TOPIC') }}">
+			<input class="uk-button uk-button-primary uk-margin-bottom" type="button" id="btnCreateTopic" value="{{ constant('TOPIC_TEXT_NEW_TOPIC') }}">
 		</div>
 		<div id="newTopic2" style="display:none">
-			<div id="panel-header">{{ constant('TOPIC_TEXT_NEW_TOPIC') }}</div>
-			<div id="newTopic" style="margin-left:20px; margin-right:20px;border:thin;border-style:dashed;padding: 10px;">
-				<form action="newtopic.php" method="post" enctype="multipart/form-data" class="uk-form-stacked">
-				
-				    <div class="uk-margin">
-						<label class="uk-form-label" for="form-topic-title">{{ constant('TOPIC_TEXT_TOPIC_TITLE') }}</label>
-						<div class="uk-form-controls">
-							<input class="uk-input" id="form-topic-title" type="text" name="t_topic_title" placeholder="Some text...">
-						</div>
-					</div>
+		
+			<div class="uk-card uk-card-default uk-card-body uk-margin">
+			
+				<h3>{{ constant('TOPIC_TEXT_NEW_TOPIC') }} <a rel="faq.php?fid=4" href="faq.php?fid=4" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}"><small>?</small></a></h3>
+				<div id="newTopic">
+					<form action="newtopic.php" method="post" enctype="multipart/form-data" class="uk-form-stacked">
 					
-					<div class="uk-margin">
-						<label class="uk-form-label" for="form-topic-title">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }}</label>
-						<div class="uk-form-controls">
-							<textarea id="newTopicText" class="uk-textarea" name="t_topic"></textarea>
+						<div class="uk-margin">
+							<label class="uk-form-label" for="form-topic-1">{{ constant('TOPIC_TEXT_TOPIC_TITLE') }}</label>
+							<div class="uk-form-controls">
+								<input class="uk-input" id="form-topic-1" type="text" name="t_topic_title" placeholder="Some text...">
+							</div>
 						</div>
-					</div>
+						
+						<div class="uk-margin">
+							<label class="uk-form-label" for="newTopicText">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></label>
+							<div class="uk-form-controls">
+								<textarea id="newTopicText" class="uk-textarea" name="t_topic"></textarea>
+							</div>
+						</div>
 
+						{% if 'CREATE_SHEETS' in user_rights|keys %}
+							{% include 'partials/cheatsheet.twig' %}
+						{% endif %}
+		
+						{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
+							<div class="uk-margin">
+								<label class="uk-form-label" for="form-topic-3">{{ constant('TOPIC_TEXT_ATTACHMENTS') }} <a rel="faq.php?fid=2&width=475" href="faq.php?fid=2&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES_ATTACHMENT') }}">?</a></label>
+								<div class="uk-form-controls">
+									<input type="file" name="t_file" id="form-topic-3">
+								</div>
+							</div>					
+							<div class="uk-text-right"><input type="submit" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}">
+						{% else %}
+							<div class="uk-text-right"><input type="button" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}" onclick="javascript:addTopic();"></div>
+						{% endif %}
 
-<div style="float:left"><span class="formInfo"><a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></span></div><div style="clear:both"></div>
-
-    {% if 'CREATE_SHEETS' in user_rights|keys %}
-		{% include 'partials/cheatsheet.twig' %}
+					</form>
+				</div>
+			</div>
+		</div>
+		{% if 'CREATE_SHEETS' in user_rights|keys %}
+			<script type="text/javascript">
+		window.onload = function() {	
+			abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
+		}
+		</script>
 	{% endif %}
-	{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
-		{{ constant('TOPIC_TEXT_ATTACHMENTS') }}<br>
-		<input type="file" name="t_file"><span class="formInfo"><a href="faq.php?fid=2&width=475" rel="faq.php?fid=2&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES_ATTACHMENT') }}">?</a></span><br>
-		<div class="uk-text-right"><input type="submit" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}"></div>
-	{% else %}
-		<div style="float:left"><input type="button" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}" onclick="javascript:addTopic();"></div>
-	{% endif %}
-	<div style="float:left"><span class="formInfo"><a rel="faq.php?fid=4" href="faq.php?fid=4" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></span></div><div style="clear:both"></div></form><br></div></div>
-	{% if 'CREATE_SHEETS' in user_rights|keys %}
-		<script type="text/javascript">
-	window.onload = function() {	
-		abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
-	}
-	</script>
-	{% endif %}<br id="brplace">
+	<br id="brplace">
+	
+	</div>
 
 {% endif %}
 	
@@ -77,16 +91,13 @@
 			<div class="uk-card-header">
 
 						<h3 class="uk-card-title uk-margin-remove-bottom">{{ topic.topic_title }}</h3>
-						<p class="uk-text-meta uk-margin-remove-top"><time datetime="{{ topic.reply_date|date("YYYY-MM-DD HH:MM:SS") }}">{{ topic.reply_date|date("d.m.Y") }}</time></p>
+						<p class="uk-text-meta uk-margin-remove-top"><time datetime="{{ topic.reply_date|date("YYYY-MM-DD HH:MM:SS") }}">{{ topic.reply_date|date(conf.date_format) }}</time></p>
 
 			</div>
-			<div class="uk-card-body">
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-			</div>
 			<div class="uk-card-footer">
-				<p class="uk-text-meta uk-margin-remove-top">{{ topic.no }} {{ constant('TOPIC_TEXT_TOPIC_ANSWERS') }} | {{ constant('TOPIC_TEXT_TOPIC_CREATED') }} {{ topic.reply_date|date("d.m.Y") }}$conf['date_format'] {{ constant('TOPIC_TEXT_TOPIC_BY') }} {{ topic.username }}
+				<p class="uk-text-meta uk-margin-remove-top">{{ topic.no }} {{ constant('TOPIC_TEXT_TOPIC_ANSWERS') }} | {{ constant('TOPIC_TEXT_TOPIC_CREATED') }} {{ topic.reply_date|date(conf.date_format) }} {{ constant('TOPIC_TEXT_TOPIC_BY') }} {{ topic.username }}
 					{% if topic.reply_date != topic.last_reply_date %}
-						 | {{ constant('TOPIC_TEXT_TOPIC_LAST_RESPONSE') }} : {{ topic.last_reply_date|date("d.m.Y, H:i") }}
+						 | {{ constant('TOPIC_TEXT_TOPIC_LAST_RESPONSE') }} : {{ topic.last_reply_date|date(conf.date_format) }}
 						{% endif %} | <a href="{{ topic.href }}">View</a></p>
 			</div>
 		</div>
@@ -105,11 +116,7 @@
 
 {% block headerInjection %}
 
-<link href="css/jquery.cluetip.css" rel="stylesheet" type="text/css" />
-<script src="jquery.min.js"></script>
-<script src="abcjs_editor_1.7-min.js" type="text/javascript"></script>
-<script src="js/jquery.cluetip.js"></script>
-<script src="js/general.js"></script>
+
 	<script type="text/javascript">
 
 $(document).ready(function(){
@@ -119,21 +126,7 @@ $(document).ready(function(){
 	$(this).toggle();
   });
 });	
-	
-		function getIdText(itemid,dbid){
-			eval($("#div"+itemid).load("getIdText.php?dbid="+dbid+"&itemid="+itemid));
-			$("#div"+itemid).slideToggle("slow");
-		}
-  
-		function getRevs(itemid,langid){
-			eval($("#divrevs"+itemid).load("getRevs.php?id="+langid));
-			$("#divrevs"+itemid).slideToggle("slow");
-		}
-  
-		function addrevs(itemid){
-			$("#divaddrevs"+itemid).slideToggle("slow");
-		}
-  
+	  
 		function tgldiv(divname){
 			$("#"+divname).slideToggle("slow");
 		}

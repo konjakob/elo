@@ -1,25 +1,11 @@
 <?php
 
-require_once("dbclass.php");
-$db = new db;
-
-require("authenticate.class.php");
-
-$auth = new Authenticate;
-
-if(!$auth->validateAuthCookie()) {
-	echo "Please log in.";
-	exit;
-}
-
-require("functions.php");
-
-// check if user is allowed to see the topic
-$userid = $auth->getUserId();
+require('includes/application_top.php');
 
 // check if allowed to see
 if ( !$db->query_one("select ru.ru_id from elo_right as r, elo_right_user as ru where user_id='".$userid."' and right_key='CREATE_TOPICS' and r.right_id=ru.right_id") ) {		
-	echo "Sorry, there is nothing.";
+	//echo "Sorry, there is nothing.";
+	echo json_encode(array('state' => 'nok', 'key' => 'no_rights', 'text' => 'You do not have sufficient rights for this action.', 'title' => 'Error', 'type' => 'error'));
 	exit();
 }
 	
@@ -56,7 +42,7 @@ if ( in_array('CREATE_SHEETS', $user_rights) && isset($_POST['abc']) && strlen($
 }
 
 // Email to admin
-$email_text = $db->query("select emailtext_text from elo_emailtext where emailtext_key='NEW_TOPIC_ADMIN' and lang_id=1");
+$email_text = $db->query_one("select emailtext_text from elo_emailtext where emailtext_key='NEW_TOPIC_ADMIN' and lang_id=1");
 
 $search_array = array("{ID}", "{USER}");
 $replace_array = array($topicid, $userid);
@@ -77,5 +63,3 @@ if ( isset($_POST['noref']) ) {
 	header("Location: topic.php");	
 }
 	
-
-?>

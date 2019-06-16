@@ -1,40 +1,10 @@
 <?php
 
-require_once("dbclass.php");
-$db = new db;
-
-require("authenticate.class.php");
-
-$auth = new Authenticate;
-
-if(!$auth->validateAuthCookie())
-	header("Location: login.php?ref=".base64_encode($_SERVER['PHP_SELF']."?".$_SERVER["QUERY_STRING"]));
-
-require("functions.php");
-
-$userid = $auth->getUserId();
-
-$query = $db->query("select r.right_key from elo_right as r, elo_right_user as ru where r.right_id=ru.right_id and ru.user_id='".$userid."'");
-$user_rights = array();
-
-while ( $res = $db->fetch_array($query) )
-	$user_rights[] = $res['right_key'];
-
-$twig_data['user_rights'] = $user_rights;
-
-$query = $db->query("select elo_user.*, elo_lang.lang_code from elo_user left join elo_lang ON (elo_user.lang_id=elo_lang.lang_id) where user_id='".$userid."' limit 1");
-$user_res = $db->fetch_array($query);
-$username = $twig_data['user_name'] = $user_res['user_name'];
-$langcode = $user_res['lang_code'];
-
-if ( strlen($langcode) <1 )
-	$langcode = "en";
-
-require_once('includes/languages/'.$langcode.'.php');
+require('includes/application_top.php');
 
 require_once('SBBCodeParser.php');
 
-$time = time();
+
 
 $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 
@@ -102,7 +72,7 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 		$query = $db->query("select r.*, u.user_name from elo_reply as r, elo_user as u where r.topic_id='".$topicid."' and u.user_id=r.user_id");
 		$musicsheets = array();
 		
-		$ubbParser = new SBBCodeParser_Document();
+		
 		$replies = array();
 		while ( $res = $db->fetch_array($query) ) {
 
@@ -156,7 +126,7 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 				}
 			}
 		
-		
+			$ubbParser = new SBBCodeParser_Document(); // todo: delete old text and keep the object
 			$replies[] = array(	'user_name' => $res['user_name'],
 								'reply_date' => $res['reply_date'],
 								'user_id' => $res['user_id'],

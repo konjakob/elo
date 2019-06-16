@@ -315,4 +315,3 @@ HAVING (((elo_group.group_id)=".intval($_GET['group_id'])."));");
 	}
 }
 	
-?>

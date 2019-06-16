@@ -5,29 +5,14 @@ $user = "db16731_5";
 $pass = "VjQ3abF81P";
 $dbname = "db16731_5";
 */
-$breadcrumb = array();
-require_once 'ext/Twig/Autoloader.php';
-Twig_Autoloader::register();
 
-$loader = new Twig_Loader_Filesystem('C:\\wamp\www\\elo\\templates'); 
-$twig = new Twig_Environment($loader); /*, array(
-		'cache' => 'ext/twig-cache',
-	));*/
-// $function = new \Twig\TwigFunction('function_name', function () {
-    // $calcFrom = $from;
-	// $calcTo = $to;
-	// $now->diff($calcFrom)->format("%a")
-// });
-// $twig->addFunction($function);
-
-$twig_data['current_url'] = $_SERVER['PHP_SELF'];
 
   define('DB_SERVER', 'localhost');
   define('DB_SERVER_USERNAME', 'root');
   define('DB_SERVER_PASSWORD', '');
   define('DB_DATABASE', 'elo');
  
- header("Content-type: text/html; charset=utf-8");
+ 
  
 class db {
 

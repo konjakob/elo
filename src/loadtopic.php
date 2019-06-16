@@ -51,6 +51,7 @@ UNION
 		$topics[] = array(	'topic_title' => $res['topic_title'],
 							'no_replies' => intval($res['no'])-1,
 							'reply_date' => $res['reply_date'],
+							'reply_text' => '',
 							'username' => $res['username'],
 							'last_reply_date' => $res['last_reply_date'],
 							'topic_id' => $res['topic_id'],

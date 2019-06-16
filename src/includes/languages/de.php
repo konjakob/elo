@@ -64,4 +64,5 @@ define('TOPIC_USER_OF_TOPIC','Benutzer dieses Themas:');
 define('TOPIC_GROUP_OF_TOPIC','Gruppen dieses Themas:');
 define('TOPIC_EDIT_REPLY','Antwort &auml;ndern');
 define('TOPIC_SHEET_INFO','ABC music info');
-?>
+
+define('TOPIC_TEXT_REPLY_TEXT','Antworte zu diesem Thema');

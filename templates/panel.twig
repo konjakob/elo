@@ -25,21 +25,15 @@
 			<div class="uk-margin">
 				<label class="uk-form-label" for="user_email">Email</label>
 				<div class="uk-form-controls">
-					<input class="uk-input" id="user_name" type="text" name="t_email" placeholder="Email">
+					<input class="uk-input" id="user_email" type="text" name="t_email" placeholder="Email">
 				</div>
 			</div>
 			<div class="uk-margin">
 				<label class="uk-form-label" for="user_pass">Password</label>
 				<div class="uk-form-controls">
-				
-					<div class="uk-margin">
-						<div class="uk-inline">
-							<span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-							<input class="uk-input" id="user_name" type="text" name="t_pass" placeholder="Password">
-						</div>
-					</div>
-					 {{ constant('PANEL_EXAMPLE_PASSWORD') }} {{ exampleCode }}
+						<input class="uk-input" id="user_pass" type="text" name="t_pass" placeholder="Password">
 				</div>
+				 {{ constant('PANEL_EXAMPLE_PASSWORD') }} <code id="suggestedPassword">{{ exampleCode }}</code> <small><a href="#" id="use-sug-password">Use this password</a></small>
 			</div>
 			<div class="uk-margin">
 				<label class="uk-form-label" for="user_reg_email">Send registration email</label>
@@ -81,7 +75,7 @@
 					<input class="uk-input" id="right_name" type="text" name="t_name" placeholder="Name">
 				</div>
 			</div>
-				<div class="uk-margin">
+			<div class="uk-margin">
 				<label class="uk-form-label" for="right_key">Key</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="right_key" type="text" name="t_key" placeholder="Key">
@@ -133,7 +127,7 @@
 		<div class="uk-column-1-2">
 			<ul class="uk-list">
 			{% for u in users %}
-				<li><a onclick="javascript:loadUserData({{ u.user_id }});javascript:tgldiv('popup');">{{ u.user_name }}</a></li>
+				<li><a onclick="javascript:loadUserData({{ u.user_id }});">{{ u.user_name }}</a></li>
 			{% endfor %}
 			</ul>
 		</div>
@@ -141,9 +135,11 @@
 
 </div>
 		
+<a name="newtopic"></a>
+
 {% for m in msgs %}
 
-<div class="uk-alert-{% if m.state == 'ok' %}scucess{% else %}danger{% endif %}" uk-alert>
+<div class="uk-alert-{% if m.state == 'ok' %}success{% else %}danger{% endif %}" uk-alert>
     <a class="uk-alert-close" uk-close></a>
     <p>{{ m.text }}</p>
 </div>
@@ -153,45 +149,61 @@
 	<div class="uk-card uk-card-default uk-card-body uk-margin">
 		<h2 class="uk-card-title">New topic</h2>
 
-<form action="{{ current_url }}" method="post" class="uk-form-stacked" enctype="multipart/form-data"  onsubmit="selectAllOptions('t_user');selectAllOptions('t_group');">
-Users: 
+<form action="{{ current_url }}#newtopic" method="post" class="uk-form-stacked" enctype="multipart/form-data"  onsubmit="selectAllOptions('t_user');selectAllOptions('t_group');">
 
-<table><tr><td>Existing user:</td><td></td><td>User for this topic:</td></tr><tr><td>
-	<select id='ex_users' size='5' multiple='multiple'>
+<div class="uk-child-width-1-2" uk-grid>
+	<div>
+		<div class="uk-card uk-card-small">
+			<h4 class="uk-card-title">Users</h4>
+			<p><table><tr><td>Existing user:</td><td></td><td>User for this topic:</td></tr><tr><td>
+	<select id='ex_users' size='5' multiple='multiple' class="uk-select">
 		{% for u in users %}
 			<option value='{{ u.user_id }}'>{{ u.user_name }}</option>
 		{% endfor %}
 	</select></td>
-	<td><input type="button" value=">>" onClick="javascript:addUserTopic();"><br><input type="button" value="<<" onClick="javascript:removeUserTopic();"></td><td><select id='t_user' size='5' multiple='multiple' name='t_user[]'></select></td></tr></table>
-	
-<br />
-Groups:
-
-	$select_group = "";
-	foreach ( $groups as $g ) 
-		$select_group .= "";	
-
-	<table><tr><td>Existing groups:</td><td></td><td>Groups for this topic:</td></tr><tr><td><select id='ex_groups' size='5' multiple='multiple'>
+	<td><input type="button" class="uk-button uk-margin-bottom uk-button-small" value=">>" onClick="javascript:addUserTopic();"><br><input class="uk-button uk-button-small" type="button" value="<<" onClick="javascript:removeUserTopic();"></td><td><select id='t_user' class="uk-select" size='5' multiple='multiple' name='t_user[]'></select></td></tr></table></p>
+		</div>
+	</div>
+	<div>
+		<div class="uk-card  uk-card-small">
+			<h4 class="uk-card-title">Groups</h4>
+			<p><table><tr><td>Existing groups:</td><td></td><td>Groups for this topic:</td></tr><tr><td><select id='ex_groups' class="uk-select" size='5' multiple='multiple'>
 	{% for g in groups %}
 	<option value='{{ g.group_id }}'>{{ g.group_name }}</option>
 	{% endfor %}</select></td>
-	<td><input type="button" value=">>" onClick="javascript:addGroupTopic();"><br><input type="button" value="<<" onClick="javascript:removeGroupTopic();"></td><td><select id='t_group' size='5' multiple='multiple' name='t_group[]'></select></td></tr></table>
-
-	<br />
-Title: <input type="text" name="t_topic_title" /><br>
-Text: <br><textarea name="t_topic" rows="10" cols="50">default_text</textarea><br />
+	<td><input type="button" class="uk-button uk-margin-bottom uk-button-small" value=">>" onClick="javascript:addGroupTopic();"><br><input type="button" class="uk-button uk-button-small" value="<<" onClick="javascript:removeGroupTopic();"></td><td><select id='t_group' size='5' class="uk-select" multiple='multiple' name='t_group[]'></select></td></tr></table></p>
+		</div>
+	</div>
+</div>
+		
+	{% include 'partials/texttitleblock.twig' %}				
 
 	{% if 'CREATE_SHEETS' in user_rights|keys %}
 		{% include 'partials/cheatsheet.twig' %}
 	{% endif %}
 	{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
-		Attachments:<br><input type="file" name="t_file">
+		{% include 'partials/attachment.twig' %}						
 	{% endif %}
-    ?><br />
-    <input type="submit" value="Save" name="new_topic" />
+
+	<div class="uk-text-right">
+		<input class="uk-button uk-button-primary" type="submit" value="Save" name="new_topic" />
+	</div>
 </form>
 </div>
-		
+	
+
+<!-- This is the modal -->
+<div id="my-id" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title" id="modal-headline">Edit User</h2>
+        <p id="modal-body"></p>
+        <p class="uk-text-right">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+            <button class="uk-button uk-button-primary" type="button">Save</button>
+        </p>
+    </div>
+</div>
+	
 {% endblock %}		  
 
 {% block footerInjection %}
@@ -199,24 +211,29 @@ Text: <br><textarea name="t_topic" rows="10" cols="50">default_text</textarea><b
 
 <script language="javascript">  
 
-function tgldiv(divname){
-	$(document).ready(function(){
+	$('#use-sug-password').click(function(e) {
+		e.preventDefault();
+		$('#user_pass').val($('#suggestedPassword').text());
+	});
+
+	function tgldiv(divname){
 		$("#"+divname).slideToggle("slow");
-	  });
-  };
+	 };
   
-  function loadUserData(id) {
-	  $.ajax({
+	function loadUserData(id) {
+		$.ajax({
 				url: "actions.php?action=getUser&userid="+id,
 				success: function(respond)
 				{
-					$("#popupcontent").html(respond);
+					$('#modal-body').html(respond);
+					UIkit.modal($('#my-id')).show();
+					/*$("#popupcontent").html(respond);
 					$("#popupcontent").find("script").each(function(i) {
-                    	eval($(this).text());
-                	});
+						eval($(this).text());
+					});*/
 				}
 		});
-  }
+	}
   
   function loadGroupData(id) {
 	  $.ajax({
@@ -286,10 +303,10 @@ function tgldiv(divname){
 </script>
 
 	{% if 'CREATE_SHEETS' in user_rights|keys %}
-	<script type="text/javascript">
-		window.onload = function() {	
-			abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
-		}
+		<script type="text/javascript">
+			window.onload = function() {	
+				abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
+			}
 		</script>
 	{% endif %}
 			

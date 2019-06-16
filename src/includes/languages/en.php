@@ -71,4 +71,5 @@ define('LOGIN_PASSFORGOTTEN_TEXT','Please insert your email address below. You w
 define('EMAIL_NEW_USER_TEXT_TITLE', 'Welcome to ELO');
 
 define('LOGIN_PASSWORD_FORGOTTEN','Password forgotten');
-?>
+
+define('TOPIC_TEXT_REPLY_TEXT','Reply to this topic');
