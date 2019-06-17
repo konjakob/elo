@@ -192,15 +192,95 @@
 </div>
 	
 
-<!-- This is the modal -->
-<div id="my-id" uk-modal>
+<div id="edit-user-model" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
         <h2 class="uk-modal-title" id="modal-headline">Edit User</h2>
-        <p id="modal-body"></p>
-        <p class="uk-text-right">
-            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-            <button class="uk-button uk-button-primary" type="button">Save</button>
-        </p>
+        <p>
+		
+			<form class="uk-form-stacked" action="{{ current_url }}" method="post">
+
+				<div class="uk-margin">
+					<label class="uk-form-label" for="user_name_c">Name</label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="t_name_c" type="text" name="t_name_c">
+					</div>
+				</div>
+				<div class="uk-margin">
+					<label class="uk-form-label" for="user_email_c">Email</label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="user_email_c" type="text" name="t_email_c">
+					</div>
+				</div>
+				<div class="uk-margin">
+					<label class="uk-form-label" for="user_pass_c">Password</label>
+					<div class="uk-form-controls">
+							<input class="uk-input" id="user_pass_c" type="text" name="t_pass_c">
+					</div>
+					 {{ constant('PANEL_EXAMPLE_PASSWORD') }} <code id="suggestedPassword_existing"></code> <small><a href="#" id="use-sug-password_existing">Use this password</a></small>
+				</div>
+				<div class="uk-margin">
+					<label class="uk-form-label" for="user_lang_c">Language</label>
+					<div class="uk-form-controls">
+						<select name="t_lang_c" class="uk-select" id="user_lang_c">
+						{% for l in langs %}
+							<option value="{{ l.lang_id }}">{{ l.lang_name }}</option>
+						{% endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="uk-text-right">
+					<input type="submit" value="Save" name="new_user_c" class="uk-button uk-button-primary" />
+				</div>
+			</form>
+			
+			<div class="uk-child-width-1-1" uk-grid>
+				<div>
+
+					<table>
+						<tr>
+							<td>Existing rights:</td>
+							<td></td>
+							<td>User rights:</td>
+						</tr>
+						<tr>
+							<td>
+								<select id='ex_rights' size='5' multiple='multiple'>
+									$option_right_no
+								</select>
+							</td>
+							<td>
+								<input type="button" value=">>" onClick="javascript:addRight('.$res['user_id'].');"><br><input type="button" value="<<" onClick="javascript:removeRight('.$res['user_id'].');">
+							</td>
+							<td>
+								<select id='us_rights' size='5' multiple='multiple'>$option_right_yes</select>
+							</td>
+						</tr>
+					</table>
+					
+				</div>
+				<div>
+					<table>
+						<tr>
+							<td>Existing groups:</td>
+							<td></td>
+							<td>User groups:</td>
+						</tr>
+						<tr>
+							<td>
+								<select id='ex_groups' size='5' multiple='multiple'>$option_group_no</select>
+							</td>
+							<td>
+								<input type="button" value=">>" onClick="javascript:addGroup('.$res['user_id'].');"><br><input type="button" value="<<" onClick="javascript:removeGroup('.$res['user_id'].');">
+							</td>
+							<td>
+								<select id='us_groups' size='5' multiple='multiple'>$option_group_yes</select>
+							</td>				
+						</tr>
+					</table>
+				</div>
+			</div>
+		
+		</p>
     </div>
 </div>
 	
@@ -223,10 +303,18 @@
 	function loadUserData(id) {
 		$.ajax({
 				url: "actions.php?action=getUser&userid="+id,
+				dataType: 'json',
 				success: function(respond)
 				{
-					$('#modal-body').html(respond);
-					UIkit.modal($('#my-id')).show();
+					if ( respond.state == 'ok' ) {
+						$('#t_name_c').val(respond.user_data.user_name);
+						$('#t_email_c').val(respond.user_data.user_email);
+						$("#user_lang_c option[id='" + respond.user_data.lang_id + "']").attr("selected", "selected");
+						//$('#modal-body').html(respond);
+						UIkit.modal($('#edit-user-model')).show();
+					} else {
+						toastr["error"]("Error", "Error");
+					}
 					/*$("#popupcontent").html(respond);
 					$("#popupcontent").find("script").each(function(i) {
 						eval($(this).text());

@@ -31,6 +31,8 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	
 	if ( $action == 'getUser' && isset($_GET['userid'])) {
 
+		$returnData = array();
+	
 		$query_groups = $db->query("select * from elo_group order by group_name");
 		$groups = array();
 		while ( $res = $db->fetch_array($query_groups) )
@@ -45,19 +47,29 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		$saved_rights = array();
 		while ( $res2 = $db->fetch_array($query_user_rights) )
 			$saved_rights[] = $res2['right_id'];
+		$returnData['user_rights'] = $saved_rights;
 			
 		$query_user_groups = $db->query("select group_id from elo_group_user where user_id=".intval($_GET['userid']));
 		$saved_groups = array();
 		while ( $res2 = $db->fetch_array($query_user_groups) )
 			$saved_groups[] = $res2['group_id'];
-			
-		$query = $db->query("select * from elo_user where user_id='".intval($_GET['userid'])."'");
+		$returnData['user_groups'] = $saved_groups;
+		
+		$query = $db->query("select user_name, user_email, lang_id, user_lastvisit from elo_user where user_id='".intval($_GET['userid'])."'");
 		$res = $db->fetch_array($query);
-			
+		
+		$returnData['user_data'] = $res;
+		
 		$saved_languages = array();
 		$query_lang = $db->query("select * from elo_lang order by lang_name desc");
 		while ( $res2 = $db->fetch_array($query_lang) )
 			$saved_languages[] = $res2;
+		
+		$returnData['state'] = 'ok';
+		
+		echo json_encode($returnData);
+		exit();
+		/*
 		?>
 
        
@@ -217,6 +229,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
   };
   </script>
         <?
+		*/
 		
 	}
 	else if ($action == 'changeUser') {
