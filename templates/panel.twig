@@ -198,7 +198,7 @@
         <p>
 		
 			<form class="uk-form-stacked" action="{{ current_url }}" method="post">
-
+				<input type="hidden" name="user_id_c" value="">
 				<div class="uk-margin">
 					<label class="uk-form-label" for="user_name_c">Name</label>
 					<div class="uk-form-controls">
@@ -244,15 +244,15 @@
 						</tr>
 						<tr>
 							<td>
-								<select id='ex_rights' size='5' multiple='multiple'>
-									$option_right_no
+								<select id='ex_rights_c' size='5' multiple='multiple' class="uk-select">
+
 								</select>
 							</td>
 							<td>
-								<input type="button" value=">>" onClick="javascript:addRight('.$res['user_id'].');"><br><input type="button" value="<<" onClick="javascript:removeRight('.$res['user_id'].');">
+								<input type="button" value=">>" onClick="javascript:addRight();"><br><input type="button" value="<<" onClick="javascript:removeRight();">
 							</td>
 							<td>
-								<select id='us_rights' size='5' multiple='multiple'>$option_right_yes</select>
+								<select id='us_rights_c' size='5' multiple='multiple' class="uk-select"></select>
 							</td>
 						</tr>
 					</table>
@@ -267,13 +267,13 @@
 						</tr>
 						<tr>
 							<td>
-								<select id='ex_groups' size='5' multiple='multiple'>$option_group_no</select>
+								<select id='ex_groups_c' size='5' multiple='multiple' class="uk-select"></select>
 							</td>
 							<td>
-								<input type="button" value=">>" onClick="javascript:addGroup('.$res['user_id'].');"><br><input type="button" value="<<" onClick="javascript:removeGroup('.$res['user_id'].');">
+								<input type="button" value=">>" onClick="javascript:addGroup();"><br><input type="button" value="<<" onClick="javascript:removeGroup();">
 							</td>
 							<td>
-								<select id='us_groups' size='5' multiple='multiple'>$option_group_yes</select>
+								<select id='us_groups_c' size='5' multiple='multiple' class="uk-select"></select>
 							</td>				
 						</tr>
 					</table>
@@ -290,6 +290,63 @@
 
 
 <script language="javascript">  
+
+   	function removeRight() {
+		$.post("actions.php",
+		{	  
+		  userid:$('#user_id_c').val(),
+		  action:'removeRight',
+		  t_r:$("#us_rights_c").val()
+		},
+		function(data,status){
+			$('#us_rights_c option:selected').each(function(){
+				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#ex_rights_c");
+				$("#us_rights_c option[value="+$(this).val()+"]").remove();
+			});
+		});
+	}
+	function addRight() {
+		$.post("actions.php",
+		{	  
+		  userid:$('#user_id_c').val(),
+		  action:'addRight',
+		  t_r:$("#ex_rights_c").val()
+		},
+		function(data,status){
+			$('#ex_rights_c option:selected').each(function(){
+				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#us_rights_c");
+				$("#ex_rights_c option[value="+$(this).val()+"]").remove();
+			});
+		});
+	}
+	function removeGroup() {
+		$.post("actions.php",
+		{	  
+		  userid:$('#user_id_c').val(),
+		  action:'removeGroup',
+		  t_r:$("#us_groups_c").val()
+		},
+		function(data,status){
+			$('#us_groups_c option:selected').each(function(){
+				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#ex_groups_c");
+				$("#us_groups_c option[value="+$(this).val()+"]").remove();
+			});
+		});
+	}
+	function addGroup() {
+		$.post("actions.php",
+		{	  
+		  userid:$('#user_id_c').val(),
+		  action:'addGroup',
+		  t_r:$("#ex_groups_c").val()
+		},
+		function(data,status){
+			$('#ex_groups_c option:selected').each(function(){
+				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#us_groups_c");
+				$("#ex_groups_c option[value="+$(this).val()+"]").remove();
+			});
+		});
+	}
 
 	$('#use-sug-password').click(function(e) {
 		e.preventDefault();
@@ -308,8 +365,30 @@
 				{
 					if ( respond.state == 'ok' ) {
 						$('#t_name_c').val(respond.user_data.user_name);
-						$('#t_email_c').val(respond.user_data.user_email);
+						$('#user_email_c').val(respond.user_data.user_email);
 						$("#user_lang_c option[id='" + respond.user_data.lang_id + "']").attr("selected", "selected");
+						$('#user_id_c').val(respond.user_data.user_id);
+						$('#suggestedPassword_existing').text(respond.exampleCode);
+						$('#ex_rights_c').empty();
+						$.each(respond.option_right_no,function(key, value) {
+							$('#ex_rights_c').append('<option value=' + key + '>' + value + '</option>');
+						});
+						
+						$('#us_rights_c').empty();
+						$.each(respond.option_right_yes,function(key, value) {
+							$('#us_rights_c').append('<option value=' + key + '>' + value + '</option>');
+						});
+						
+						$('#ex_groups_c').empty();
+						$.each(respond.option_group_no,function(key, value) {
+							$('#ex_groups_c').append('<option value=' + key + '>' + value + '</option>');
+						});
+						
+						$('#us_groups_c').empty();
+						$.each(respond.option_group_yes,function(key, value) {
+							$('#us_groups_c').append('<option value=' + key + '>' + value + '</option>');
+						});
+						
 						//$('#modal-body').html(respond);
 						UIkit.modal($('#edit-user-model')).show();
 					} else {

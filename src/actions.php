@@ -47,15 +47,15 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		$saved_rights = array();
 		while ( $res2 = $db->fetch_array($query_user_rights) )
 			$saved_rights[] = $res2['right_id'];
-		$returnData['user_rights'] = $saved_rights;
+		//$returnData['user_rights'] = $saved_rights;
 			
 		$query_user_groups = $db->query("select group_id from elo_group_user where user_id=".intval($_GET['userid']));
 		$saved_groups = array();
 		while ( $res2 = $db->fetch_array($query_user_groups) )
 			$saved_groups[] = $res2['group_id'];
-		$returnData['user_groups'] = $saved_groups;
+		//$returnData['user_groups'] = $saved_groups;
 		
-		$query = $db->query("select user_name, user_email, lang_id, user_lastvisit from elo_user where user_id='".intval($_GET['userid'])."'");
+		$query = $db->query("select user_id, user_name, user_email, lang_id, user_lastvisit from elo_user where user_id='".intval($_GET['userid'])."'");
 		$res = $db->fetch_array($query);
 		
 		$returnData['user_data'] = $res;
@@ -67,6 +67,35 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		
 		$returnData['state'] = 'ok';
 		
+		$option_right_yes = array();
+		$option_right_no = array();
+		foreach ( $rights as $r ) {
+		if ( in_array($r['right_id'],$saved_rights)) {
+			$option_right_yes[$r['right_id']] = $r['right_name'];
+		} else {
+			$option_right_no[$r['right_id']] = $r['right_name'];
+		}
+		$returnData['option_right_yes'] = $option_right_yes;
+		$returnData['option_right_no'] = $option_right_no;
+		
+		$option_group_yes = array();
+		$option_group_no = array();
+
+		foreach ( $groups as $g ) {
+			if ( in_array($g['group_id'],$saved_groups)) {
+				$option_group_yes[$g['group_id']] = $g['group_name'];
+			} else {
+				$option_group_no[$g['group_id']] = $g['group_name'];
+			}
+		}
+		$returnData['option_group_yes'] = $option_group_yes;
+		$returnData['option_group_no'] = $option_group_no;
+		
+		$returnData['exampleCode'] = createCode(8);
+	}
+
+
+	
 		echo json_encode($returnData);
 		exit();
 		/*
