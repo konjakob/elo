@@ -78,10 +78,12 @@ if ( isset($_POST['new_group']) ) {
 	$db->query("insert into elo_group (group_name) values ('".addslashes($_POST['t_group'])."')");
 	$msg_group = "<div id='correct'>Saved the new group.</div>";
 }
+/*
 if ( isset($_GET['delete_group']) ) {
 	$db->query("delete from elo_group where group_id='".intval($_GET['delete_group'])."'");
 	$msg_group = "<div id='correct'>Group deleted.</div>";	
 }
+*/
 $query_groups = $db->query("select * from elo_group order by group_name");
 
 $groups = array();
@@ -154,8 +156,10 @@ if ( isset($_POST['new_topic']) ) {
 				$db->query("insert into elo_topic_group (group_id, topic_id) values ('".$g."', '".$topicid."')");
 		}
 		
-		if ( in_array('CREATE_ATTACHMENTS', $user_rights) && isset($_FILES['t_file']) ) {
-			processAttachment();
+		if ( in_array('CREATE_ATTACHMENTS', $user_rights) && isset($_POST['picture']) ) {
+			//processAttachment();
+			foreach ( $_POST['picture'] as $p ) 
+				$db->query("insert into elo_reply_attachment (reply_id, attachment_id) values ('".$reply_id."', '".(int)$p."')");
 		}
 		
 		if ( in_array('CREATE_SHEETS', $user_rights) && isset($_POST['abc']) && strlen($_POST['abc'])) {
