@@ -4,11 +4,13 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Table structure for table `elo_attachment`
 --
+drop table `elo_attachment`;
 
 CREATE TABLE `elo_attachment` (
   `attachment_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
   `attachment_filename` varchar(50) NOT NULL,
   `user_id` int(8) unsigned NOT NULL,
+  `attachment_time` datetime,
   PRIMARY KEY (`attachment_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
