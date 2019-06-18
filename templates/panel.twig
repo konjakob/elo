@@ -115,7 +115,7 @@
 	<div class="uk-card uk-card-default uk-card-body uk-margin">
 		<h2 class="uk-card-title">Groups</h2>
 {% for g in groups %}
-	<a onclick="javascript:loadGroupData({{ g.group_id }});javascript:tgldiv('popup');">{{ g.group_name }}</a>
+	<a onclick="javascript:loadGroupData({{ g.group_id }});">{{ g.group_name }}</a>
 	(<a href='{{ current_url }}?delete_group={{ g.group_id }}'>Delete</a> | <a onclick="javascript:changeGroupData({{ g.group_id }});javascript:tgldiv('popup');">Modify</a>)<br>
 
 {% endfor %}
@@ -284,6 +284,25 @@
     </div>
 </div>
 	
+	
+<div id="modal-group-users" uk-modal>
+    <div class="uk-modal-dialog">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">User of group <span></span></h2>
+        </div>
+
+        <div class="uk-modal-body" uk-overflow-auto>
+
+            <p><ul id="users-of-group" size='10' class="uk-select" multiple='multiple'></ul></p>
+			<p class="uk-text-right"><button class="uk-button uk-button-primary" id="remove-group-user">Remove</button></p>
+        </div>
+
+    </div>
+</div>
+	
 {% endblock %}		  
 
 {% block footerInjection %}
@@ -352,6 +371,25 @@
 		e.preventDefault();
 		$('#user_pass').val($('#suggestedPassword').text());
 	});
+	
+	$('#remove-group-user').click(function() {
+		$('#users-of-group option:selected').each(function(){
+			$.post("actions.php",
+			{	  
+			  guid:$(this).val(),
+			  action:'removeUserFromGoup',
+			  dataType: 'json'
+			},
+			function(data,status){
+				if ( data.state == 'ok' ) {
+					$("#users-of-group option[value="+$(this).val()+"]").remove();
+				} else {
+					toastr["error"]("Error", "Error");
+				}
+			});			
+		});
+	});
+	
 
 	function tgldiv(divname){
 		$("#"+divname).slideToggle("slow");
@@ -394,10 +432,6 @@
 					} else {
 						toastr["error"]("Error", "Error");
 					}
-					/*$("#popupcontent").html(respond);
-					$("#popupcontent").find("script").each(function(i) {
-						eval($(this).text());
-					});*/
 				}
 		});
 	}
@@ -405,12 +439,18 @@
   function loadGroupData(id) {
 	  $.ajax({
 				url: "actions.php?action=getGroupUser&group_id="+id,
+				dataType: 'json',
 				success: function(respond)
 				{
-					$("#popupcontent").html(respond);
-					$("#popupcontent").find("script").each(function(i) {
-                    	eval($(this).text());
-                	});
+					if ( respond.state == 'ok' ) {
+						$('#users-of-group').empty();
+						$.each(respond.users,function(key, value) {
+							$('#users-of-group').append('<option value=' + key + '>' + value + '</option>');
+						});
+						UIkit.modal($('#modal-group-users')).show();
+					} else {
+						toastr["error"](respond.text, respond.title);
+					}
 				}
 		});
   }

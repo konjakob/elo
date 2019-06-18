@@ -285,56 +285,93 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ($action == 'removeRight') {
-		$user = intval($_POST['userid']);
-		for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ )
-			$db->query("delete from elo_right_user where user_id='".$user."' and right_id='".intval($_POST['t_r'][$i])."'");		
+		$returnData = array();
+		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
+			$returnData['state'] = 'ok';
+			$user = intval($_POST['userid']);
+			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ )
+				$db->query("delete from elo_right_user where user_id='".$user."' and right_id='".intval($_POST['t_r'][$i])."'");		
+		} else {
+			$returnData['state'] = 'nok';
+			$returnData['text'] = 'Please select a user.';
+			$returnData['title'] = 'Error';
+		}
+		echo json_encode($returnData);
+		exit();
 	}
 	
 	else if ($action == 'removeUserFromGoup') {
-		$db->query("delete from elo_group_user where gu_id='".intval($_POST['guid'])."'");		
+		$returnData = array();
+		if ( isset($_POST['guid']) ) {
+			$returnData['state'] = 'ok';
+			$db->query("delete from elo_group_user where gu_id='".intval($_POST['guid'])."'");	
+		} else {
+			$returnData['state'] = 'nok';
+			$returnData['text'] = 'Please select a user.';
+			$returnData['title'] = 'Error';
+		}
+		echo json_encode($returnData);
+		exit();
 	}
 	
 	else if ($action == 'addRight') {
-		$user = intval($_POST['userid']);
-		for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ )
-			$db->query("insert into elo_right_user (user_id, right_id) values ('".$user."', '".intval($_POST['t_r'][$i])."')");			
+		$returnData = array();
+		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
+			$returnData['state'] = 'ok';
+			$user = intval($_POST['userid']);
+			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ )
+				$db->query("insert into elo_right_user (user_id, right_id) values ('".$user."', '".intval($_POST['t_r'][$i])."')");
+		} else {
+			$returnData['state'] = 'nok';
+			$returnData['text'] = 'Please select a user.';
+			$returnData['title'] = 'Error';
+		}	
+		echo json_encode($returnData);
+		exit();
 	}
 	
 	else if ( $action == 'getGroupUser') {
-		$query = $db->query("SELECT elo_user.user_id, elo_user.user_name, elo_group_user.gu_id
-FROM elo_group INNER JOIN (elo_group_user INNER JOIN elo_user ON elo_group_user.user_id = elo_user.user_id) ON elo_group.group_id = elo_group_user.group_id
-GROUP BY elo_group.group_id, elo_user.user_id, elo_user.user_name
-HAVING (((elo_group.group_id)=".intval($_GET['group_id'])."));");
-
-		echo "User:<hr><ul>";
-		while ($res = $db->fetch_array($query)) {
-			echo "<li id='user".$res['gu_id']."'>".$res['user_name']." (<a onclick='javascript:removeUserFromGroup(".$res['gu_id'].")'>Remove</a>)<br>";	
+		
+		$returnData = array();
+		if ( isset($_GET['group_id']) ) {
+			$returnData['state'] = 'ok';
+			
+			$query = $db->query("SELECT elo_user.user_id, elo_user.user_name, elo_group_user.gu_id
+	FROM elo_group INNER JOIN (elo_group_user INNER JOIN elo_user ON elo_group_user.user_id = elo_user.user_id) ON elo_group.group_id = elo_group_user.group_id
+	GROUP BY elo_group.group_id, elo_user.user_id, elo_user.user_name
+	HAVING (((elo_group.group_id)=".intval($_GET['group_id'])."));");
+			$returnData['users'] = array();
+			while ($res = $db->fetch_array($query)) {
+				$returnData['users'][$res['gu_id']] = $res['user_name'];
+			}
+		} else {
+			$returnData['state'] = 'nok';
+			$returnData['text'] = 'Please select a group';
+			$returnData['title'] = 'error';
 		}
-		echo "</ul>";
-		?>
-           <script type="text/javascript">
-   	function removeUserFromGroup(id) {
-		$(document).ready(function(){
-		$.post("actions.php",
-		{	  
-		  guid:id,
-		  action:'removeUserFromGoup'
-		},
-		function(data,status){
-			$('#user'+id).remove();
-		});
-	  });
-	}
-    </script>
-        
-        <?
+		echo json_encode($returnData);
+		exit();
 	}
 	else if ( $action == 'changeGoup' ) {
-		$db->query("update elo_group set group_name='".addslashes($_POST['t_name'])."' where group_id='".intval($_POST['guid'])."'");
+		$returnData = array();
+		if ( isset($_POST['guid']) && isset($_POST['t_name']) && strlen($_POST['t_name']) > 0) {
+			$returnData['state'] = 'ok';
+			$db->query("update elo_group set group_name='".addslashes($_POST['t_name'])."' where group_id='".intval($_POST['guid'])."'");
+		} else {
+			$returnData['state'] = 'nok';
+			$returnData['text'] = 'Please select a group and enter a name.';
+			$returnData['title'] = 'Error';
+		}
+		echo json_encode($returnData);
+		exit();
 	}
 	else if ( $action == 'getGroup') {
-		$query = $db->query("select * from elo_group where group_id='".intval($_GET['group_id'])."'");
-		$res = $db->fetch_array($query);
+		$returnData = array();
+		if ( isset($_GET['group_id'])) {
+			$returnData['state'] = 'ok';
+			$query = $db->query("select group_id, group_name from elo_group where group_id='".intval($_GET['group_id'])."'");
+			$returnData['data'] = $db->fetch_array($query);
+			/*
 		?>
         Change a group<hr />
         <input type="text" id="group_name" value="<?=$res['group_name']?>" /><input type="button" value="Save" onClick="changeGroup();" />
@@ -354,6 +391,14 @@ HAVING (((elo_group.group_id)=".intval($_GET['group_id'])."));");
 	}
     </script>
         <?
+		*/
+		} else {
+			$returnData['state'] = 'nok';
+			$returnData['text'] = 'Please select a group.';
+			$returnData['title'] = 'Error';
+		}
+		echo json_encode($returnData);
+		exit();
 	}
 }
 	
