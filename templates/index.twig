@@ -55,6 +55,46 @@
 		  "showMethod": "fadeIn",
 		  "hideMethod": "fadeOut"
 		}
+		
+		{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
+		var bar = document.getElementById('js-progressbar');
+		var divImages = document.getElementById('divImages');
+
+		UIkit.upload('.js-upload', {
+
+			url: 'upload-images.php?mode=review',
+			multiple: true,
+
+			complete: function () {
+				var data = JSON.parse(arguments[0]['responseText']);
+				divImages.innerHTML += '<div><div class=""><!--<img src="' + arguments[0]['responseText'] + '" width="100">--><input type="hidden" name="picture[]" value="' + data.fileId + '">' + data.fileName + '</div></div>'
+			},
+
+			loadStart: function (e) {
+				bar.removeAttribute('hidden');
+				bar.max = e.total;
+				bar.value = e.loaded;
+			},
+
+			progress: function (e) {
+				bar.max = e.total;
+				bar.value = e.loaded;
+			},
+
+			loadEnd: function (e) {
+				bar.max = e.total;
+				bar.value = e.loaded;
+			},
+
+			completeAll: function () {
+				setTimeout(function () {
+					bar.setAttribute('hidden', 'hidden');
+				}, 1000);
+			}
+
+		});
+		{% endif %}
+	
 		</script>
 	{% block footerInjection %}{% endblock %}
 </body>
