@@ -33,8 +33,9 @@ $reply_id = $db->insert_id();
 $db->query("insert into elo_topic_user (user_id, topic_id) values ('".$userid."', '".$topicid."')");
 
 
-if ( in_array('CREATE_ATTACHMENTS', $user_rights) && isset($_FILES['t_file']) ) {
-	processAttachment();
+if ( in_array('CREATE_ATTACHMENTS', $user_rights) && isset($_POST['picture']) ) {
+	foreach ( $_POST['picture'] as $p ) 
+		$db->query("insert into elo_reply_attachment (reply_id, attachment_id) values ('".$reply_id."', '".(int)$p."')");
 }
 
 if ( in_array('CREATE_SHEETS', $user_rights) && isset($_POST['abc']) && strlen($_POST['abc'])) {

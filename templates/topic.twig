@@ -54,23 +54,16 @@
 						{% endif %}
 		
 						{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
-							<div class="uk-margin">
-								<label class="uk-form-label" for="form-topic-3">{{ constant('TOPIC_TEXT_ATTACHMENTS') }} <a rel="faq.php?fid=2&width=475" href="faq.php?fid=2&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES_ATTACHMENT') }}">?</a></label>
-								<div class="uk-form-controls">
-									<input type="file" name="t_file" id="form-topic-3">
-								</div>
-							</div>					
-							<div class="uk-text-right"><input type="submit" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}">
-						{% else %}
-							<div class="uk-text-right"><input type="button" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}" onclick="javascript:addTopic();"></div>
+							{% include 'partials/attachment.twig' %}	
 						{% endif %}
+						<div class="uk-text-right"><input type="submit" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}"></div>
 
-					</form>
+					</form>{#  onclick="javascript:addTopic();" #}
 				</div>
 			</div>
 		</div>
 		{% if 'CREATE_SHEETS' in user_rights|keys %}
-			<script type="text/javascript">
+		<script type="text/javascript">
 		window.onload = function() {	
 			abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
 		}
