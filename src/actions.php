@@ -248,27 +248,6 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			$returnData['state'] = 'ok';
 			$query = $db->query("select group_id, group_name from elo_group where group_id='".intval($_GET['group_id'])."'");
 			$returnData['data'] = $db->fetch_array($query);
-			/*
-		?>
-        Change a group<hr />
-        <input type="text" id="group_name" value="<?=$res['group_name']?>" /><input type="button" value="Save" onClick="changeGroup();" />
-        <script type="text/javascript">
-   	function changeGroup() {
-		$(document).ready(function(){
-		$.post("actions.php",
-		{	  
-		  guid:<?=intval($_GET['group_id'])?>,
-		  t_name:$('#group_name').val(),
-		  action:'changeGoup'
-		},
-		function(data,status){
-			alert("Saved");
-		});
-	  });
-	}
-    </script>
-        <?
-		*/
 		} else {
 			$returnData['state'] = 'nok';
 			$returnData['text'] = 'Please select a group.';
@@ -276,6 +255,9 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		}
 		echo json_encode($returnData);
 		exit();
+	}
+	else if ( $action == 'newTopic') {
+		
 	}
 }
 	
