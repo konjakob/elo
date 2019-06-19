@@ -257,7 +257,74 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		exit();
 	}
 	else if ( $action == 'newTopic') {
-		
+        $returnData = array();
+        // check the rights
+        if ( !in_array('CREATE_TOPICS', $user_rights) ) {
+            $returnData['state'] = 'nok';
+			$returnData['text'] = 'No rights to create topics.';
+			$returnData['title'] = 'Error';
+            echo json_encode($returnData);
+            exit();
+        }
+        // check if the title and text is given
+        if ( strlen($_POST['t_topic_title']) <1 || strlen($_POST['t_topic']) < 1 ) {
+            $returnData['state'] = 'nok';
+			$returnData['text'] = 'No title and/or text.';
+			$returnData['title'] = 'Error';
+            echo json_encode($returnData);
+            exit();
+        }
+        
+        if ( !in_array('ALLOW_HTML', $user_rights) )  {
+            $_POST['t_topic_title'] = htmlentities($_POST['t_topic_title']);
+            $_POST['t_topic'] = htmlentities($_POST['t_topic']);
+        }
+        
+        $db->query("insert into elo_topic (topic_title) values ('".addslashes($_POST['t_topic_title'])."')");
+
+        $topicid = $db->insert_id();
+        $db->query("insert into elo_reply (user_id, topic_id, reply_date, reply_text) values ('".$userid."', '".$topicid."', '".time()."', '".addslashes($_POST['t_topic'])."')");
+        $reply_id = $db->insert_id();
+        $db->query("insert into elo_topic_user (user_id, topic_id) values ('".$userid."', '".$topicid."')");
+
+        if ( in_array('CREATE_ATTACHMENTS', $user_rights) && isset($_POST['picture']) ) {
+            foreach ( $_POST['picture'] as $p ) 
+                $db->query("insert into elo_reply_attachment (reply_id, attachment_id) values ('".$reply_id."', '".(int)$p."')");
+        }
+
+        if ( in_array('CREATE_SHEETS', $user_rights) && isset($_POST['abc']) && strlen($_POST['abc'])) {
+            processMusic();
+        }
+
+        if ( isset( $_POST['t_user'] )) {
+			foreach ( $_POST['t_user'] as $u )
+                if ( $u != $userid )
+                    $db->query("insert into elo_topic_user (user_id, topic_id) values ('".(int)$u."', '".$topicid."')");
+		}
+		if ( isset($_POST['t_group'])) {
+			foreach ( $_POST['t_group'] as $g )
+				$db->query("insert into elo_topic_group (group_id, topic_id) values ('".(int)$g."', '".$topicid."')");
+		}   
+
+        $topic = array(	'topic_title' => $_POST['t_topic_title'],
+                        'no_replies' => 0,
+                        'reply_date' => $time,
+                        'reply_text' => $_POST['t_topic'],
+                        'username' => $username,
+                        'last_reply_date' => '',
+                        'topic_id' => $topicid,
+                        'href' => $conf['url']."topic.php?id=".$topicid 
+					);        
+        
+        /*
+        // Email to admin
+        $email_text = $db->query_one("select emailtext_text from elo_emailtext where emailtext_key='NEW_TOPIC_ADMIN' and lang_id=1");
+
+        $search_array = array("{ID}", "{USER}");
+        $replace_array = array($topicid, $userid);
+
+        $email_text = str_replace($search_array, $replace_array, $email_text);
+        */
 	}
 }
 	
