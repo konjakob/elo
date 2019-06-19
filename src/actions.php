@@ -1,25 +1,6 @@
 <?php
 
-require_once("dbclass.php");
-$db = new db;
-
-require("authenticate.class.php");
-
-$auth = new Authenticate;
-
-if(!$auth->validateAuthCookie())
-	header("Location: login.php");
-
-require("functions.php");
-
-$userid = $auth->getUserId();
-
-$query = $db->query("select r.right_key from elo_right as r, elo_right_user as ru where r.right_id=ru.right_id and ru.user_id='".$userid."'");
-$user_rights = array();
-
-while ( $res = $db->fetch_array($query) )
-	$user_rights[] = $res['right_key'];
-	
+require('includes/application_top.php');
 	
 if(isset($_GET['action']) || isset($_POST['action'])) {
 	
@@ -306,16 +287,22 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 				$db->query("insert into elo_topic_group (group_id, topic_id) values ('".(int)$g."', '".$topicid."')");
 		}   
 
-        $topic = array(	'topic_title' => $_POST['t_topic_title'],
-                        'no_replies' => 0,
-                        'reply_date' => $time,
-                        'reply_text' => $_POST['t_topic'],
-                        'username' => $username,
-                        'last_reply_date' => '',
-                        'topic_id' => $topicid,
-                        'href' => $conf['url']."topic.php?id=".$topicid 
-					);        
+        $topic = array('topic' => array('topic_title' => $_POST['t_topic_title'],
+										'no_replies' => 0,
+										'reply_date' => $time,
+										'reply_text' => $_POST['t_topic'],
+										'username' => $username,
+										'last_reply_date' => '',
+										'topic_id' => $topicid,
+										'href' => $conf['url']."topic.php?id=".$topicid
+					));        
         
+		
+		$returnData['html'] = $twig->render("partials/topicblock.twig", $topic);
+		$returnData['state'] = 'ok';
+
+		echo json_encode($returnData);
+		exit();
         /*
         // Email to admin
         $email_text = $db->query_one("select emailtext_text from elo_emailtext where emailtext_key='NEW_TOPIC_ADMIN' and lang_id=1");

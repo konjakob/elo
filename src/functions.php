@@ -57,51 +57,6 @@ function prepareEmailAndSend($email_text, $email_ad, $email_name,$subject="", $a
 		
 }
 		
-	
-function createRightHeader() {
-	global $user_rights;
-?>	
-
-        <div class="tm-header">
-            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; bottom: #sticky-dropdown">
-                <nav class="uk-navbar-container">
-                    <div class="uk-container">
-                        <div uk-navbar>
-                            <div class="uk-navbar-left">
-
-                                <a class="uk-navbar-item uk-logo" href="#">Logo</a>
-
-                                <ul class="uk-navbar-nav">
-<?php
-	if ( in_array('IS_ADMIN',$user_rights) ) {
-		?>
-								<li><a href="panel.php">Admin panel</a></li>
-								<li><a href="view_user_topics.php">User view</a></li>
-		<?php
-	}
-?>
-								
-                                    <!--<li class="uk-active"><a href="">Active</a></li>-->
-                                </ul>
-								
-                            </div>
-							
-							<div class="uk-navbar-right">
-
-                                <ul class="uk-navbar-nav">
-									<li><a href="user-settings.php"><?=TOPIC_USER_SETTINGS?></a></li>
-                                    <li><a href="logout.php"><?=TOPIC_TEXT_LOGOUT?></a></li>
-                                </ul>
-								
-                            </div>
-							
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-<?php	
-}
 
 function showCreateSheet() {
 		?>

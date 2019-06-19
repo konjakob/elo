@@ -146,50 +146,9 @@
 
 {% endfor %}
 
-	<div class="uk-card uk-card-default uk-card-body uk-margin">
-		<h2 class="uk-card-title">New topic</h2>
-
-<form action="{{ current_url }}#newtopic" method="post" class="uk-form-stacked" enctype="multipart/form-data"  onsubmit="selectAllOptions('t_user');selectAllOptions('t_group');">
-
-<div class="uk-child-width-1-2" uk-grid>
-	<div>
-		<div class="uk-card uk-card-small">
-			<h4 class="uk-card-title">Users</h4>
-			<p><table><tr><td>Existing user:</td><td></td><td>User for this topic:</td></tr><tr><td>
-	<select id='ex_users' size='5' multiple='multiple' class="uk-select">
-		{% for u in users %}
-			<option value='{{ u.user_id }}'>{{ u.user_name }}</option>
-		{% endfor %}
-	</select></td>
-	<td><input type="button" class="uk-button uk-margin-bottom uk-button-small" value=">>" onClick="javascript:addUserTopic();"><br><input class="uk-button uk-button-small" type="button" value="<<" onClick="javascript:removeUserTopic();"></td><td><select id='t_user' class="uk-select" size='5' multiple='multiple' name='t_user[]'></select></td></tr></table></p>
-		</div>
-	</div>
-	<div>
-		<div class="uk-card  uk-card-small">
-			<h4 class="uk-card-title">Groups</h4>
-			<p><table><tr><td>Existing groups:</td><td></td><td>Groups for this topic:</td></tr><tr><td><select id='ex_groups' class="uk-select" size='5' multiple='multiple'>
-	{% for g in groups %}
-	<option value='{{ g.group_id }}'>{{ g.group_name }}</option>
-	{% endfor %}</select></td>
-	<td><input type="button" class="uk-button uk-margin-bottom uk-button-small" value=">>" onClick="javascript:addGroupTopic();"><br><input type="button" class="uk-button uk-button-small" value="<<" onClick="javascript:removeGroupTopic();"></td><td><select id='t_group' size='5' class="uk-select" multiple='multiple' name='t_group[]'></select></td></tr></table></p>
-		</div>
-	</div>
-</div>
-		
-	{% include 'partials/texttitleblock.twig' %}				
-
-	{% if 'CREATE_SHEETS' in user_rights|keys %}
-		{% include 'partials/cheatsheet.twig' %}
-	{% endif %}
-	{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
-		{% include 'partials/attachment.twig' %}						
-	{% endif %}
-
-	<div class="uk-text-right">
-		<input class="uk-button uk-button-primary" type="submit" value="Save" name="new_topic" />
-	</div>
-</form>
-</div>
+{% if 'CREATE_TOPICS' in user_rights|keys %}
+	{% include 'partials/newtopic.twig' %}						
+{% endif %}
 	
 
 <div id="edit-user-model" uk-modal>
@@ -517,38 +476,7 @@
 
   }
   
-     function removeUserTopic() {
-		$(document).ready(function(){
-			$('#t_user option:selected').each(function(){
-				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#ex_users");
-				$("#t_user option[value="+$(this).val()+"]").remove();
-			});
-		});
-	}
-	function addUserTopic() {
-		$(document).ready(function(){
-			$('#ex_users option:selected').each(function(){
-				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#t_user");
-				$("#ex_users option[value="+$(this).val()+"]").remove();
-			});
-		});
-	}
-	function removeGroupTopic() {
-		$(document).ready(function(){
-			$('#t_group option:selected').each(function(){
-				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#ex_groups");
-				$("#t_group option[value="+$(this).val()+"]").remove();
-			});
-		});
-	}
-	function addGroupTopic() {
-		$(document).ready(function(){
-			$('#ex_groups option:selected').each(function(){
-				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#t_group");
-				$("#ex_groups option[value="+$(this).val()+"]").remove();
-			});
-	  });
-	}
+
 	function selectAllOptions(selStr)
 	{
 	  var selObj = document.getElementById(selStr);
@@ -556,6 +484,25 @@
 		selObj.options[i].selected = true;
 	  }
 	}
+	
+	$("#frmNewTopic").submit(function(e){
+        e.preventDefault();
+		$.ajax({
+			url: 'actions.php',
+			dataType: 'json',
+			method: 'POST',
+			data: $('#frmNewTopic').serialize(),
+			success: function(respond){
+				if ( respond.state == 'ok' ) {
+					$("#submitTopic").closest('form').find("input[type=text], textarea").val("");
+					toastr["success"]("Successfully posted", "Success");
+				} else {
+					toastr["error"]("Error", "Error");
+				}
+			}
+		});		  
+  
+  });
 	
 </script>
 

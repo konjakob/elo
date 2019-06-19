@@ -29,46 +29,14 @@
 		</div>
 		<div id="newTopic2" style="display:none">
 		
-			<div class="uk-card uk-card-default uk-card-body uk-margin">
-			
-				<h3>{{ constant('TOPIC_TEXT_NEW_TOPIC') }} <a rel="faq.php?fid=4" href="faq.php?fid=4" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}"><small>?</small></a></h3>
-				<div id="newTopic">
-					<form action="newtopic.php" method="post" enctype="multipart/form-data" class="uk-form-stacked">
-					
-						<div class="uk-margin">
-							<label class="uk-form-label" for="form-topic-1">{{ constant('TOPIC_TEXT_TOPIC_TITLE') }}</label>
-							<div class="uk-form-controls">
-								<input class="uk-input" id="form-topic-1" type="text" name="t_topic_title" placeholder="Some text...">
-							</div>
-						</div>
-						
-						<div class="uk-margin">
-							<label class="uk-form-label" for="newTopicText">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></label>
-							<div class="uk-form-controls">
-								<textarea id="newTopicText" class="uk-textarea" name="t_topic"></textarea>
-							</div>
-						</div>
 
-						{% if 'CREATE_SHEETS' in user_rights|keys %}
-							{% include 'partials/cheatsheet.twig' %}
-						{% endif %}
+		{% if 'CREATE_TOPICS' in user_rights|keys %}
+			{% include 'partials/newtopic.twig' %}						
+		{% endif %}
 		
-						{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
-							{% include 'partials/attachment.twig' %}	
-						{% endif %}
-						<div class="uk-text-right"><input type="submit" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}"></div>
-
-					</form>{#  onclick="javascript:addTopic();" #}
-				</div>
-			</div>
+		
 		</div>
-		{% if 'CREATE_SHEETS' in user_rights|keys %}
-		<script type="text/javascript">
-		window.onload = function() {	
-			abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
-		}
-		</script>
-	{% endif %}
+		
 	<br id="brplace">
 	
 	</div>
@@ -76,25 +44,10 @@
 {% endif %}
 	
 
-<div class="uk-width-1-1" uk-grid>
+<div class="uk-width-1-1" uk-grid id="gridTopics">
 
 {% for topic in topics %}
-	<div class="uk-width-1-2">
-		<div class="uk-card uk-card-default">
-			<div class="uk-card-header">
-
-						<h3 class="uk-card-title uk-margin-remove-bottom">{{ topic.topic_title }}</h3>
-						<p class="uk-text-meta uk-margin-remove-top"><time datetime="{{ topic.reply_date|date("YYYY-MM-DD HH:MM:SS") }}">{{ topic.reply_date|date(conf.date_format) }}</time></p>
-
-			</div>
-			<div class="uk-card-footer">
-				<p class="uk-text-meta uk-margin-remove-top">{{ topic.no }} {{ constant('TOPIC_TEXT_TOPIC_ANSWERS') }} | {{ constant('TOPIC_TEXT_TOPIC_CREATED') }} {{ topic.reply_date|date(conf.date_format) }} {{ constant('TOPIC_TEXT_TOPIC_BY') }} {{ topic.username }}
-					{% if topic.reply_date != topic.last_reply_date %}
-						 | {{ constant('TOPIC_TEXT_TOPIC_LAST_RESPONSE') }} : {{ topic.last_reply_date|date(conf.date_format) }}
-						{% endif %} | <a href="{{ topic.href }}">View</a></p>
-			</div>
-		</div>
-	</div>
+	{% include 'partials/topicblock.twig' %}
 {% endfor %}
 
 </div>
@@ -118,6 +71,29 @@ $(document).ready(function(){
 	$("#newTopic2").toggle();
 	$(this).toggle();
   });
+  
+  $("#frmNewTopic").submit(function(e){
+        e.preventDefault();
+		$.ajax({
+			url: 'actions.php',
+			dataType: 'json',
+			method: 'POST',
+			data: $('#frmNewTopic').serialize(),
+			success: function(respond){
+				if ( respond.state == 'ok' ) {
+					$("#newTopic2").toggle();
+					$("#btnCreateTopic").toggle();
+					$("#submitTopic").closest('form').find("input[type=text], textarea").val("");
+					$("#gridTopics").prepend(respond.html);
+					$('body').scrollTo('#gridTopics'); 
+				} else {
+					toastr["error"]("Error", "Error");
+				}
+			}
+		});		  
+  
+  });
+  
 });	
 	  
 		function tgldiv(divname){

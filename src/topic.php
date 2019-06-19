@@ -142,6 +142,19 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 		echo $twig->render("topic_detail.twig", $twig_data);
 	
 	} else {
+		
+		$query_user = $db->query("select * from elo_user order by user_name");
+		$query_groups = $db->query("select * from elo_group order by group_name");
+
+		$groups = array();
+		while ( $res = $db->fetch_array($query_groups) )
+			$groups[] = $res;
+		
+		while ( $res = $db->fetch_array($query_user) )
+			$users[] = $res;
+		
+		$twig_data['users'] = $users;
+		$twig_data['groups'] = $groups;
 
 		$no_topics = $db->query_one("select count(*) from ((select t.topic_id from elo_topic as t, elo_topic_group as tg, elo_group_user as gu, elo_group as g where gu.user_id='".$userid."' and gu.group_id=g.group_id and g.group_id=tg.group_id and tg.topic_id=t.topic_id)
 	UNION all
