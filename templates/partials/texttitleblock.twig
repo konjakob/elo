@@ -1,13 +1,13 @@
 						<div class="uk-margin">
 							<label class="uk-form-label" for="form-topic-1">{{ constant('TOPIC_TEXT_TOPIC_TITLE') }}</label>
 							<div class="uk-form-controls">
-								<input class="uk-input" id="form-topic-1" type="text" name="t_topic_title" placeholder="Some text...">
+								<input class="uk-input" id="form-topic-1" type="text" name="t_topic_title" placeholder="Some text..."  data-validation-length="min{{ config.min_length_topic_title }}">
 							</div>
 						</div>
 						
 						<div class="uk-margin">
 							<label class="uk-form-label" for="newTopicText">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></label>
 							<div class="uk-form-controls">
-								<textarea id="newTopicText" class="uk-textarea" name="t_topic"></textarea>
+								<textarea id="newTopicText" class="uk-textarea" name="t_topic" data-validation-length="min{{ config.min_length_topic_text }}"></textarea>
 							</div>
 						</div>

@@ -277,12 +277,12 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
             processMusic();
         }
 
-        if ( isset( $_POST['t_user'] )) {
+        if ( in_array('ADD_USER_TO_TOPIC', $user_rights) && isset( $_POST['t_user'] )) {
 			foreach ( $_POST['t_user'] as $u )
                 if ( $u != $userid )
                     $db->query("insert into elo_topic_user (user_id, topic_id) values ('".(int)$u."', '".$topicid."')");
 		}
-		if ( isset($_POST['t_group'])) {
+		if ( in_array('ADD_GROUP_TO_TOPIC', $user_rights) && isset($_POST['t_group'])) {
 			foreach ( $_POST['t_group'] as $g )
 				$db->query("insert into elo_topic_group (group_id, topic_id) values ('".(int)$g."', '".$topicid."')");
 		}   

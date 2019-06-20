@@ -7,6 +7,15 @@
 
    <h1><?=USER_SETTINGS_HEADER?></h1>
 
+{% for m in msgs %}
+
+<div class="uk-alert-{% if m.state == 'ok' %}success{% else %}danger{% endif %}" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>{{ m.text }}</p>
+</div>
+
+{% endfor %}   
+   
    <form action="<?=$_SERVER['PHP_SELF']?>" method="post" class="uk-form-stacked">
    
     <div class="uk-margin">

@@ -59,19 +59,20 @@ if ( in_array('CREATE_NEW_USER', $user_rights) && isset($_POST['new_user']) && i
 			   $error .= 'Message could not be sent.';
 			   $error .= 'Mailer Error: ' . $mail->ErrorInfo;
 			} else {
-				$success .= "<br>Send a registration email with all information to the user.";
+				$success .= "<br>Sent a registration email with all information to the user.";
 			}
 
 			
 		}
 	}
-	
+	/*
 	if ( strlen($success) ) {
 		echo '<div id="correct">'.$success.'</div>';
 	}
 	if ( strlen($error) ) {
 		echo '<div id="error">'.$error.'</div>';
 	}
+	*/
 }
 
 if ( isset($_POST['new_group']) ) {
@@ -180,6 +181,7 @@ if ( isset($_POST['new_topic']) ) {
 $db->close();
 $twig_data['exampleCode'] = createCode(8);
 $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
+$breadcrumb[] = array( 'text' => 'Admin Panel', 'href' => '');
 $twig_data['breadcrumb'] = $breadcrumb;
 $twig_data['msgs'] = $msgs;
 echo $twig->render("panel.twig", $twig_data);

@@ -58,6 +58,7 @@ $langcode = $user_res['lang_code'];
 if ( strlen($langcode) <1 )
 	$langcode = "en";
 
+$twig_data['langcode'] = $langcode;
 require_once('includes/languages/'.$langcode.'.php');
 
 $time = time();

@@ -3,6 +3,7 @@
 
 <form action="actions.php" method="post" class="uk-form-stacked" enctype="multipart/form-data"  onsubmit="selectAllOptions('t_user');selectAllOptions('t_group');" id="frmNewTopic"><input type="hidden" value="newTopic" name="action">
 
+{% if 'ADD_USER_TO_TOPIC' in user_rights|keys %}
 <div class="uk-child-width-1-2" uk-grid>
 	<div>
 		<div class="uk-card uk-card-small">
@@ -16,6 +17,8 @@
 	<td><input type="button" class="uk-button uk-margin-bottom uk-button-small" value=">>" onClick="javascript:addUserTopic();"><br><input class="uk-button uk-button-small" type="button" value="<<" onClick="javascript:removeUserTopic();"></td><td><select id='t_user' class="uk-select" size='5' multiple='multiple' name='t_user[]'></select></td></tr></table></p>
 		</div>
 	</div>
+{% endif %}	
+{% if 'ADD_GROUP_TO_TOPIC' in user_rights|keys %}	
 	<div>
 		<div class="uk-card  uk-card-small">
 			<h4 class="uk-card-title">Groups</h4>
@@ -26,6 +29,8 @@
 	<td><input type="button" class="uk-button uk-margin-bottom uk-button-small" value=">>" onClick="javascript:addGroupTopic();"><br><input type="button" class="uk-button uk-button-small" value="<<" onClick="javascript:removeGroupTopic();"></td><td><select id='t_group' size='5' class="uk-select" multiple='multiple' name='t_group[]'></select></td></tr></table></p>
 		</div>
 	</div>
+{% endif %}
+
 </div>
 		
 	{% include 'partials/texttitleblock.twig' %}				
