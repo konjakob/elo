@@ -16,6 +16,11 @@
 
 {% endfor %}   
    
+   <h1>User Settings</h1>
+   <h2>Profile picture</h2>
+   {% include 'partials/attachment.twig' %}
+   
+   <h2>Profile data</h2>
    <form action="<?=$_SERVER['PHP_SELF']?>" method="post" class="uk-form-stacked">
    
     <div class="uk-margin">

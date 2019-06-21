@@ -487,12 +487,6 @@
 	
 	$("#frmNewTopic").submit(function(e){
         e.preventDefault();
-		{% if 'ADD_USER_TO_TOPIC' in user_rights|keys %}
-		selectAllOptions('t_user');
-		{% endif %}
-		{% if 'ADD_GROUP_TO_TOPIC' in user_rights|keys %}
-		selectAllOptions('t_group');
-		{% endif %}
 		$.ajax({
 			url: 'actions.php',
 			dataType: 'json',

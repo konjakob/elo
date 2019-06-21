@@ -130,12 +130,15 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 			$replies[] = array(	'user_name' => $res['user_name'],
 								'reply_date' => $res['reply_date'],
 								'user_id' => $res['user_id'],
+								'reply_id' => $res['reply_id'],
 								'reply_text' => $ubbParser->parse(stripslashes($res['reply_text']))->detect_links()->detect_emails()->get_html(),
 								'attachments' => $attachments,
 								'sheets' => $sheets,
 								'can_edit' => (($res['user_id'] == $user_res['user_id'] && $res['reply_date'] > ($time - $conf['max_edit_time'])) || in_array('IS_ADMIN',$user_rights))
 							);								
 		}
+		
+		$breadcrumb[] = array( 'text' => $twig_data['page_title'], 'href' => '');
 
 		$twig_data['replies'] = $replies;
 		$twig_data['breadcrumb'] = $breadcrumb;

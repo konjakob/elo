@@ -223,6 +223,65 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		echo json_encode($returnData);
 		exit();
 	}
+	else if ( $action == 'delete_reply') {
+		$returnData = array();
+		if ( isset($_GET['replyid'])) {
+	
+			$replyid = intval($_GET['id']);
+			
+			$query = $db->query("select * from elo_reply where reply_id='".$replyid."'");
+			
+			if ( $db->num_rows($query) ) {
+				$res = $db->fetch_array($query);
+			
+				if ( ($res['user_id'] == $user_res['user_id'] && $res['reply_date'] > ($time - $conf['max_edit_time']) ) || in_array('IS_ADMIN',$user_rights) ) {
+					
+					
+					if ( isset($_GET['aid']) ) {
+						$db->query("delete from elo_reply_attachment where reply_id='".$replyid."' and ra_id='".intval($_GET['aid'])."'");				
+						
+						$returnData['state'] = 'ok';
+						$returnData['text'] = "Attachment deleted";
+						$returnData['title'] = "Deleted";
+						if ( isset($_GET['ref']) ) {
+							header("Location: edit_reply.php?id=".$replyid);
+							exit();
+						}
+					} else {
+					
+						$db->query("delete from elo_reply where reply_id='".$replyid."'");
+						$db->query("delete from elo_reply_attachment where reply_id='".$replyid."'");
+						$db->query("delete from elo_reply_music where reply_id='".$replyid."'");
+						
+						$returnData['state'] = 'ok';
+						$returnData['text'] = "Reply deleted";
+						$returnData['title'] = "Deleted";
+						
+						if ( isset($_GET['ref']) ) {
+							header("Location: topic.php?id=".$res['topic_id']);
+							exit();
+						}
+					}
+					
+				} else {
+					$returnData['state'] = 'nok';
+					$returnData['text'] = DELETE_REPLY_NO_RIGHTS;
+					$returnData['title'] = 'Error';
+				}
+			} else {
+				$returnData['state'] = 'nok';
+				$returnData['text'] = "Reply not found";
+				$returnData['title'] = 'Error';
+			}
+			
+		} else {
+			$returnData['state'] = 'nok';
+			$returnData['text'] = DELETE_REPLY_NO_ID;
+			$returnData['title'] = 'Error';
+		}
+		echo json_encode($returnData);
+		exit();
+	}
 	else if ( $action == 'getGroup') {
 		$returnData = array();
 		if ( isset($_GET['group_id'])) {

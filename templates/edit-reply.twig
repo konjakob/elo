@@ -1,0 +1,137 @@
+{% extends 'default.twig' %}
+
+{% block vars %}
+{% endblock %}
+
+{% block default %}
+
+	<h1>{{ page_title }}</h1>
+	
+{% for m in msgs %}
+
+<div class="uk-alert-{% if m.state == 'ok' %}success{% else %}danger{% endif %}" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>{{ m.text }}</p>
+</div>
+
+{% endfor %}	
+	
+	
+	<div class="uk-card uk-card-default uk-card-body uk-margin">
+		<h2 class="uk-card-title">TOPIC_EDIT_REPLY</h2>
+
+<form action="actions.php" method="post" class="uk-form-stacked" enctype="multipart/form-data" id="frmNewTopic"><input type="hidden" value="editTopic" name="action">
+<input type="hidden" value="{{ reply.reply_id }}" name="id">
+{% if 'ADD_USER_TO_TOPIC' in user_rights|keys %}
+<div class="uk-child-width-1-2" uk-grid>
+	<div>
+		<div class="uk-card uk-card-small">
+			<h4 class="uk-card-title">User for this topic</h4>
+			<p>
+			<select id='ex_users' size='5' multiple='multiple' class="js-select2 uk-select uk-width-1-1 " style="width: 75%" name='t_user[]'>
+				{% for u in users %}
+					<option value='{{ u.user_id }}' {% if u.selected %} selected="selected"{% endif %}>{{ u.user_name }}</option>
+				{% endfor %}
+			</select>
+			</p>
+		</div>
+	</div>
+{% endif %}	
+{% if 'ADD_GROUP_TO_TOPIC' in user_rights|keys %}	
+	<div>
+		<div class="uk-card  uk-card-small">
+			<h4 class="uk-card-title">Groups for this topic</h4>
+			<p><select id='ex_groups' class="uk-select js-select2 uk-width-1-1"  style="width: 75%" size='5' multiple='multiple' name='t_group[]'>
+	{% for g in groups %}
+	<option value='{{ g.group_id }}' {% if u.selected %} selected="selected"{% endif %}>{{ g.group_name }}</option>
+	{% endfor %}</select></p>
+		</div>
+	</div>
+{% endif %}
+
+</div>
+		
+	{% include 'partials/texttitleblock.twig' %}				
+
+	{% if 'CREATE_SHEETS' in user_rights|keys %}
+		{% include 'partials/cheatsheet.twig' %}
+	{% endif %}
+	
+	{% if 'CREATE_SHEETS' in user_rights|keys %}
+	
+		{% for a in reply.sheets %}
+	<div id="abc<?=$r['rm_id']?>Check" style="display:none"><pre id="abc<?=$r['rm_id']?>CheckText" class="abcCheckText"></pre></div>
+      <div style="float:left">  <textarea name="old_abc[<?=$r['music_id']?>]" id="abc<?=$r['rm_id']?>" cols="80" rows="15"><?=$r['music_text']?></textarea></div><div style="float:left"><span class="formInfo"><a rel="faq.php?fid=3" href="faq.php?fid=3" class="jt" title="<?=TOPIC_SHEET_INFO?>">?</a></span></div><div style="clear:both"></div>
+<input type="button" value="Check syntax" onclick="checkAbcSyntax('abc<?=$r['rm_id']?>')" /><div id="midi<?=$r['rm_id']?>"></div>
+<div id="warnings<?=$r['rm_id']?>"></div>
+<div id="music<?=$r['rm_id']?>"></div>
+<div id="paper0<?=$r['rm_id']?>"></div>
+		{% endfor %}
+	{% endif %}
+	
+	{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
+		{% include 'partials/attachment.twig' %}						
+	{% endif %}
+	
+	{% if 'CREATE_ATTACHMENTS' in user_rights|keys and reply.attachments|length > 0 %}
+		TOPIC_TEXT_ATTACHMENTS
+		<ul>
+		{% for a in reply.attachments %}
+			<li>{{ a.attachment_filename }} (<a data-id="{{ reply.reply_id }}" data-aid="{{ a.attachment_id }}" href='actions.php?action=delete_reply&ref=1&aid={{ a.attachment_id }}&id={{ reply.reply_id }}' class="item-attachment">TOPIC_DELETE</a>)</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+
+	<div class="uk-text-right">
+		<input class="uk-button uk-button-primary" type="submit" value="Save" name="new_topic" />
+	</div>
+</form>
+</div>
+
+	{% if 'CREATE_SHEETS' in user_rights|keys %}
+		<script type="text/javascript">
+		window.onload = function() {	
+			abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
+		}		
+		</script>
+	{% endif %}
+	
+
+    <script type="text/javascript">
+	window.onload = function() {
+
+		{% if 'CREATE_SHEETS' in user_rights|keys %}
+			{% for a in reply.sheets %}
+				abc_editor{{ a.rm_id }} = new ABCJS.Editor("abc{{ a.rm_id }}", { paper_id: "paper0{{ a.rm_id }}", midi_id:"midi{{ a.rm_id }}", warnings_id:"warnings{{ a.rm_id }}"});
+			{% endfor %}
+		{% endif %}
+		
+			abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
+		}
+		
+		
+$(".item-attachment").click(function(event) {
+  event.preventDefault();
+  var el = $(this);
+  UIkit.modal.confirm('Do you really want to delete this attachment?').then(function() {
+		$.get( "actions.php?action=delete_reply&id=" + el.attr('data-id') + "&aid=" + el.attr('data-id') )
+		  .done(function( data ) {
+			if ( data.status == 'ok' ) {
+				el.closest("li").toggle();
+				toastr["success"](data.text, data.title);
+			} else {
+				toastr["error"](data.text, data.title);
+			}
+		  });
+	}, function () {
+	});
+});	
+		
+		</script>
+    
+
+{% endblock %}		  
+
+{% block footerInjection %}
+	
+{% endblock %}	

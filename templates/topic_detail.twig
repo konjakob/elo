@@ -42,7 +42,7 @@
 					</div>
 					<div class="uk-position-top-right uk-position-small uk-hidden-hover">
 						{% if reply.can_edit %}
-							<a class="uk-link-muted" href='edit_reply.php?id={{ reply.reply_id }}'>{{ constant('TOPIC_EDIT') }}</a> | <a href='delete_reply.php?id={{ reply.reply_id }}' class="uk-link-muted">{{ constant('TOPIC_DELETE') }}</a>
+							<a class="uk-link-muted" href='edit_reply.php?id={{ reply.reply_id }}'>{{ constant('TOPIC_EDIT') }}</a> | <a href='actions.php?action=delete_reply&ref=1&id={{ reply.reply_id }}' data-id="{{ reply.reply_id }}" class="uk-link-muted reply-delete">{{ constant('TOPIC_DELETE') }}</a>
 						{% endif %}
 					</div>
 				</header>
@@ -140,5 +140,24 @@
 		  closeText: '<img src="includes/images/cross.png" alt="close" />'
 		});
 	});
+	
+$(".reply-delete").click(function(event) {
+  event.preventDefault();
+  var el = $(this);
+  UIkit.modal.confirm('Do you really want to delete this reply?').then(function() {
+		$.get( "actions.php?action=delete_reply&id=" + el.attr('data-id') )
+		  .done(function( data ) {
+			if ( data.status == 'ok' ) {
+				el.closest("li").toggle();
+				toastr["success"](data.text, data.title);
+			} else {
+				toastr["error"](data.text, data.title);
+			}
+		  });
+	}, function () {
+	});
+});	
+	
+
 	</script>		
 {% endblock %}	
