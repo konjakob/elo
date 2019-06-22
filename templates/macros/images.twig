@@ -1,0 +1,3 @@
+{% macro userGraphic(name, size = 100, classes) %}
+    <img class="uk-border-circle {{ classes }}" src="images/profile/{% if name|length %}{{ name }}{% else %}default.png{% endif %}" width="{{ size }}" height="{{ size }}" alt="">
+{% endmacro %}

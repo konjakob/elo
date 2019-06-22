@@ -52,6 +52,7 @@ UNION
 							'no_replies' => intval($res['no'])-1,
 							'reply_date' => $res['reply_date'],
 							'reply_text' => '',
+							'user_picture' => '',
 							'username' => $res['username'],
 							'last_reply_date' => $res['last_reply_date'],
 							'topic_id' => $res['topic_id'],

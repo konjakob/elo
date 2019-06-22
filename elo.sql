@@ -434,6 +434,9 @@ CREATE TABLE `elo_user` (
   `user_password` varchar(100) NOT NULL,
   `lang_id` int(8) NOT NULL,
   `user_lastvisit` int(13) NOT NULL,
+  `user_picture` varchar(100) NOT NULL,
+  `user_registration` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_lastlogin` datetime NOT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 

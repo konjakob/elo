@@ -54,6 +54,7 @@ $query = $db->query("select elo_user.*, elo_lang.lang_code from elo_user left jo
 $user_res = $db->fetch_array($query);
 $username = $twig_data['user_name'] = $user_res['user_name'];
 $langcode = $user_res['lang_code'];
+$twig_data['user_picture'] = $user_res['user_picture'];
 
 if ( strlen($langcode) <1 )
 	$langcode = "en";

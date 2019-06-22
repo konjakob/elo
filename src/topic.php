@@ -69,7 +69,7 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 			$twig_data['ar_group_see_topic'] = $ar_group_see_topic;
 		}
 		
-		$query = $db->query("select r.*, u.user_name from elo_reply as r, elo_user as u where r.topic_id='".$topicid."' and u.user_id=r.user_id");
+		$query = $db->query("select r.*, u.user_name, u.user_picture from elo_reply as r, elo_user as u where r.topic_id='".$topicid."' and u.user_id=r.user_id");
 		$musicsheets = array();
 		
 		
@@ -131,6 +131,7 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 								'reply_date' => $res['reply_date'],
 								'user_id' => $res['user_id'],
 								'reply_id' => $res['reply_id'],
+								'user_picture' => $res['user_picture'],
 								'reply_text' => $ubbParser->parse(stripslashes($res['reply_text']))->detect_links()->detect_emails()->get_html(),
 								'attachments' => $attachments,
 								'sheets' => $sheets,

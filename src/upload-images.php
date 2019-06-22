@@ -48,16 +48,21 @@ if (isset($_GET['mode'])) {
 		// check whether it's not empty, and whether it indeed is an uploaded file
 		if( !empty( $tmpName ) && is_uploaded_file( $tmpName ) )
 		{	
-			$tmpFileName = md5($customer_id).".".addslashes($imageFileType);
-			tep_db_query("update elo_user set user_picture='".$tmpFileName."' where user_id='" . $userid . "'");
+			$tmpFileName = md5($userid).".".addslashes($imageFileType);
+			$db->query("update elo_user set user_picture='".$tmpFileName."' where user_id='" . $userid . "'");
 			
-			echo $destName = "images/profile/" . $tmpFileName;
+			$destName = "images/profile/" . $tmpFileName;
 			
 			if ( file_exists($destName) ) {
 				unlink($destName);
 			}
 			
 			move_uploaded_file( $tmpName, $destName );
+			
+			$dataAr = array();
+			$dataAr['state'] = 'ok';
+			$dataAr['filePath'] =  $destName;
+			echo json_encode($dataAr);
 		}
 	}
 }

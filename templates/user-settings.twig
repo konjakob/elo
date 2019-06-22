@@ -1,11 +1,12 @@
+{% set uploadPath = 'profile' %}
 {% extends 'default.twig' %}
-
+{% import 'macros/images.twig' as img %}
 {% block vars %}
 {% endblock %}
 
 {% block default %}
 
-   <h1><?=USER_SETTINGS_HEADER?></h1>
+   <h1>USER_SETTINGS_HEADER</h1>
 
 {% for m in msgs %}
 
@@ -16,12 +17,20 @@
 
 {% endfor %}   
    
-   <h1>User Settings</h1>
-   <h2>Profile picture</h2>
+	<h1>User Settings</h1>
+	<h2>Profile picture</h2>
+   
+	Your current profile image is shown below:
+	{% if user_picture|length > 0 %}
+	
+	{% endif %}
+	<div id="userImage">{{ img.userGraphic(user_picture, 100) }}</div>
+	
+   
    {% include 'partials/attachment.twig' %}
    
    <h2>Profile data</h2>
-   <form action="<?=$_SERVER['PHP_SELF']?>" method="post" class="uk-form-stacked">
+   <form action="$_SERVER['PHP_SELF']" method="post" class="uk-form-stacked">
    
     <div class="uk-margin">
         <label class="uk-form-label" for="form-element1">{{ constant('USER_SETTINGS_USERNAME') }}</label>

@@ -59,19 +59,21 @@
 		  "hideMethod": "fadeOut"
 		}
 		
-		{% if 'CREATE_ATTACHMENTS' in user_rights|keys or current_url == 'user-settings.php'%}
+		{% if 'CREATE_ATTACHMENTS' in user_rights|keys or uploadPath == 'profile' %}
 		var bar = document.getElementById('js-progressbar');
 		var divImages = document.getElementById('divImages');
 
 		UIkit.upload('.js-upload', {
 			
-			url: 'upload-images.php?mode={% if current_url == 'user-settings.php' %}profile{% else %}review{% end %}',{# We need to check, if it is an attachment for topics or replies or a profile picture #}
+			url: 'upload-images.php?mode={% if uploadPath == 'profile' %}profile{% else %}review{% endif %}',{# We need to check, if it is an attachment for topics or replies or a profile picture #}
 			multiple: true,
 
 			complete: function () {
 				var data = JSON.parse(arguments[0]['responseText']);
-				{% if current_url == 'user-settings.php' %}
-				
+				{% if uploadPath == 'profile' %}
+				if ( data.state == 'ok' ) {
+					$('#userImage').innerHTML = '<img src="' + data.filePath + '" width="100" height="100">';
+				}
 				{% else %}
 				divImages.innerHTML += '<div><div class=""><!--<img src="' + arguments[0]['responseText'] + '" width="100">--><input type="hidden" name="picture[]" value="' + data.fileId + '">' + data.fileName + '</div></div>';
 				{% endif %}
