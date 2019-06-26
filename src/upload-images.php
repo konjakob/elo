@@ -37,8 +37,7 @@ if (isset($_GET['mode'])) {
 		}
 	} else if ( $_GET['mode'] == 'profile') {
 				
-		if( !empty( $_FILES[ 'files' ][ 'error' ][0] ) )
-		{
+		if( !empty( $_FILES[ 'files' ][ 'error' ][0] ) ) {
 			return false;
 		}
 		
@@ -62,6 +61,11 @@ if (isset($_GET['mode'])) {
 			$dataAr = array();
 			$dataAr['state'] = 'ok';
 			$dataAr['filePath'] =  $destName;
+            
+            list($width, $height) = getimagesize($destName);
+            $dataAr['width'] = $width;
+            $dataAr['height'] = $height;
+            
 			echo json_encode($dataAr);
 		}
 	}

@@ -185,6 +185,3 @@ $breadcrumb[] = array( 'text' => 'Admin Panel', 'href' => '');
 $twig_data['breadcrumb'] = $breadcrumb;
 $twig_data['msgs'] = $msgs;
 echo $twig->render("panel.twig", $twig_data);
-
-
-

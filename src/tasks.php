@@ -9,7 +9,7 @@ require_once('SBBCodeParser.php');
 
 /*****************************************************************
 *
-* Create the emai object with all the setting set.
+* Create the email object with all the setting set.
 *
 *****************************************************************/
 
@@ -32,7 +32,7 @@ $mail->SMTPSecure = '';                            // Enable encryption, 'ssl' a
 
 $mail->SetFrom($conf['from_email'], $conf['from_name']);
 $mail->FromName = $conf['from_name'];
-$mail->WordWrap = 80;                                 // Set word wrap to 50 characters
+$mail->WordWrap = 80;                                 // Set word wrap 
 $mail->IsHTML(true); 
 	
  
@@ -253,4 +253,3 @@ foreach ( $topics as $topic ) {
 	}
 }
 
-?>

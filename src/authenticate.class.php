@@ -53,11 +53,11 @@ class Authenticate {
 
         if ( $remember ) {
 
-            $expiration = time() + 1209600; // 14 dagen
+            $expiration = time() + 1209600; // 14 days
 
         } else {
 
-            $expiration = time() + 172800; // 48 uur
+            $expiration = time() + 172800; // 48 hours
 
         }
 
@@ -114,7 +114,8 @@ class Authenticate {
 		
         list( $id, $expiration, $hmac ) = explode( '|', $_COOKIE[COOKIE_AUTH] );
 
-		$db->query("update elo_user set user_lastvisit='".time()."' where user_id=".intval($id));
+		//$db->query("update elo_user set user_lastvisit='".time()."' where user_id=".intval($id));
+        $db->query("insert into elo_user_login (user_id) values ('".(int)$id."')");
 
         return $id;
 
@@ -123,5 +124,3 @@ class Authenticate {
 }
 
 class AuthException extends Exception {}
-
-?>

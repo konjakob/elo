@@ -1,0 +1,74 @@
+{% extends 'layouts/default.twig' %}
+
+{% block vars %}
+{% endblock %}
+
+{% block default %}
+
+
+<ul class="uk-list">
+    {% for u in allUser %}
+        <li class="even" onClick="javascript:loadUser({{ u.user_id }});">{{ u.user_name }}</li>
+    {% endfor %}
+</ul>
+
+
+</div><div id="userdata" style="float:left;margin-top:20px;width:80%;"></div>
+<div id="postswrapper">
+   <div class="item"></div>
+   <div id="loadmoreajaxloader" style="display:none;"><center><img src="ajax-loader.gif" /></center></div>
+</div>
+
+
+			
+{% endblock %}		  
+
+{% block footerInjection %}
+<script language="javascript">  
+
+var start = 10;
+var stopscrol = 0;
+var userid; 
+function loadUser(id){
+	start = 10;
+	stopscrol = 0;
+	userid = id;
+	$.ajax({
+		url: "loadtopic.php?showUserid="+id,
+		success: function(respond)
+		{
+			$("#userdata").html(respond);
+		}
+	});
+  };
+  
+  $(window).scroll(function()
+	{
+		if ( stopscrol == 0 )
+		{
+			if($(window).scrollTop() == $(document).height() - $(window).height())
+			{
+				$('div#loadmoreajaxloader').show();
+				$.ajax({
+				url: "loadtopic.php?start="+start,
+				success: function(html)
+				{
+					if(html)
+					{
+						$("#userdata").append(html);
+						$('div#loadmoreajaxloader').hide();
+						start = start + 10;
+					}else
+					{
+						stopscrol = 1;
+						$("#postswrapper").append('<div style="border:thin;border-style:dashed;align:center;border-right:none;border-left:none;border-bottom:none"><center>NO_MORE_POSTS</center></div>');
+						$('div#loadmoreajaxloader').hide();
+					}
+				}
+				});
+			}
+		}
+	});
+</script>
+
+{% endblock %}		  

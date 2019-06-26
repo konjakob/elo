@@ -14,25 +14,25 @@ $breadcrumb[] = array('href' => '', 'text' => 'User settings');
 
 $msgs = array();
 
-   if (isset($_POST['action'])) {
-		$sql_pass = "";
-		
-		
-		if ( $db->query_one("select user_id from elo_user where user_email='".addslashes($_POST['t_email'])."' and user_id<>'".$userid."'") ) {
-			$msgs[] = array('state' => 'nok', 'text' => USER_SETTINGS_EMAIL_EXISTS);
-		} else {
-			
-			if ( isset($_POST['t_pass']) && strlen($_POST['t_pass'])) {
-				require_once( "PasswordHash.php" );
-				$hasher = new PasswordHash( 8, TRUE );
-				$sql_pass = ", user_password='".$hasher->HashPassword($_POST['t_pass'])."' ";
-			}
-			$db->query("update elo_user set user_name='".addslashes($_POST['t_name'])."', user_email='".addslashes($_POST['t_email'])."' ".$sql_pass.", lang_id='".intval($_POST['t_lang'])."' where user_id='".$userid."'");
-			header("Location: user-settings.php?saved=1");
-		}
-	}
-	if( isset($_GET['saved']))
-		$msgs[] = array('state' => 'ok', 'text' => USER_SETTINGS_SAVED);
+if (isset($_POST['action'])) {
+    $sql_pass = "";
+    
+    
+    if ( $db->query_one("select user_id from elo_user where user_email='".addslashes($_POST['t_email'])."' and user_id<>'".$userid."'") ) {
+        $msgs[] = array('state' => 'nok', 'text' => USER_SETTINGS_EMAIL_EXISTS);
+    } else {
+        
+        if ( isset($_POST['t_pass']) && strlen($_POST['t_pass'])) {
+            require_once( "PasswordHash.php" );
+            $hasher = new PasswordHash( 8, TRUE );
+            $sql_pass = ", user_password='".$hasher->HashPassword($_POST['t_pass'])."' ";
+        }
+        $db->query("update elo_user set user_name='".addslashes($_POST['t_name'])."', user_email='".addslashes($_POST['t_email'])."' ".$sql_pass.", lang_id='".intval($_POST['t_lang'])."' where user_id='".$userid."'");
+        header("Location: user-settings.php?saved=1");
+    }
+}
+if( isset($_GET['saved']))
+    $msgs[] = array('state' => 'ok', 'text' => USER_SETTINGS_SAVED);
 
 
 $db->close();

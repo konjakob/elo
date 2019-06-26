@@ -2,14 +2,21 @@
 
 require('includes/application_top.php');
 	
+$returnData = array();    
+    
 if(isset($_GET['action']) || isset($_POST['action'])) {
 	
 	$action = isset($_GET['action'])  ?  $_GET['action'] : $_POST['action'];
 	
-	if ( $action == 'getUser' && isset($_GET['userid'])) {
+	if ( $action == 'getUser' ) {
+	    
+        if ( !isset($_GET['userid']) ) {
+            $returnData['state'] = 'nok';
+            $returnData['text'] = 'No user given.';
+            json_encode($returnData);
+            exit();
+        }
 
-		$returnData = array();
-	
 		$query_groups = $db->query("select * from elo_group order by group_name");
 		$groups = array();
 		while ( $res = $db->fetch_array($query_groups) )
@@ -73,8 +80,21 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		exit();
 			
 	}
+    else if ($action == 'cropImage') {
+        if ( !isset($_POST['x1']) || !isset($_POST['x2']) || !isset($_POST['y1']) || !isset($_POST['y2']) ) {
+            $returnData['state'] = 'nok';
+            $returnData['text'] = 'Missing value for cropping.';
+            $returnData['title'] = 'Error';	
+            echo json_encode($returnData);
+            exit();
+        }
+        // todo: crop the image
+        $returnData['filePath'] = $user_data['user_image'];
+        $returnData['state'] = 'ok';
+        echo json_encode($returnData);
+        exit();
+    }
 	else if ($action == 'changeUser') {
-		$returnData = array();
 		if ( isset($_POST['userid']) && isset($_POST['t_name']) && isset($_POST['t_email']) && isset($_POST['t_l']) ) {
 			if (strlen($_POST['t_name']) && strlen($_POST['t_email'])) {
 				$sql_pass = "";

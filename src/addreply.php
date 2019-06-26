@@ -7,6 +7,12 @@ if ( !isset($_POST['id'])) {
 	exit();
 }
 
+if ( !in_array('CAN_REPLY', $user_rights) ) {
+    echo "No rights.";
+    exit();
+}
+
+
 $topicid = (int)$_POST['id'];
 
 // check if allowed to see
@@ -23,11 +29,13 @@ if ( strlen($_POST['text']) < 1 ) {
 	echo "No text.";
 	exit;	
 }
-	
+
+$replyText = $_POST['text'];
+
 if ( !in_array('ALLOW_HTML', $user_rights) ) 
-	$_POST['text'] = htmlentities($_POST['text']);
+	$replyText = htmlentities($replyText);
 			
-$db->query("insert into elo_reply (user_id, topic_id, reply_date, reply_text) values ('".$userid."', '".$topicid."', '".time()."', '".addslashes($_POST['text'])."')");
+$db->query("insert into elo_reply (user_id, topic_id, reply_date, reply_text) values ('".$userid."', '".$topicid."', '".time()."', '".addslashes($replyText)."')");
 $reply_id = $db->insert_id();
 
 if ( in_array('CREATE_ATTACHMENTS', $user_rights) && isset($_POST['picture']) ) {

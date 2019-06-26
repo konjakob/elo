@@ -1,20 +1,10 @@
 <?
 
-require_once("dbclass.php");
-$db = new db;
-
-require("authenticate.class.php");
-
-$auth = new Authenticate;
-
-if(!$auth->validateAuthCookie())
-	header("Location: login.php?ref=".base64_encode($_SERVER['PHP_SELF']."?".$_SERVER["QUERY_STRING"]));
-
-require("functions.php");
-
+require('includes/application_top.php');
 
 if ( isset($_POST['text'])) {
 
+    // TODO: Add this to a temp folder
 	$tmpfile = 	"tmp-".createCode(10).".abc";
 	
 	file_put_contents($tmpfile,$_POST['text']);
@@ -34,8 +24,4 @@ if ( isset($_POST['text'])) {
 		echo "\n";
 	}
 
-	
 }
-
-
-?>

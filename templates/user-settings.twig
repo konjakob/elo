@@ -67,7 +67,53 @@
 		
 <div class="uk-text-right"><input class="uk-button uk-button-primary" type="submit" value="{{ constant('TOPIC_TEXT_SAVE') }}" name="action"></div>
 </form>
-		
+
+{# Modal for image cropping #}
+<div id="modal-image-crop" uk-modal>
+    <div class="uk-modal-dialog">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">Crop you profile image</h2>
+        </div>
+
+        <div class="uk-modal-body" uk-overflow-auto>
+
+            <p><div id="userImageCrop"></div><input type="hidden" value="" name="crop-x1"><input type="hidden" value="" name="crop-x2"><input type="hidden" value="" name="crop-y1"><input type="hidden" value="" name="crop-y2"></p>
+			<p class="uk-text-right"><button class="uk-button uk-button-primary" id="btnCropImage">Crop</button></p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    $('#btnCropImage').click(function(e) {
+		e.preventDefault();
+		$.post("actions.php",
+			{	  
+			  x1:$('input[name="crop-x1"]').val(),
+              x2:$('input[name="crop-x2"]').val(),
+              y1:$('input[name="crop-y1"]').val(),
+              y2:$('input[name="crop-y2"]').val(),
+			  action:'cropImage'
+			},
+			function(data,status){
+				if ( data.state == 'ok' ) {
+                    $('#userImage').innerHTML = '<img src="' + data.filePath + '?timestamp=' + time() + '" id="profile-image" width="100" height="100">';
+					UIkit.modal($('#modal-image-crop')).hide();
+					toastr["success"]("Image saved", "Success");
+				} else {
+					toastr["error"]("Error", "Error");
+				}
+			});
+	});
+    
+
+</script>		
+        
+        
 {% endblock %}		  
 
 {% block footerInjection %}

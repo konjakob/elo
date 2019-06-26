@@ -12,5 +12,3 @@
 	} catch(  AuthException $a)  {
 		$error = "<strong>Logout failed.</strong><br><br>";
 	}
-
-?>

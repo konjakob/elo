@@ -1,0 +1,19 @@
+{% extends 'layouts/default.twig' %}
+
+{% block vars %}
+{% endblock %}
+
+{% block default %}
+
+	<h1>{{ page_title }}</h1>
+	
+{% for m in msgs %}
+
+<div class="uk-alert-{% if m.state == 'ok' %}success{% else %}danger{% endif %}" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>{{ m.text }}</p>
+</div>
+
+{% endfor %}
+			
+{% endblock %}		  

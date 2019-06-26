@@ -12,7 +12,7 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 		$twig_data['topicid'] = $topicid = intval($_GET['id']);
 		
 		
-		// check if allowed to see
+		// check if allowed to see the topic
 		if ( !$db->query_one("select tu_id from elo_topic_user where topic_id='".$topicid."' and user_id='".$userid."' limit 1") && !in_array('IS_ADMIN',$user_rights) )
 		{
 			if ( !$db->query_one("select tg_id from elo_topic_group as tg, elo_group_user AS gu where tg.topic_id='".$topicid."' and tg.group_id=gu.group_id and gu.user_id='".$userid."' limit 1") )
@@ -109,7 +109,7 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 						}
 						$filesize_s = "";
 						$filesize = filesize($file);
-						if ( $filesize < 1024 ) {
+						if ( $filesize < 1024 ) { // todo: can't this be done in an easier way? If not, move to a function
 							$filesize_s = $filesize." Byte";
 						} else if ( $filesize < 1024*1024 ) {
 							$filesize_s = round($filesize/1024)." kB";

@@ -51,6 +51,7 @@
 						{{ reply.reply_text|raw }}
 	
 						{% if reply.sheets|length > 0 %}
+                        {# Todo: This should be a grid with panels #}
 							<hr>
 							{% for s in reply.sheets %}
 								{% if s.img %}
@@ -64,6 +65,7 @@
 						{% endif %}
 					
 						{% if reply.attachments|length > 0 %}
+                            {# Todo: This should be a grid with panels #}
 							<hr><strong>{{ constant('TOPIC_TEXT_ATTACHMENTS') }}:</strong><br>
 							{% for a in reply.attachments %}
 								{% if a.img %}
@@ -80,33 +82,35 @@
 	{% endfor %}
 	</ul>
 
+    {% if 'CAN_REPLY' in user_rights|keys %}
 	<div id="newReplyRespond{{ topicid }}" style="display:none; "></div>
 	
 	<div class="uk-card uk-card-default uk-card-body uk-margin" id="newReply{{ topicid }}">
 		<h3>{{ constant('TOPIC_TEXT_REPLY_TEXT') }} <a rel="faq.php?fid=4" href="faq.php?fid=4" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}"><small>?</small></a></h3>
 		
-				<form action="addreply.php" method="post" enctype="multipart/form-data">
-					<input type="hidden" value="{{ topicid }}" name="id">
-					<div class="uk-margin">
-						<label class="uk-form-label" for="newReplyText{{ topicid }}">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></label>
-						<div class="uk-form-controls">
-							<textarea id="newReplyText{{ topicid }}" class="uk-textarea" name="text"></textarea>
-						</div>
-					</div>	
-					
-					{% if 'CREATE_SHEETS' in user_rights|keys %}
-						{% include 'partials/cheatsheet.twig' %}
-					{% endif %}
+        <form action="addreply.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" value="{{ topicid }}" name="id">
+            <div class="uk-margin">
+                <label class="uk-form-label" for="newReplyText{{ topicid }}">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></label>
+                <div class="uk-form-controls">
+                    <textarea id="newReplyText{{ topicid }}" class="uk-textarea" name="text"></textarea>
+                </div>
+            </div>	
+            
+            {% if 'CREATE_SHEETS' in user_rights|keys %}
+                {% include 'partials/cheatsheet.twig' %}
+            {% endif %}
 
-					{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
-						{% include 'partials/attachment.twig' %}						
-					{% endif %}
-									
-					<div class="uk-text-right"><input type="submit" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}"></div>
-	
-				</form>
+            {% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
+                {% include 'partials/attachment.twig' %}						
+            {% endif %}
+                            
+            <div class="uk-text-right"><input type="submit" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}"></div>
+
+        </form>
 	
 	</div>
+    {% endif %}
 
 
 

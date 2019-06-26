@@ -72,7 +72,14 @@
 				var data = JSON.parse(arguments[0]['responseText']);
 				{% if uploadPath == 'profile' %}
 				if ( data.state == 'ok' ) {
-					$('#userImage').innerHTML = '<img src="' + data.filePath + '" width="100" height="100">';
+					$('#userImage').innerHTML = '<img src="' + data.filePath  + '?timestamp=' + time() + '" id="profile-image" width="100" height="100">';
+                    $('#userImageCrop').innerHTML = '<img src="' + data.filePath + '" id="profile-image-crop" width="100" height="100">';
+                    // show cropping tool
+                    var maxLength = (data.width < data.height) ? data.width : data.height;
+                    $('#profile-image-crop').imgAreaSelect({ aspectRatio: '1:1', handles: true, x1: 0.1*maxLength, y1: 0.1*maxLength, x2: 0.9*maxLength, y2: 0.9*maxLength, onSelectEnd: function (img, selection) { $('input[name="crop-x1"]').val(selection.x1); $('input[name="crop-y1"]').val(selection.y1); $('input[name="crop-x2"]').val(selection.x2); $('input[name="crop-y2"]').val(selection.y2); }                    
+                    });
+                    UIkit.modal($('#modal-image-crop')).show();
+                    
 				}
 				{% else %}
 				divImages.innerHTML += '<div><div class=""><!--<img src="' + arguments[0]['responseText'] + '" width="100">--><input type="hidden" name="picture[]" value="' + data.fileId + '">' + data.fileName + '</div></div>';

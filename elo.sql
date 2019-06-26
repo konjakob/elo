@@ -275,7 +275,7 @@ CREATE TABLE `elo_right` (
   `right_name` varchar(50) NOT NULL,
   `right_key` varchar(20) NOT NULL,
   PRIMARY KEY (`right_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `elo_right`
@@ -293,7 +293,8 @@ INSERT INTO `elo_right` (`right_id`, `right_name`, `right_key`) VALUES
 (11, 'Delete own replys', 'DELETE_OWN_REPLYS'),
 (12, 'Is Administrator', 'IS_ADMIN'),
 (13, 'Can add users to topic', 'ADD_USER_TO_TOPIC'),
-(14, 'Can add groups to topic', 'ADD_GROUP_TO_TOPIC');
+(14, 'Can add groups to topic', 'ADD_GROUP_TO_TOPIC'),
+(15, 'Can reply to topics', 'CAN_REPLY');
 
 -- --------------------------------------------------------
 
@@ -423,6 +424,12 @@ INSERT INTO `elo_topic_user` (`tu_id`, `user_id`, `topic_id`) VALUES
 
 -- --------------------------------------------------------
 
+
+CREATE TABLE `elo_user_login` (
+  `user_id` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `user_login` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
 --
 -- Table structure for table `elo_user`
 --
@@ -433,10 +440,8 @@ CREATE TABLE `elo_user` (
   `user_email` varchar(100) NOT NULL,
   `user_password` varchar(100) NOT NULL,
   `lang_id` int(8) NOT NULL,
-  `user_lastvisit` int(13) NOT NULL,
   `user_picture` varchar(100) NOT NULL,
   `user_registration` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_lastlogin` datetime NOT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
