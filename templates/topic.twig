@@ -187,7 +187,7 @@ $(document).ready(function(){
 			{
 				$('div#loadmoreajaxloader').show();
 				$.ajax({
-					url: "loadtopic.php?start="+start,
+					url: "actions.php?action=loadTopic&start="+start,
 					success: function(html)
 					{
 						if(html) 

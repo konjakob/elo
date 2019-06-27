@@ -426,8 +426,10 @@ INSERT INTO `elo_topic_user` (`tu_id`, `user_id`, `topic_id`) VALUES
 
 
 CREATE TABLE `elo_user_login` (
-  `user_id` int(6) unsigned NOT NULL AUTO_INCREMENT,
-  `user_login` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `ul_id` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(6) unsigned NOT NULL,
+  `user_login` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ul_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 --

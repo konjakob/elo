@@ -71,7 +71,7 @@ if ( isset($_POST['action_login'])) {
 
 $langcode = "en";
 require_once('includes/languages/'.$langcode.'.php');
-$twig_data['showForgotten'] = (isset($_GET['pass']) && $_GET['pass'] == 'forgotten'));
+$twig_data['showForgotten'] = (isset($_GET['pass']) && $_GET['pass'] == 'forgotten');
 $twig_data['ref'] = $ref;
 $twig_data['msgs'] = $msgs;
 echo $twig->render("login.twig", $twig_data);

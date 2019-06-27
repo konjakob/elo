@@ -34,7 +34,7 @@ function loadUser(id){
 	stopscrol = 0;
 	userid = id;
 	$.ajax({
-		url: "loadtopic.php?showUserid="+id,
+		url: "actions.php?action=loadTopic&showUserid="+id,
 		success: function(respond)
 		{
 			$("#userdata").html(respond);
@@ -50,7 +50,7 @@ function loadUser(id){
 			{
 				$('div#loadmoreajaxloader').show();
 				$.ajax({
-				url: "loadtopic.php?start="+start,
+				url: "actions.php?action=loadTopic&start="+start,
 				success: function(html)
 				{
 					if(html)

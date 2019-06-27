@@ -88,8 +88,16 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
             echo json_encode($returnData);
             exit();
         }
-        // todo: crop the image
-        $returnData['filePath'] = $user_data['user_image'];
+		
+		$x1 = (int)$_POST['x1'];
+		$x2 = (int)$_POST['x2'];
+		$y1 = (int)$_POST['y1'];
+		$y2 = (int)$_POST['y2'];
+		
+		$filepath = "images/profile/" . $user_res['user_picture'];
+		exec($conf['convert']." ".$filepath." -crop ".($x2-$x1)."x".($y2-$y1)."+".$x1."+".$y1." ".$filepath);
+		// todo: wait and check results of crop action
+        $returnData['filePath'] = $filepath;
         $returnData['state'] = 'ok';
         echo json_encode($returnData);
         exit();
@@ -115,6 +123,13 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			$returnData['title'] = 'Error';			
 		}
 		echo json_encode($returnData);
+		exit();
+	}
+	
+	else if ($action == 'loadTopic') {
+		include("loadtopic.php");
+		//todo
+		echo json_encode($topics);
 		exit();
 	}
 	

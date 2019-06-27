@@ -1,6 +1,6 @@
 <?php
 
-require("dbclass.php");
+require_once("dbclass.php");
 $db = new db;
 
 $userid = 1;

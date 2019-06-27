@@ -23,10 +23,10 @@ if ( !isset($jsonMode) ) {
 
 $twig_data['current_url'] = $_SERVER['PHP_SELF'];
 
-require("dbclass.php");
+require_once("dbclass.php");
 $db = new db;
 
-require("authenticate.class.php");
+require_once("authenticate.class.php");
 
 $auth = new Authenticate;
 

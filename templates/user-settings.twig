@@ -6,7 +6,7 @@
 
 {% block default %}
 
-   <h1>USER_SETTINGS_HEADER</h1>
+   <h1>{{ constant('USER_SETTINGS_HEADER') }}</h1>
 
 {% for m in msgs %}
 
@@ -17,7 +17,7 @@
 
 {% endfor %}   
    
-	<h1>User Settings</h1>
+
 	<h2>Profile picture</h2>
    
 	Your current profile image is shown below:
@@ -91,7 +91,12 @@
 
     $('#btnCropImage').click(function(e) {
 		e.preventDefault();
-		$.post("actions.php",
+		
+		$.ajax({
+			url: 'actions.php',
+			dataType: 'json',
+			method: 'POST',
+			data: 
 			{	  
 			  x1:$('input[name="crop-x1"]').val(),
               x2:$('input[name="crop-x2"]').val(),
@@ -99,15 +104,17 @@
               y2:$('input[name="crop-y2"]').val(),
 			  action:'cropImage'
 			},
-			function(data,status){
+			success: function(data){
 				if ( data.state == 'ok' ) {
-                    $('#userImage').innerHTML = '<img src="' + data.filePath + '?timestamp=' + time() + '" id="profile-image" width="100" height="100">';
+                    $('#userImage').innerHTML = '<img src="' + data.filePath + '?timestamp=' + Date.now() + '" id="profile-image" width="100" height="100">';
 					UIkit.modal($('#modal-image-crop')).hide();
 					toastr["success"]("Image saved", "Success");
 				} else {
 					toastr["error"]("Error", "Error");
 				}
-			});
+			}
+		});
+		
 	});
     
 
@@ -117,5 +124,6 @@
 {% endblock %}		  
 
 {% block footerInjection %}
-			
+  <link rel="stylesheet" type="text/css" href="css/imgareaselect-default.css" />
+  <script type="text/javascript" src="js/jquery.imgareaselect.pack.js"></script>			
 {% endblock %}	

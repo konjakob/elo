@@ -1,10 +1,8 @@
 <?php
 
-require('includes/application_top.php');
+require_once('includes/application_top.php');
 
 require_once('SBBCodeParser.php');
-
-
 
 $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 

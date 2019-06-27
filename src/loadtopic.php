@@ -1,6 +1,6 @@
 <?php
 
-require('includes/application_top.php');
+//require('includes/application_top.php');
 
 $row_start = isset($_GET['start']) ? (int)$_GET['start'] : 0;
 
