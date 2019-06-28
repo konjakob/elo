@@ -18,7 +18,7 @@
 	
 
 
-	{% if 'CREATE_TOPICS' in user_rights|keys %}
+	{% if 'CREATE_TOPICS' in user_rights %}
 
     <div id="newTopicRespond" style="display:none; "></div>
 	
@@ -30,7 +30,7 @@
 		<div id="newTopic2" style="display:none">
 		
 
-		{% if 'CREATE_TOPICS' in user_rights|keys %}
+		{% if 'CREATE_TOPICS' in user_rights %}
 			{% include 'partials/newtopic.twig' %}						
 		{% endif %}
 		
@@ -74,10 +74,10 @@ $(document).ready(function(){
   
   $("#frmNewTopic").submit(function(e){
         e.preventDefault();
-		{% if 'ADD_USER_TO_TOPIC' in user_rights|keys %}
+		{% if 'ADD_USER_TO_TOPIC' in user_rights %}
 		selectAllOptions('t_user');
 		{% endif %}
-		{% if 'ADD_GROUP_TO_TOPIC' in user_rights|keys %}
+		{% if 'ADD_GROUP_TO_TOPIC' in user_rights %}
 		selectAllOptions('t_group');
 		{% endif %}
 		$.ajax({
@@ -102,9 +102,7 @@ $(document).ready(function(){
   
 });	
 	  
-		function tgldiv(divname){
-			$("#"+divname).slideToggle("slow");
-		}
+		
   
 		function tgldivnow(divname){
 			$("#"+divname).hide();
@@ -118,13 +116,13 @@ $(document).ready(function(){
 			$("#newReplyText"+topicid).focus();
 			return;
 		}
-		{% if 'CREATE_SHEETS' in user_rights|keys %}
+		{% if 'CREATE_SHEETS' in user_rights %}
 		t2 = $("#abc").val();
 		{% endif %}
 
 		$.post("addReply.php",
 		{
-			{% if 'CREATE_SHEETS' in user_rights|keys %}
+			{% if 'CREATE_SHEETS' in user_rights %}
 			abc:t2,
 			{% endif %}
 		  
@@ -139,7 +137,7 @@ $(document).ready(function(){
 		});
 	}
   
-  {% if 'CREATE_TOPICS' in user_rights|keys %}
+  {% if 'CREATE_TOPICS' in user_rights %}
   function addTopic(){
 	var t;
 	var t2;
@@ -156,13 +154,13 @@ $(document).ready(function(){
 			$("#t_topic_title").focus();
 			return;
 		}
-		{% if 'CREATE_SHEETS' in user_rights|keys %}
+		{% if 'CREATE_SHEETS' in user_rights %}
 			t3 = $("#abc").val();
 		{% endif %}
 		
 		$.post("newTopic.php",
 		{
-			{% if 'CREATE_SHEETS' in user_rights|keys %}
+			{% if 'CREATE_SHEETS' in user_rights %}
 				abc:t3,
 			{% endif %}
 			

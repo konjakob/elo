@@ -7,7 +7,7 @@
 
 	<h1>{{ page_title }}</h1>
 	
-	{% if 'IS_ADMIN' in user_rights|keys %}
+	{% if 'IS_ADMIN' in user_rights %}
 		<div class="uk-child-width-1-2@s" uk-grid>		
 			<div>
 				<div class="uk-card uk-card-default uk-card-primary uk-card-small uk-card-body">
@@ -82,7 +82,7 @@
 	{% endfor %}
 	</ul>
 
-    {% if 'CAN_REPLY' in user_rights|keys %}
+    {% if 'CAN_REPLY' in user_rights %}
 	<div id="newReplyRespond{{ topicid }}" style="display:none; "></div>
 	
 	<div class="uk-card uk-card-default uk-card-body uk-margin" id="newReply{{ topicid }}">
@@ -97,11 +97,11 @@
                 </div>
             </div>	
             
-            {% if 'CREATE_SHEETS' in user_rights|keys %}
+            {% if 'CREATE_SHEETS' in user_rights %}
                 {% include 'partials/cheatsheet.twig' %}
             {% endif %}
 
-            {% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
+            {% if 'CREATE_ATTACHMENTS' in user_rights %}
                 {% include 'partials/attachment.twig' %}						
             {% endif %}
                             
@@ -126,7 +126,7 @@
 					echo 'abc_editor'.$a['rm_id'].' = new ABCJS.Editor("abc'.$a['rm_id'].'", { paper_id: "paper0'.$a['rm_id'].'"});';
 			{% endfor %}
 		{% endfor %}
-		{% if 'CREATE_SHEETS' in user_rights|keys %}
+		{% if 'CREATE_SHEETS' in user_rights %}
 	
 			abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
 		{% endif %}

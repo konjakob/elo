@@ -22,7 +22,7 @@
 
 <form action="actions.php" method="post" class="uk-form-stacked" enctype="multipart/form-data" id="frmNewTopic"><input type="hidden" value="editTopic" name="action">
 <input type="hidden" value="{{ reply.reply_id }}" name="id">
-{% if 'ADD_USER_TO_TOPIC' in user_rights|keys %}
+{% if 'ADD_USER_TO_TOPIC' in user_rights %}
 <div class="uk-child-width-1-2" uk-grid>
 	<div>
 		<div class="uk-card uk-card-small">
@@ -37,7 +37,7 @@
 		</div>
 	</div>
 {% endif %}	
-{% if 'ADD_GROUP_TO_TOPIC' in user_rights|keys %}	
+{% if 'ADD_GROUP_TO_TOPIC' in user_rights %}	
 	<div>
 		<div class="uk-card  uk-card-small">
 			<h4 class="uk-card-title">Groups for this topic</h4>
@@ -53,11 +53,11 @@
 		
 	{% include 'partials/texttitleblock.twig' %}				
 
-	{% if 'CREATE_SHEETS' in user_rights|keys %}
+	{% if 'CREATE_SHEETS' in user_rights %}
 		{% include 'partials/cheatsheet.twig' %}
 	{% endif %}
 	
-	{% if 'CREATE_SHEETS' in user_rights|keys %}
+	{% if 'CREATE_SHEETS' in user_rights %}
 	
 		{% for a in reply.sheets %}
 	<div id="abc<?=$r['rm_id']?>Check" style="display:none"><pre id="abc<?=$r['rm_id']?>CheckText" class="abcCheckText"></pre></div>
@@ -69,7 +69,7 @@
 		{% endfor %}
 	{% endif %}
 	
-	{% if 'CREATE_ATTACHMENTS' in user_rights|keys %}
+	{% if 'CREATE_ATTACHMENTS' in user_rights %}
 		{% include 'partials/attachment.twig' %}						
 	{% endif %}
 	
@@ -88,7 +88,7 @@
 </form>
 </div>
 
-	{% if 'CREATE_SHEETS' in user_rights|keys %}
+	{% if 'CREATE_SHEETS' in user_rights %}
 		<script type="text/javascript">
 		window.onload = function() {	
 			abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
@@ -100,7 +100,7 @@
     <script type="text/javascript">
 	window.onload = function() {
 
-		{% if 'CREATE_SHEETS' in user_rights|keys %}
+		{% if 'CREATE_SHEETS' in user_rights %}
 			{% for a in reply.sheets %}
 				abc_editor{{ a.rm_id }} = new ABCJS.Editor("abc{{ a.rm_id }}", { paper_id: "paper0{{ a.rm_id }}", midi_id:"midi{{ a.rm_id }}", warnings_id:"warnings{{ a.rm_id }}"});
 			{% endfor %}

@@ -25,10 +25,10 @@ if (isset($_GET['mode'])) {
 				$dataAr = array();
 				
 				// if it is a pdf or picture, create a thumbnail
-				/*
-				if (  preg_match('/[(pdf)|(gif)|(png)|(jpeg)|(jpg)]$/',$_FILES['t_file']['name']) ) {
+				if (  preg_match('/[(pdf)|(gif)|(png)|(jpeg)|(jpg)]$/',$_FILES['files']['name'][ $index ]) ) {
 					exec($conf['convert']." \"".$conf['file_folder']."{".$filename."}[0]\" -colorspace RGB -geometry 200 \"".$conf['file_folder'].$filename.".png\"");
-				}*/
+					$dataAr['preview'] = $conf['file_folder'].$filename.".png";
+				}
 				$dataAr['fileName'] =  $_FILES[ 'files' ][ 'name' ][ $index ];
 				$dataAr['filePath'] =  $conf['file_folder'].$filename;
 				$dataAr['fileId'] = $db->insert_id();

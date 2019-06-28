@@ -9,7 +9,7 @@
 
 
 <div class="uk-child-width-1-2@m uk-child-width-1-1@s uk-margin-top" uk-grid>
-{% if 'CREATE_NEW_USER' in user_rights|keys %}
+{% if 'CREATE_NEW_USER' in user_rights %}
 
 <div>
 	<div class="uk-card uk-card-default uk-card-body">
@@ -59,7 +59,7 @@
 </div>
 {% endif %}
 
-{% if 'CREATE_NEW_RIGHT' in user_rights|keys %}
+{% if 'CREATE_NEW_RIGHT' in user_rights %}
 
 {% if saved_new_right %}
 <div id='correct'>Saved the new right.</div>
@@ -92,7 +92,7 @@
 {{ msg_group }}
 
 
-{% if 'CREATE_GROUPS' in user_rights|keys %}	
+{% if 'CREATE_GROUPS' in user_rights %}	
 <div>
 	<div class="uk-card uk-card-default uk-card-body uk-margin">
 		<h2 class="uk-card-title">New Group</h2>
@@ -146,7 +146,7 @@
 
 {% endfor %}
 
-{% if 'CREATE_TOPICS' in user_rights|keys %}
+{% if 'CREATE_TOPICS' in user_rights %}
 	{% include 'partials/newtopic.twig' %}						
 {% endif %}
 	
@@ -506,7 +506,7 @@
 	
 </script>
 
-	{% if 'CREATE_SHEETS' in user_rights|keys %}
+	{% if 'CREATE_SHEETS' in user_rights %}
 		<script type="text/javascript">
 			window.onload = function() {	
 				abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });

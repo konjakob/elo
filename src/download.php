@@ -12,19 +12,19 @@ if ( isset($_GET['mid']) ) {
     
 	$type = $_GET['type'];
 	$mid = (int)$_GET['mid'];
+	
+	$topic_id = $db->query_one("SELECT r.topic_id FROM elo_reply_music as a, elo_reply as r, elo_topic_user as t where a.rm_id='".$aid."' and a.reply_id=r.reply_id and r.topic_id=t.topic_id and t.user_id='".$userid."'");
 
-    // TODO: check if allowed to see the topic
-    if ( !$db->query_one("select tu_id from elo_topic_user where topic_id='".$topicid."' and user_id='".$userid."' limit 1") && !in_array('IS_ADMIN',$user_rights) )
+	// check if allowed to download this file
+    if ( !$topic_id && !in_array('IS_ADMIN',$user_rights) )
     {
-        if ( !$db->query_one("select tg_id from elo_topic_group as tg, elo_group_user AS gu where tg.topic_id='".$topicid."' and tg.group_id=gu.group_id and gu.user_id='".$userid."' limit 1") )
+        if ( (int)$db->query_one("SELECT count(*) FROM elo_reply_music as a, elo_reply as r, elo_topic_group as g, elo_group_user as gu where a.rm_id='".$aid."' and a.reply_id=r.reply_id and r.topic_id=g.topic_id and gu.user_id='".$userid."' and g.group_id=gu.group_id") < 1 )
         {
             echo $twig->render("no_access.twig", $twig_data);
             exit();
         }
     }
-	
-    // check if is allowed to download file
-    
+	 
 	$folder = $conf['file_folder']."m-".$mid."/";
 
 	if ( !file_exists($folder) )
@@ -51,12 +51,14 @@ if ( isset($_GET['mid']) ) {
 	}
 } else if  ( isset($_GET['aid']) ) {
 	$aid = intval($_GET['aid']);	
-	$filename = $db->query("select attachment_filename from elo_attachment where attachment_id='".$aid."'");
+	$filename = $db->query_one("select attachment_filename from elo_attachment where attachment_id='".$aid."'");
     
-    // TODO: check if allowed to see the topic
-    if ( !$db->query_one("select tu_id from elo_topic_user where topic_id='".$topicid."' and user_id='".$userid."' limit 1") && !in_array('IS_ADMIN',$user_rights) )
+    $topic_id = $db->query_one("SELECT r.topic_id FROM elo_reply_attachment as a, elo_reply as r, elo_topic_user as t where a.ra_id='".$aid."' and a.reply_id=r.reply_id and r.topic_id=t.topic_id and t.user_id='".$userid."'");
+
+    // check if allowed to download this file
+    if ( !$topic_id && !in_array('IS_ADMIN',$user_rights) )
     {
-        if ( !$db->query_one("select tg_id from elo_topic_group as tg, elo_group_user AS gu where tg.topic_id='".$topicid."' and tg.group_id=gu.group_id and gu.user_id='".$userid."' limit 1") )
+        if ( (int)$db->query_one("SELECT count(*) FROM elo_reply_attachment as a, elo_reply as r, elo_topic_group as g, elo_group_user as gu where a.ra_id='".$aid."' and a.reply_id=r.reply_id and r.topic_id=g.topic_id and gu.user_id='".$userid."' and g.group_id=gu.group_id") < 1 )
         {
             echo $twig->render("no_access.twig", $twig_data);
             exit();
