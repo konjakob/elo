@@ -53,9 +53,9 @@
 						{% if reply.sheets|length > 0 %}
                         {# Todo: This should be a grid with panels #}
 							<hr>
-							{% for s in reply.sheets %}
-								{% if s.img %}
-									<div><img src="{{ s.img }}" {{ a.img_data }}></div>
+							{% for a in reply.sheets %}
+								{% if a.img %}
+									<div><img src="{{ a.img }}" {{ a.img_data }}></div>
 								{% else %}
 									<div style="display:none"><textarea name="abc{{ a.rm_id }}" id="abc{{ a.rm_id }}" cols="80" rows="15">{{ a.music_text }}</textarea></div>
 									<div id="midi{{ a.rm_id }}"></div><div id="paper0{{ a.rm_id }}"></div><div id="music{{ a.rm_id }}"></div>
@@ -66,7 +66,7 @@
 					
 						{% if reply.attachments|length > 0 %}
                             {# Todo: This should be a grid with panels #}
-							<hr><strong>{{ constant('TOPIC_TEXT_ATTACHMENTS') }}:</strong><br>
+							<hr><strong>{{ constant('TOPIC_TEXT_ATTACHMENTS') }}</strong><br>
 							{% for a in reply.attachments %}
 								{% if a.img %}
 									<img src="{{ a.img }}" {{ a.img_data }}><br>

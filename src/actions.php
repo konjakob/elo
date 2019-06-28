@@ -127,9 +127,15 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ($action == 'loadTopic') {
+		$returnData = array();
 		include("loadtopic.php");
-		//todo
-		echo json_encode($topics);
+		$html = "";
+		foreach ( $topics as $topic ) 
+			$html .= $twig->render("partials/topicblock.twig", array('topic' => $topic));
+		$returnData['state'] = 'ok';
+		$returnData['rows'] = sizeof($topics);
+		$returnData['html'] = $html;
+		echo json_encode($returnData);
 		exit();
 	}
 	
@@ -137,6 +143,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		$returnData = array();
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {		
 			$user = intval($_POST['userid']);
+			$returnData['state'] = 'ok';
 			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ )
 				$db->query("delete from elo_group_user where user_id='".$user."' and group_id='".intval($_POST['t_r'][$i])."'");
 		} else {
@@ -196,9 +203,21 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	else if ($action == 'deleteGroup') {
 		$returnData = array();
 		if ( isset($_POST['delete_group']) ) {
-			$returnData['state'] = 'ok';
-			// todo: delete user relations to group
-			$db->query("delete from elo_group where group_id='".intval($_POST['delete_group'])."'");
+			
+			$group_id = (int) $_POST['delete_group'];
+			// delete all user group relations
+			$db->query("delete from elo_group_user where group_id='".$group_id."'");
+			// delete the group
+			$db->query("delete from elo_group where group_id='".$group_id."'");
+			if ( $db->affected_rows() ) {
+				$returnData['state'] = 'ok';
+				$returnData['title'] = 'Success';
+				$returnData['text'] = "The group was successfully deleted.";
+			} else {
+				$returnData['state'] = 'nok';
+				$returnData['title'] = 'Error';
+				$returnData['text'] = "No group was deleted.";
+			}
 		} else {
 			$returnData['state'] = 'nok';
 			$returnData['text'] = 'Please select a group.';

@@ -47,7 +47,6 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 		$twig_data['sheets'] = $sheets;
 		$twig_data['page_title'] = $db->query_one("select topic_title from elo_topic where topic_id='".$topicid."'");
 		
-		
 		if ( in_array('IS_ADMIN',$user_rights) ) {
 			$query_see_users = $db->query("select u.user_name from elo_user as u, elo_topic_user as ut where ut.user_id=u.user_id and ut.topic_id='".$topicid."'");
 
@@ -70,12 +69,11 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 		$query = $db->query("select r.*, u.user_name, u.user_picture from elo_reply as r, elo_user as u where r.topic_id='".$topicid."' and u.user_id=r.user_id");
 		$musicsheets = array();
 		
-		
 		$replies = array();
 		while ( $res = $db->fetch_array($query) ) {
 
 			// music sheets 
-			$sheets = array();
+			$sheets_reply = array();
 			if ( array_key_exists($res['reply_id'],$sheets) && is_array($sheets[$res['reply_id']]) ) {	
 				
 				foreach ( $sheets[$res['reply_id']] as $a) {
@@ -89,12 +87,13 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 					} else {
 						$sheet['music_text'] = $a['music_text'];				
 					}
-					$sheets[] = $sheet;
+					$sheet['music_id'] = $a['music_id'];
+					$sheets_reply[] = $sheet;
 				}
 			}
 		
 			// attachments
-			$attachments = array();
+			$attachments_reply = array();
 			if ( array_key_exists($res['reply_id'], $attachments) && is_array($attachments[$res['reply_id']])  && sizeof($attachments[$res['reply_id']]) ) {
 				foreach ( $attachments[$res['reply_id']] as $a) {
 					$file = $conf['file_folder'].$a['attachment_id'].base64_encode($a['attachment_filename']);
@@ -119,7 +118,8 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 						$att['attachment_filename'] = $a['attachment_filename'];
 						$att['attachment_id'] = $a['attachment_id'];
 						$att['filesize'] = $filesize_s;
-						$attachments[] = $att;
+						
+						$attachments_reply[] = $att;
 					}
 				}
 			}
@@ -131,8 +131,8 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 								'reply_id' => $res['reply_id'],
 								'user_picture' => $res['user_picture'],
 								'reply_text' => $ubbParser->parse(stripslashes($res['reply_text']))->detect_links()->detect_emails()->get_html(),
-								'attachments' => $attachments,
-								'sheets' => $sheets,
+								'attachments' => $attachments_reply,
+								'sheets' => $sheets_reply,
 								'can_edit' => (($res['user_id'] == $user_res['user_id'] && $res['reply_date'] > ($time - $conf['max_edit_time'])) || in_array('IS_ADMIN',$user_rights))
 							);								
 		}

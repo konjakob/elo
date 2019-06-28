@@ -53,7 +53,7 @@
 </div>
 
 
-<div id="postswrapper">
+<div id="postswrapper" class="uk-margin-top">
    <div class="item"></div>
    <div id="loadmoreajaxloader" style="display:none;"><center><img src="ajax-loader.gif" /></center></div>
 </div>
@@ -188,18 +188,19 @@ $(document).ready(function(){
 				$('div#loadmoreajaxloader').show();
 				$.ajax({
 					url: "actions.php?action=loadTopic&start="+start,
-					success: function(html)
+					dataType: 'json',
+					success: function(response)
 					{
-						if(html) 
+						
+						if( response.state == 'ok' && response.rows ) 
 						{
-							$("#postswrapper").append(html);
+							$("#gridTopics").append(response.html);							
 							$('div#loadmoreajaxloader').hide();
 							start = start + 10;
 						} else {
 							stopscrol = 1;
-							$("#postswrapper").append('<div style="border:thin;border-style:dashed;align:center;border-right:none;border-left:none;border-bottom:none"><center>NO_MORE_POSTS</center></div>');
+							$("#postswrapper").append('<div class="uk-text-center">{{ constant('NO_MORE_POSTS') }}</div>');
 							$('div#loadmoreajaxloader').hide();
-							//$('div#loadmoreajaxloader').html('<center>No more posts to show.</center>');
 						}
 					}
 				});
