@@ -1,20 +1,23 @@
-{% extends 'layouts/default.twig' %}
+{% extends 'default.twig' %}
 
 {% block vars %}
 {% endblock %}
 
 {% block default %}
 
+<div class="uk-column-1-2@s uk-column-1-3@m uk-column-1-4@l uk-background-muted uk-padding">
+	<ul class="uk-list">
+		{% for u in allUser %}
+			<li class="even" onClick="javascript:loadUser({{ u.user_id }});">{{ u.user_name }}</li>
+		{% endfor %}
+	</ul>
+</div>
 
-<ul class="uk-list">
-    {% for u in allUser %}
-        <li class="even" onClick="javascript:loadUser({{ u.user_id }});">{{ u.user_name }}</li>
-    {% endfor %}
-</ul>
+<div class="uk-width-1-1 uk-margin-top" uk-grid id="gridTopics">
 
+</div>
 
-</div><div id="userdata" style="float:left;margin-top:20px;width:80%;"></div>
-<div id="postswrapper">
+<div id="postswrapper" class="uk-margin-top">
    <div class="item"></div>
    <div id="loadmoreajaxloader" style="display:none;"><center><img src="ajax-loader.gif" /></center></div>
 </div>
@@ -30,14 +33,19 @@ var start = 10;
 var stopscrol = 0;
 var userid; 
 function loadUser(id){
+	$("#gridTopics").html("");
 	start = 10;
 	stopscrol = 0;
 	userid = id;
 	$.ajax({
 		url: "actions.php?action=loadTopic&showUserid="+id,
-		success: function(respond)
+		dataType: "json",
+		success: function(response)
 		{
-			$("#userdata").html(respond);
+			if( response.state == 'ok' && response.rows ) 
+			{
+				$("#gridTopics").append(response.html);	
+			}
 		}
 	});
   };
@@ -50,18 +58,18 @@ function loadUser(id){
 			{
 				$('div#loadmoreajaxloader').show();
 				$.ajax({
-				url: "actions.php?action=loadTopic&start="+start,
-				success: function(html)
+				url: "actions.php?action=loadTopic&showUserid=" + userid + "&start="+start,
+				dataType: 'json',
+				success: function(response)
 				{
-					if(html)
+					if( response.state == 'ok' && response.rows ) 
 					{
-						$("#userdata").append(html);
+						$("#gridTopics").append(response.html);							
 						$('div#loadmoreajaxloader').hide();
 						start = start + 10;
-					}else
-					{
+					} else {
 						stopscrol = 1;
-						$("#postswrapper").append('<div style="border:thin;border-style:dashed;align:center;border-right:none;border-left:none;border-bottom:none"><center>NO_MORE_POSTS</center></div>');
+						$("#postswrapper").append('<div class="uk-text-center">{{ constant('NO_MORE_POSTS') }}</div>');
 						$('div#loadmoreajaxloader').hide();
 					}
 				}

@@ -66,3 +66,4 @@ define('TOPIC_EDIT_REPLY','Antwort &auml;ndern');
 define('TOPIC_SHEET_INFO','ABC music info');
 
 define('TOPIC_TEXT_REPLY_TEXT','Antworte zu diesem Thema');
+define('MODULE_HEADER_TAGS_NOSCRIPT_TEXT', "Please activate JavaScript!");

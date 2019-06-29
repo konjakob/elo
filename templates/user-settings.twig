@@ -35,14 +35,14 @@
     <div class="uk-margin">
         <label class="uk-form-label" for="form-element1">{{ constant('USER_SETTINGS_USERNAME') }}</label>
         <div class="uk-form-controls">
-            <input class="uk-input" id="form-element1" type="text" name="t_name" value="{{ user_res.user_name }}">
+            <input class="uk-input" id="form-element1" type="text" name="t_name" value="{{ user_name }}">
         </div>
     </div>
 	
 	<div class="uk-margin">
         <label class="uk-form-label" for="form-element2">{{ constant('USER_SETTINGS_EMAIL') }}</label>
         <div class="uk-form-controls">
-            <input class="uk-input" id="form-element2" type="text" name="t_email" value="{{ user_res.user_email }}">
+            <input class="uk-input" id="form-element2" type="text" name="t_email" value="{{ user_email }}">
         </div>
     </div>
 	
@@ -58,7 +58,7 @@
         <div class="uk-form-controls">
             <select class="uk-select" name="t_lang">
 			{% for l in saved_languages %}
-				<option value="{{ l.lang_id }}" {% if l.lang_id == user_res.lang_id %}selected{% endif %}>{{ l.lang_name }}</option>
+				<option value="{{ l.lang_id }}" {% if l.lang_id == lang_id %}selected{% endif %}>{{ l.lang_name }}</option>
 			{% endfor %}
 			</select>
         </div>

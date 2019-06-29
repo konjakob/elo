@@ -1,13 +1,21 @@
 	<div class="uk-width-1-2">
 		<div class="uk-card uk-card-default">
 			<div class="uk-card-header">
-
+				<div class="uk-grid-small uk-flex-middle" uk-grid>
+					<div class="uk-width-auto">
+						{{ img.userGraphic(topic.user_picture, 80, 'uk-comment-avatar') }}
+					</div>
+					<div class="uk-width-expand">
 						<h3 class="uk-card-title uk-margin-remove-bottom">{{ topic.topic_title }}</h3>
 						<p class="uk-text-meta uk-margin-remove-top"><time datetime="{{ topic.reply_date|date("YYYY-MM-DD HH:MM:SS") }}">{{ topic.reply_date|date(conf.date_format) }}</time></p>
-
+					</div>
+				</div>
+			</div>
+			<div class="uk-card-body">
+				<p>{{ topic.reply_text }}</p>
 			</div>
 			<div class="uk-card-footer">
-				<p class="uk-text-meta uk-margin-remove-top">{{ topic.no }} {{ constant('TOPIC_TEXT_TOPIC_ANSWERS') }} | {{ constant('TOPIC_TEXT_TOPIC_CREATED') }} {{ topic.reply_date|date(conf.date_format) }} {{ constant('TOPIC_TEXT_TOPIC_BY') }} {{ topic.username }}
+				<p class="uk-text-meta uk-margin-remove-top">{{ topic.no_replies }} {{ constant('TOPIC_TEXT_TOPIC_ANSWERS') }} | {{ constant('TOPIC_TEXT_TOPIC_CREATED') }} {{ topic.reply_date|date(conf.date_format) }} {{ constant('TOPIC_TEXT_TOPIC_BY') }} {{ topic.username }}
 					{% if topic.reply_date != topic.last_reply_date %}
 						 | {{ constant('TOPIC_TEXT_TOPIC_LAST_RESPONSE') }} : {{ topic.last_reply_date|date(conf.date_format) }}
 						{% endif %} | <a href="{{ topic.href }}">View</a></p>

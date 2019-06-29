@@ -14,7 +14,7 @@ $db->close();
 
 while ( $res = $db->fetch_array($query_user) ) {
     $allUser[] = $res;
-    
+}   
 
 
 $twig_data['allUser'] = $allUser;
@@ -23,7 +23,7 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 $breadcrumb[] = array( 'text' => 'Admin Panel', 'href' => 'panel.php');
 $breadcrumb[] = array( 'text' => 'User view', 'href' => '');
 $twig_data['breadcrumb'] = $breadcrumb;
-$twig_data['msgs'] = $msgs;
+//$twig_data['msgs'] = $msgs;
 
 echo $twig->render("loaduser.twig", $twig_data);
     

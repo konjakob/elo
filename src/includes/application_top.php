@@ -50,7 +50,7 @@ while ( $res = $db->fetch_array($query) )
 
 $twig_data['user_rights'] = $user_rights;
 
-$query = $db->query("select elo_user.*, elo_lang.lang_code from elo_user left join elo_lang ON (elo_user.lang_id=elo_lang.lang_id) where user_id='".$userid."' limit 1");
+$query = $db->query("select elo_user.*, elo_lang.lang_id, elo_lang.lang_code from elo_user left join elo_lang ON (elo_user.lang_id=elo_lang.lang_id) where user_id='".$userid."' limit 1");
 $user_res = $db->fetch_array($query);
 $username = $twig_data['user_name'] = $user_res['user_name'];
 $langcode = $user_res['lang_code'];

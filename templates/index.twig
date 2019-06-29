@@ -94,7 +94,12 @@
                     
 				}
 				{% else %}
-				divImages.innerHTML += '<div><div class=""><!--<img src="' + arguments[0]['responseText'] + '" width="100">--><input type="hidden" name="picture[]" value="' + data.fileId + '">' + data.fileName + '</div></div>';
+				if (data.preview) {
+					divImages.innerHTML += '<div><img src="' + data.preview + '" width="100"><input type="hidden" name="picture[]" value="' + data.fileId + '"></div>';
+				} else {
+					divImages.innerHTML += '<div><input type="hidden" name="picture[]" value="' + data.fileId + '">' + data.fileName + '</div>';
+				}
+				
 				{% endif %}
 			},
 

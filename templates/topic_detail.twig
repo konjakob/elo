@@ -51,7 +51,7 @@
 						{{ reply.reply_text|raw }}
 	
 						{% if reply.sheets|length > 0 %}
-                        {# Todo: This should be a grid with panels #}
+                        {# Todo: Check how this looks with multiple sheets #}
 							<hr>
 							{% for a in reply.sheets %}
 								{% if a.img %}
@@ -65,14 +65,16 @@
 						{% endif %}
 					
 						{% if reply.attachments|length > 0 %}
-                            {# Todo: This should be a grid with panels #}
 							<hr><strong>{{ constant('TOPIC_TEXT_ATTACHMENTS') }}</strong><br>
+							<div uk-grid>
 							{% for a in reply.attachments %}
+								<div>
 								{% if a.img %}
 									<img src="{{ a.img }}" {{ a.img_data }}><br>
 								{% endif %}
-								{{ a.attachment_filename }} (<a href='download.php?aid={{ a.attachment_id }}'>{{ constant('TOPIC_TEXT_DOWNLOAD') }}</a>, {{ a.filesize }})<br>
+								{{ a.attachment_filename }} (<a href='download.php?aid={{ a.attachment_id }}'>{{ constant('TOPIC_TEXT_DOWNLOAD') }}</a>, {{ a.filesize }})</div>
 							{% endfor %}
+							</div>
 						{% endif %}
 					</p>
 				</div>

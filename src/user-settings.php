@@ -37,6 +37,9 @@ if( isset($_GET['saved']))
 
 $db->close();
 
+$twig_data['user_email'] = $user_res['user_email'];
+$twig_data['lang_id'] = $user_res['lang_id'];
+
 $twig_data['msgs'] = $msgs;
 $twig_data['breadcrumb'] = $breadcrumb;
 echo $twig->render("user-settings.twig", $twig_data);

@@ -19,6 +19,7 @@ define('TOPIC_TEXT_NO_RIGHT','Sorry, there is nothing.');
 define('TOPIC_TEXT_DOWNLOADS','Downloads');
 define('TOPIC_TEXT_DOWNLOAD','Download');
 define('TOPIC_TEXT_ATTACHMENTS','Attachments');
+define('MODULE_HEADER_TAGS_NOSCRIPT_TEXT', "Please activate JavaScript!");
 
 define('TOPIC_TEXT_SAVE','Save');
 define('TOPIC_TEXT_HELLO','Hello');
