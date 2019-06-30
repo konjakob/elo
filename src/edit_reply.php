@@ -84,11 +84,11 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 			// attachments
 			$query_a = $db->query("select ra.ra_id, a.* from elo_attachment as a, elo_reply_attachment as ra where ra.reply_id='".$replyid."' and ra.attachment_id=a.attachment_id");
 			$attachments = array();
-			while($r = $db->fetch_array($query_m)) {
+			while($r = $db->fetch_array($query_a)) {
 				$attachments[] = $r;
 			}
 			$reply['attachments'] = $attachments;
-	
+
 		} else {
 			$msgs[] = array('state' => 'nok', 'text' => DELETE_REPLY_NO_RIGHTS);
 		}
@@ -113,7 +113,8 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 }
 
 $breadcrumb[] = array('href' => 'topic.php', 'text' => 'Topics');
-$breadcrumb[] = array('href' => 'topic.php?id='.$topicid."#".$replyid, 'text' => 'Topic');
+$breadcrumb[] = array('href' => 'topic.php?id='.$topicid."#".$replyid, 'text' => $db->query_one("select topic_title from elo_topic where topic_id='".$topicid."'"));
+$breadcrumb[] = array('href' => '', 'text' => TOPIC_EDIT_REPLY);
 $twig_data['reply'] = $reply;
 $twig_data['msgs'] = $msgs;
 $twig_data['breadcrumb'] = $breadcrumb;

@@ -123,13 +123,10 @@
 	window.onload = function() {
 		{% for reply in replies %}
 			{% for a in reply.sheets %}
-
-				if ( !in_array($a['rm_id'],$musicsheets))
-					echo 'abc_editor'.$a['rm_id'].' = new ABCJS.Editor("abc'.$a['rm_id'].'", { paper_id: "paper0'.$a['rm_id'].'"});';
+				abc_editor{{ a.rm_id }} = new ABCJS.Editor("abc{{ a.rm_id }}", { paper_id: "paper0{{ a.rm_id }}"});
 			{% endfor %}
 		{% endfor %}
 		{% if 'CREATE_SHEETS' in user_rights %}
-	
 			abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
 		{% endif %}
 	}
