@@ -1,12 +1,5 @@
 <?php
 
-$query = $db->query("select * from elo_config");
-$conf = array();
-while ( $res = $db->fetch_array($query) )
-	$conf[$res['config_name']] = $res['config_value'];
-
-$twig_data['conf'] = $conf;
-
 function createCode($no) {
 	$letters = array("0","1","2","3","4","5","6","7","8","9","q","w","e","r","t","y","u","i","o","p","a","s","d","f","g","h","j","k","l","z","x","c","v","b","n","m");
 	$word = "";
@@ -58,19 +51,6 @@ function prepareEmailAndSend($email_text, $email_ad, $email_name,$subject="", $a
 }
 		
 
-function showCreateSheet() {
-		?>
-        <div id="abcCheck" style="display:none"><pre id="abcCheckText" class="abcCheckText"></pre></div>
-        <div id="newMusicSheet" style="display:none"><div style="float:left">
-        
-        <textarea name="abc" id="abc" cols="80" rows="15"></textarea></div><div style="float:left"><span class="formInfo"><a rel="faq.php?fid=3" href="faq.php?fid=3" class="jt" title="<?=TOPIC_SHEET_INFO?>">?</a></span></div><div style="clear:both"></div><input type="button" value="Check syntax" onclick="checkAbcSyntax('abc')" /><div id="midi"></div>
-<div id="warnings"></div>
-<div id="music"></div>
-<div id="paper0"></div>
-</div><div id="addmusicdiv"><input type="button" value="<?=TOPIC_TEXT_ADD_MUSIC?>" onClick="javascript:tgldiv('addmusicdiv');javascript:tgldiv('newMusicSheet');"></div>
-        <?
-}	
-
 function processAttachment() {
 	global $db, $userid, $reply_id, $conf;
 	
@@ -101,7 +81,8 @@ function processMusicFiles($musicid, $text) {
 	exec($conf['abc2midi']." ".$abcfile." -o ".$mfolder."/".$musicid.".mid");
 	
 	// create the pdf
-	$fmt = $conf['fmt'];
+	// check if there is a format file given
+	$fmt = array_key_exists('fmt', $conf) ? $conf['fmt'] : "";
 	$psfile = $mfolder."/".$musicid.".ps";
 	$pdffile = $mfolder."/".$musicid.".pdf";
 	$pngfile = $mfolder."/".$musicid.".png";
@@ -129,29 +110,6 @@ function processMusic() {
 	$db->query("insert into elo_reply_music (reply_id, music_id) values ('".$reply_id."', '".$musicid."')");	
 	
 	processMusicFiles($musicid,$_POST['abc']);
-}
-
-function createReply() {
-?>
-
-<?	
-}
-
-/**
-* 
-*/
-function createTopic() {
-	global $res,$conf;
-
-	?>
-
-    <!--
-    <div id="topic" class="<?=$oddeventext?>">
-		<? echo stripslashes($res['topic_title']); ?><hr /><div id="small">
-		<a href=""></a> </div>
-		</div>
-    -->
-    <?
 }
 
 /**
@@ -199,10 +157,5 @@ function _createPdfFile($abcFile, $fileBase) {
 function _createMidiFile($abcFile, $fileBase) {
 	$midFile = $fileBase.'.mid';
 	passthru(fullpath($this->getConf('abc2midi'))." $abcFile -o $midFile");
-}
-
-function createReplyText() {
-	
-	
 }
 

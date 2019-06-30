@@ -13,10 +13,15 @@ if ( isset($_GET['mid']) ) {
 	$type = $_GET['type'];
 	$mid = (int)$_GET['mid'];
 	
-	$topic_id = $db->query_one("SELECT r.topic_id FROM elo_reply_music as a, elo_reply as r, elo_topic_user as t where a.rm_id='".$aid."' and a.reply_id=r.reply_id and r.topic_id=t.topic_id and t.user_id='".$userid."'");
+	$topic_id = (int)$db->query_one("SELECT r.topic_id FROM elo_reply_music as a, elo_reply as r, elo_topic_user as t where a.rm_id='".$mid."' and a.reply_id=r.reply_id and r.topic_id=t.topic_id and t.user_id='".$userid."'");
 
+	if ( !$topic_id ) {
+		echo $twig->render("no_access.twig", $twig_data);
+		exit();
+	}
+	
 	// check if allowed to download this file
-    if ( !$topic_id && !in_array('IS_ADMIN',$user_rights) )
+    if ( !in_array('IS_ADMIN',$user_rights) )
     {
         if ( (int)$db->query_one("SELECT count(*) FROM elo_reply_music as a, elo_reply as r, elo_topic_group as g, elo_group_user as gu where a.rm_id='".$aid."' and a.reply_id=r.reply_id and r.topic_id=g.topic_id and gu.user_id='".$userid."' and g.group_id=gu.group_id") < 1 )
         {
@@ -28,25 +33,34 @@ if ( isset($_GET['mid']) ) {
 	$folder = $conf['file_folder']."m-".$mid."/";
 
 	if ( !file_exists($folder) )
-		header("Location: topic.php");
+		header("Location: topic.php?id=".$topic_id);
 		
 	if ( $type == 'midi') {
 		$file = $folder.$mid.".mid";
 		if ( file_exists($file) ) {
 			header("Location: ".$file);
 			exit();
+		} else {
+			echo $twig->render("404.twig", $twig_data);
+            exit();
 		}
 	} else if ($type == 'pdf') {
 		$file = $folder.$mid.".pdf";
 		if ( file_exists($file) ) {
 			header("Location: ".$file);
 			exit();
-		}	
+		} else {
+			echo $twig->render("404.twig", $twig_data);
+            exit();
+		}
 	} else if ($type == 'abc') {
 		$file = $folder.$mid.".abc";
 		if ( file_exists($file) ) {
 			header("Location: ".$file);
 			exit();
+		} else {
+			echo $twig->render("404.twig", $twig_data);
+            exit();
 		}	
 	}
 } else if  ( isset($_GET['aid']) ) {

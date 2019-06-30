@@ -38,7 +38,15 @@ if(!$auth->validateAuthCookie()) {
 	}
 	exit();
 }
-require("functions.php");
+
+$query = $db->query("select * from elo_config");
+$conf = array();
+while ( $res = $db->fetch_array($query) )
+	$conf[$res['config_name']] = $res['config_value'];
+
+$twig_data['conf'] = $conf;
+
+require_once("functions.php");
 
 $userid = $auth->getUserId();
 
