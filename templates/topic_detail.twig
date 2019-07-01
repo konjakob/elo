@@ -7,7 +7,7 @@
 
 	<div uk-grid class="uk-child-width-1-2">
 		<div><h1><span id="topicTitle">{{ page_title }}</span> <a href="" uk-icon="icon: file-edit" id="editTopicTitle"></a></h1></div>
-		<div class="uk-text-right"><a href="" uk-icon="icon: trash" id="deleteTopic"></a></div>
+		{% if 'IS_ADMIN' in user_rights %}<div class="uk-text-right"><a href="" uk-icon="icon: trash" id="deleteTopic"></a></div>{% endif %}
 	</div>
 	
 	{% if 'IS_ADMIN' in user_rights %}
@@ -175,15 +175,15 @@ $("#editTopicTitle").click(function(event) {
 	});
 });
 	
-	
-$(".deleteTopic").click(function(event) {
+{% if 'IS_ADMIN' in user_rights %}	
+$("#deleteTopic").click(function(event) {
   event.preventDefault();
   var el = $(this);
   UIkit.modal.confirm('Do you really want to delete the whole topic?').then(function() {
-		$.get( "actions.php?action=deleteTopic&id=" + el.attr('data-id') )
+		$.get( "actions.php?action=deleteTopic&id={{ topicid }}" )
 		  .done(function( data ) {
 			if ( data.status == 'ok' ) {
-				el.closest("li").toggle();
+				window.location.replace("topic.php");
 				toastr["success"](data.text, data.title);
 			} else {
 				toastr["error"](data.text, data.title);
@@ -192,6 +192,7 @@ $(".deleteTopic").click(function(event) {
 	}, function () {
 	});
 });	
+{% endif %}
 	
 $(".reply-delete").click(function(event) {
   event.preventDefault();
