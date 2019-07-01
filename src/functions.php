@@ -9,6 +9,10 @@ function createCode($no) {
 	return $word;
 }
 
+function toastFeedback($state, $text, $title) {
+	return array('state' => $state, 'text' => $text, 'title' => $title);
+}
+
 function prepareAttachments($attachments) {
 	global $conf;
 	$attachments_reply = array();

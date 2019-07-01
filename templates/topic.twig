@@ -12,7 +12,7 @@
 <div id="board_messages" style="display: none;"></div>
 
 	
-	<div><br>{{ constant('TOPIC_TEXT_HELLO') }} <strong>{{ user_name }}</strong>{{ constant('TOPIC_TEXT_WELCOME') }}</div>
+	<div>{{ constant('TOPIC_TEXT_HELLO') }} <strong>{{ user_name }}</strong>{{ constant('TOPIC_TEXT_WELCOME') }}</div>
 	<hr>
 	<div id="placeholder" style="display:none;border:thin;border-style:dashed;padding:10px"></div>
 	
@@ -72,6 +72,7 @@ $(document).ready(function(){
 	$(this).toggle();
   });
   
+  {% if 'CREATE_TOPICS' in user_rights %}
   $("#frmNewTopic").submit(function(e){
         e.preventDefault();
 		{% if 'ADD_USER_TO_TOPIC' in user_rights %}
@@ -99,6 +100,7 @@ $(document).ready(function(){
 		});		  
   
   });
+  {% endif %}
   
 });	
 	  
@@ -137,44 +139,6 @@ $(document).ready(function(){
 		});
 	}
   
-  {% if 'CREATE_TOPICS' in user_rights %}
-  function addTopic(){
-	var t;
-	var t2;
-
-		t = $("#newTopicText").val();
-		t2 = $("#t_topic_title").val();
-		if ( t.length < 1 ) {
-			$("#newTopicText").css('background-color','#F96');
-			$("#newTopicText").focus();
-			return;
-		}
-		if ( t2.length < 1 ) {
-			$("#t_topic_title").css('background-color','#F96');
-			$("#t_topic_title").focus();
-			return;
-		}
-		{% if 'CREATE_SHEETS' in user_rights %}
-			t3 = $("#abc").val();
-		{% endif %}
-		
-		$.post("newTopic.php",
-		{
-			{% if 'CREATE_SHEETS' in user_rights %}
-				abc:t3,
-			{% endif %}
-			
-		  t_topic:t,
-		  t_topic_title:t2,
-		  noref:1
-		},
-		function(data,status){
-			$("#brplace").after(data);
-			$("#createNewTopic").show();
-			$("#newTopic").hide();
-		});
-  }
-  {% endif %}
   var start = 10;
   var stopscrol = 0;
   $(window).scroll(function()

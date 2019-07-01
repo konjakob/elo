@@ -5,7 +5,10 @@
 
 {% block default %}
 
-	<h1>{{ page_title }}</h1>
+	<div uk-grid class="uk-child-width-1-2">
+		<div><h1><span id="topicTitle">{{ page_title }}</span> <a href="" uk-icon="icon: file-edit" id="editTopicTitle"></a></h1></div>
+		<div class="uk-text-right"><a href="" uk-icon="icon: trash" id="deleteTopic"></a></div>
+	</div>
 	
 	{% if 'IS_ADMIN' in user_rights %}
 		<div class="uk-child-width-1-2@s" uk-grid>		
@@ -93,7 +96,7 @@
         <form action="addreply.php" method="post" enctype="multipart/form-data">
             <input type="hidden" value="{{ topicid }}" name="id">
             <div class="uk-margin">
-                <label class="uk-form-label" for="newReplyText{{ topicid }}">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></label>
+                <label class="uk-form-label" for="newReplyText{{ topicid }}">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}"><span uk-icon="question"></span></a></label>
                 <div class="uk-form-controls">
                     <textarea id="newReplyText{{ topicid }}" class="uk-textarea" name="text"></textarea>
                 </div>
@@ -143,6 +146,52 @@
 		  closeText: '<img src="includes/images/cross.png" alt="close" />'
 		});
 	});
+	
+
+$("#editTopicTitle").click(function(event) {
+  event.preventDefault();
+  var el = $(this);
+  UIkit.modal.prompt('Change the topic title:', $('#topicTitle').text()).then(function(name) {
+		if ( name ) {
+			$.ajax({
+				url: 'actions.php',
+				dataType: 'json',
+				method: 'POST',
+				data: {
+					action: 'updateTopicTitle',
+					t_topic_title: name,
+					topicid: {{ topicid }}
+				},
+				success: function(respond){
+					if ( respond.state == 'ok' ) {
+						$('#topicTitle').text(name);
+						toastr["success"](respond.text, respond.title);
+					} else {
+						toastr["error"](respond.text, respond.title);
+					}
+				}
+			});	
+		}
+	});
+});
+	
+	
+$(".deleteTopic").click(function(event) {
+  event.preventDefault();
+  var el = $(this);
+  UIkit.modal.confirm('Do you really want to delete the whole topic?').then(function() {
+		$.get( "actions.php?action=deleteTopic&id=" + el.attr('data-id') )
+		  .done(function( data ) {
+			if ( data.status == 'ok' ) {
+				el.closest("li").toggle();
+				toastr["success"](data.text, data.title);
+			} else {
+				toastr["error"](data.text, data.title);
+			}
+		  });
+	}, function () {
+	});
+});	
 	
 $(".reply-delete").click(function(event) {
   event.preventDefault();

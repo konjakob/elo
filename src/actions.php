@@ -102,6 +102,9 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
         echo json_encode($returnData);
         exit();
     }
+	else if ($action == 'deleteTopic') {
+		
+	}
 	else if ($action == 'changeUser') {
 		if ( isset($_POST['userid']) && isset($_POST['t_name']) && isset($_POST['t_email']) && isset($_POST['t_l']) ) {
 			if (strlen($_POST['t_name']) && strlen($_POST['t_email'])) {
@@ -113,14 +116,10 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 				}
 				$db->query("update elo_user set user_name='".addslashes($_POST['t_name'])."', user_email='".addslashes($_POST['t_email'])."' ".$sql_pass.", lang_id='".intval($_POST['t_l'])."' where user_id='".intval($_POST['userid'])."'");
 			} else {
-				$returnData['state'] = 'nok';
-				$returnData['text'] = 'Please enter an email address and a name.';
-				$returnData['title'] = 'Error';		
+				$returnData = toastFeedback('nok', 'Please enter an email address and a name.', 'Error');				
 			}
 		} else {
-			$returnData['state'] = 'nok';
-			$returnData['text'] = 'Please enter all the data';
-			$returnData['title'] = 'Error';			
+			$returnData = toastFeedback('nok', 'Please enter all the data', 'Error');				
 		}
 		echo json_encode($returnData);
 		exit();
@@ -147,9 +146,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ )
 				$db->query("delete from elo_group_user where user_id='".$user."' and group_id='".intval($_POST['t_r'][$i])."'");
 		} else {
-			$returnData['state'] = 'nok';
-			$returnData['text'] = 'Please select a user.';
-			$returnData['title'] = 'Error';			
+			$returnData = toastFeedback('nok', 'Please select a user.', 'Error');				
 		}
 		echo json_encode($returnData);
 		exit();
@@ -163,9 +160,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ )
 				$db->query("insert into elo_group_user (user_id, group_id) values ('".$user."', '".intval($_POST['t_r'][$i])."')");	
 		} else {
-			$returnData['state'] = 'nok';
-			$returnData['text'] = 'Please select a user.';
-			$returnData['title'] = 'Error';			
+			$returnData = toastFeedback('nok', 'Please select a user.', 'Error');			
 		}
 		echo json_encode($returnData);
 		exit();
@@ -179,9 +174,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ )
 				$db->query("delete from elo_right_user where user_id='".$user."' and right_id='".intval($_POST['t_r'][$i])."'");		
 		} else {
-			$returnData['state'] = 'nok';
-			$returnData['text'] = 'Please select a user.';
-			$returnData['title'] = 'Error';
+			$returnData = toastFeedback('nok', 'Please select a user.', 'Error');
 		}
 		echo json_encode($returnData);
 		exit();
@@ -193,9 +186,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			$returnData['state'] = 'ok';
 			$db->query("delete from elo_group_user where gu_id='".intval($_POST['guid'])."'");	
 		} else {
-			$returnData['state'] = 'nok';
-			$returnData['text'] = 'Please select a user.';
-			$returnData['title'] = 'Error';
+			$returnData = toastFeedback('nok', 'Please select a user.', 'Error');
 		}
 		echo json_encode($returnData);
 		exit();
@@ -210,18 +201,12 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			// delete the group
 			$db->query("delete from elo_group where group_id='".$group_id."'");
 			if ( $db->affected_rows() ) {
-				$returnData['state'] = 'ok';
-				$returnData['title'] = 'Success';
-				$returnData['text'] = "The group was successfully deleted.";
+				$returnData = toastFeedback('ok', 'The group was successfully deleted.', 'Success');
 			} else {
-				$returnData['state'] = 'nok';
-				$returnData['title'] = 'Error';
-				$returnData['text'] = "No group was deleted.";
+				$returnData = toastFeedback('nok', 'No group was deleted.', 'Error');
 			}
 		} else {
-			$returnData['state'] = 'nok';
-			$returnData['text'] = 'Please select a group.';
-			$returnData['title'] = 'Error';
+			$returnData = toastFeedback('nok', 'Please select a group.', 'Error');
 		}
 		echo json_encode($returnData);
 		exit();
@@ -237,6 +222,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			$returnData['state'] = 'nok';
 			$returnData['text'] = 'Please select a user.';
 			$returnData['title'] = 'Error';
+			
 		}	
 		echo json_encode($returnData);
 		exit();
@@ -257,9 +243,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 				$returnData['users'][$res['gu_id']] = $res['user_name'];
 			}
 		} else {
-			$returnData['state'] = 'nok';
-			$returnData['text'] = 'Please select a group';
-			$returnData['title'] = 'error';
+			$returnData = toastFeedback('nok', 'Please select a group', 'Error');
 		}
 		echo json_encode($returnData);
 		exit();
@@ -270,24 +254,30 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			$returnData['state'] = 'ok';
 			$db->query("update elo_group set group_name='".addslashes($_POST['t_name'])."' where group_id='".intval($_POST['guid'])."'");
 		} else {
-			$returnData['state'] = 'nok';
-			$returnData['text'] = 'Please select a group and enter a name.';
-			$returnData['title'] = 'Error';
+			$returnData = toastFeedback('nok', 'Please select a group and enter a name.', 'Error');
 		}
 		echo json_encode($returnData);
 		exit();
 	}
 	else if ( $action == 'updateTopicTitle') {
 		if ( !isset($_POST['topicid'])) {
-			$returnData['state'] = 'nok';
-			$returnData['text'] = 'No topic given.';
-			$returnData['title'] = 'Error';
-			echo json_encode($returnData);
+			echo json_encode(toastFeedback('nok', 'No topic given.', 'Error'));
 			exit();
 		}
+		$topicid = (int)$_POST['topicid'];
+		$query = $db->query("SELECT elo_reply.reply_id, elo_reply.user_id, elo_reply.topic_id, elo_reply.reply_date FROM elo_topic INNER JOIN elo_reply ON elo_topic.topic_id = elo_reply.topic_id WHERE (((elo_topic.topic_id)='".$topicid."')) ORDER BY elo_reply.reply_date desc limit 1 ");
+		if ( $db->num_rows($query) < 1 ) {
+			echo json_encode(toastFeedback('nok', 'No topic found.', 'Error'));
+			exit();
+		}
+		$res = $db->fetch_array($query);
 		if ( ($res['user_id'] == $user_res['user_id'] && $res['reply_date'] > ($time - $conf['max_edit_time']) ) || in_array('IS_ADMIN',$user_rights)) {
 			$db->query("update elo_topic set topic_title='".addslashes($_POST['t_topic_title'])."' where topic_id='".$topicid."'");
+			echo json_encode(toastFeedback('ok', 'Successfully modified.', 'Success'));			
+		} else {
+			echo json_encode(toastFeedback('nok', 'Too late to edit.', 'Error'));
 		}
+		exit();
 	}
 	else if ( $action == 'delete_reply') {
 		$returnData = array();
