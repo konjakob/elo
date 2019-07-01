@@ -277,6 +277,18 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		echo json_encode($returnData);
 		exit();
 	}
+	else if ( $action == 'updateTopicTitle') {
+		if ( !isset($_POST['topicid'])) {
+			$returnData['state'] = 'nok';
+			$returnData['text'] = 'No topic given.';
+			$returnData['title'] = 'Error';
+			echo json_encode($returnData);
+			exit();
+		}
+		if ( ($res['user_id'] == $user_res['user_id'] && $res['reply_date'] > ($time - $conf['max_edit_time']) ) || in_array('IS_ADMIN',$user_rights)) {
+			$db->query("update elo_topic set topic_title='".addslashes($_POST['t_topic_title'])."' where topic_id='".$topicid."'");
+		}
+	}
 	else if ( $action == 'delete_reply') {
 		$returnData = array();
 		if ( isset($_GET['replyid'])) {

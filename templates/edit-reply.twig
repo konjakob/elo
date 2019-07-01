@@ -20,7 +20,7 @@
 	<div class="uk-card uk-card-default uk-card-body uk-margin">
 		<h2 class="uk-card-title">{{ constant('TOPIC_EDIT_REPLY') }}</h2>
 
-<form action="actions.php" method="post" class="uk-form-stacked" enctype="multipart/form-data" id="frmNewTopic"><input type="hidden" value="editTopic" name="action">
+<form action="{{ current_url }}" method="post" class="uk-form-stacked" enctype="multipart/form-data" id="frmNewTopic"><input type="hidden" value="editTopic" name="action">
 <input type="hidden" value="{{ reply.reply_id }}" name="id">
 {% if 'ADD_USER_TO_TOPIC' in user_rights or 'ADD_GROUP_TO_TOPIC' in user_rights %}
 	<div class="uk-child-width-1-2" uk-grid>
@@ -53,7 +53,12 @@
 {% endif %}
 
 		
-	{% include 'partials/texttitleblock.twig' %}				
+	<div class="uk-margin">
+		<label class="uk-form-label" for="newTopicText">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></label>
+		<div class="uk-form-controls">
+			<textarea id="newTopicText" class="uk-textarea" name="t_topic" data-validation-length="min{{ config.min_length_topic_text }}">{{ reply.reply_text }}</textarea>
+		</div>
+	</div>				
 
 	{% if 'CREATE_SHEETS' in user_rights %}
 		{% include 'partials/cheatsheet.twig' %}

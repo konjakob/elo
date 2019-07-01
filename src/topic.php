@@ -95,33 +95,7 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 			// attachments
 			$attachments_reply = array();
 			if ( array_key_exists($res['reply_id'], $attachments) && is_array($attachments[$res['reply_id']])  && sizeof($attachments[$res['reply_id']]) ) {
-				foreach ( $attachments[$res['reply_id']] as $a) {
-					$file = $conf['file_folder'].$a['attachment_id'].base64_encode($a['attachment_filename']);
-					if ( file_exists( $file ) ) {
-						$att = array();
-						if ( file_exists($file.".png") ) {
-							$img_data = getimagesize($file.".png");
-							$att['img'] = $file.'.png';
-							$att['img_data'] = $img_data[3];
-						}
-						$filesize_s = "";
-						$filesize = filesize($file);
-						if ( $filesize < 1024 ) { // todo: can't this be done in an easier way? If not, move to a function
-							$filesize_s = $filesize." Byte";
-						} else if ( $filesize < 1024*1024 ) {
-							$filesize_s = round($filesize/1024)." kB";
-						} else if ( $filesize < 1024*1024*1024 ) {
-							$filesize_s = round($filesize/(1024*1024))." MB";
-						} else {
-							$filesize_s = $filesize." Byte";
-						}
-						$att['attachment_filename'] = $a['attachment_filename'];
-						$att['attachment_id'] = $a['attachment_id'];
-						$att['filesize'] = $filesize_s;
-						
-						$attachments_reply[] = $att;
-					}
-				}
+				$attachments_reply = prepareAttachments($attachments[$res['reply_id']]);
 			}
 		
 			$ubbParser = new SBBCodeParser_Document(); // todo: delete old text and keep the object
