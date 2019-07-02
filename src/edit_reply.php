@@ -27,7 +27,9 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 	
 			// music sheets
 			$query_m = $db->query("select a.*, ra.rm_id from elo_music as a, elo_reply_music as ra where ra.reply_id='".$replyid."' and ra.music_id=a.music_id");
-			
+			$sheets = array();
+			while($r = $db->fetch_array($query_m))
+				$sheets[] = $r;
 			
 			// submit of edited data
 			if ( isset($_POST['action']) && $_POST['action'] == 'editTopic') {	
@@ -47,10 +49,9 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 								$db->query("insert into elo_topic_group (group_id, topic_id) values ('".$g."', '".$topicid."')");
 						}
 					}
-					//$db->query("update elo_topic set topic_title='".addslashes($_POST['t_topic_title'])."' where topic_id='".$topicid."'");
 				}
 			
-				while($r = $db->fetch_array($query_m)) {
+				foreach ($sheets as $r) {
 					if ( strlen($_POST['old_abc'][$r['music_id']])) {
 						if ( $_POST['old_abc'][$r['music_id']] != $r['music_text']) {
 							$db->query("update elo_music set music_text='".addslashes( $_POST['old_abc'][$r['music_id']])."' where music_id='".$r['music_id']."'");
@@ -68,8 +69,9 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 							
 				$db->query("update elo_reply set reply_text='".addslashes($topicText)."' where reply_id='".$replyid."'");
 				
-				if ( in_array('CREATE_ATTACHMENTS', $user_rights) && isset($_FILES['t_file']) && strlen($_FILES['t_file']['name'])) {
-					processAttachment();
+				if ( in_array('CREATE_ATTACHMENTS', $user_rights) && isset($_POST['picture']) ) {
+					foreach ( $_POST['picture'] as $p ) 
+						$db->query("insert into elo_reply_attachment (reply_id, attachment_id) values ('".$replyid."', '".(int)$p."')");
 				}
 				
 				if ( in_array('CREATE_SHEETS', $user_rights) && isset($_POST['abc']) && strlen($_POST['abc'])) {
@@ -93,6 +95,7 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 			}
 			
 			$reply['attachments'] = prepareAttachments($attachments);
+			$reply['sheets'] = $sheets;
 			
 			if ( in_array('IS_ADMIN',$user_rights) || in_array('ADD_USER_TO_TOPIC',$user_rights) || in_array('ADD_GROUP_TO_TOPIC',$user_rights) ) {
 		

@@ -67,12 +67,22 @@
 	{% if 'CREATE_SHEETS' in user_rights %}
 	
 		{% for a in reply.sheets %}
-	<div id="abc{{ a.rm_id }}Check" style="display:none"><pre id="abc{{ a.rm_id }}CheckText" class="abcCheckText"></pre></div>
-      <div style="float:left">  <textarea name="old_abc[{{ a.music_id }}]" id="abc{{ a.rm_id }}" cols="80" rows="15">{{ a.music_text }}</textarea></div><div style="float:left"><span class="formInfo"><a rel="faq.php?fid=3" href="faq.php?fid=3" class="jt" title="TOPIC_SHEET_INFO">?</a></span></div><div style="clear:both"></div>
-<input type="button" value="Check syntax" onclick="checkAbcSyntax('abc{{ a.rm_id }}')" /><div id="midi{{ a.rm_id }}"></div>
+		
+	<div id="abc{{ a.rm_id }}Check" style="display:none">
+		<pre id="abc{{ a.rm_id }}CheckText" class="abcCheckText"></pre>
+	</div>
+	<div class="uk-margin">
+		<label class="uk-form-label" for="abc{{ a.rm_id }}">{{ constant('TOPIC_TEXT_ADD_MUSIC') }} <a rel="faq.php?fid=3" href="faq.php?fid=3" class="jt" title="{{ constant('TOPIC_SHEET_INFO') }}">?</a></label>
+		<div class="uk-form-controls">
+			<textarea class="uk-textarea" name="old_abc[{{ a.music_id }}]" id="abc{{ a.rm_id }}" cols="80" rows="15">{{ a.music_text }}</textarea>
+		</div>
+	</div>		
+
+<input type="button" class="uk-button" value="Check syntax" onclick="checkAbcSyntax('abc{{ a.rm_id }}')" /><div id="midi{{ a.rm_id }}"></div>
 <div id="warnings{{ a.rm_id }}"></div>
 <div id="music{{ a.rm_id }}"></div>
 <div id="paper0{{ a.rm_id }}"></div>
+
 		{% endfor %}
 	{% endif %}
 	

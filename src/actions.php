@@ -103,7 +103,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
         exit();
     }
 	else if ($action == 'deleteTopic') {
-		
+		// todo
 	}
 	else if ($action == 'changeUser') {
 		if ( isset($_POST['userid']) && isset($_POST['t_name']) && isset($_POST['t_email']) && isset($_POST['t_l']) ) {
@@ -309,9 +309,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 						$db->query("delete from elo_reply_attachment where reply_id='".$replyid."'");
 						$db->query("delete from elo_reply_music where reply_id='".$replyid."'");
 						
-						$returnData['state'] = 'ok';
-						$returnData['text'] = "Reply deleted";
-						$returnData['title'] = "Deleted";
+						$returnData = toastFeedback('ok', "Reply deleted", 'Deleted');
 						
 						if ( isset($_GET['ref']) ) {
 							header("Location: topic.php?id=".$res['topic_id']);
@@ -320,20 +318,14 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 					}
 					
 				} else {
-					$returnData['state'] = 'nok';
-					$returnData['text'] = DELETE_REPLY_NO_RIGHTS;
-					$returnData['title'] = 'Error';
+					$returnData = toastFeedback('nok', DELETE_REPLY_NO_RIGHTS, 'Error');	
 				}
 			} else {
-				$returnData['state'] = 'nok';
-				$returnData['text'] = "Reply not found";
-				$returnData['title'] = 'Error';
+				$returnData = toastFeedback('nok', "Reply not found", 'Error');
 			}
 			
 		} else {
-			$returnData['state'] = 'nok';
-			$returnData['text'] = DELETE_REPLY_NO_ID;
-			$returnData['title'] = 'Error';
+			$returnData = toastFeedback('nok', DELETE_REPLY_NO_ID, 'Error');
 		}
 		echo json_encode($returnData);
 		exit();
@@ -345,9 +337,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			$query = $db->query("select group_id, group_name from elo_group where group_id='".intval($_GET['group_id'])."'");
 			$returnData['data'] = $db->fetch_array($query);
 		} else {
-			$returnData['state'] = 'nok';
-			$returnData['text'] = 'Please select a group.';
-			$returnData['title'] = 'Error';
+			$returnData = toastFeedback('nok', 'Please select a group.', 'Error');
 		}
 		echo json_encode($returnData);
 		exit();
@@ -356,17 +346,13 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
         $returnData = array();
         // check the rights
         if ( !in_array('CREATE_TOPICS', $user_rights) ) {
-            $returnData['state'] = 'nok';
-			$returnData['text'] = 'No rights to create topics.';
-			$returnData['title'] = 'Error';
+			$returnData = toastFeedback('nok', 'No rights to create topics.', 'Error');
             echo json_encode($returnData);
             exit();
         }
         // check if the title and text is given
         if ( strlen($_POST['t_topic_title']) <1 || strlen($_POST['t_topic']) < 1 ) {
-            $returnData['state'] = 'nok';
-			$returnData['text'] = 'No title and/or text.';
-			$returnData['title'] = 'Error';
+			$returnData = toastFeedback('nok', 'No title and/or text.', 'Error');
             echo json_encode($returnData);
             exit();
         }
