@@ -59,7 +59,7 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 						}
 					} else {
 						$db->query("delete from elo_music where music_id='".$r['music_id']."'");
-						$db->query("delete from elo_music_reply where music_id='".$r['music_id']."'");	
+						$db->query("delete from elo_reply_music where music_id='".$r['music_id']."'");	
 					}
 				}
 				

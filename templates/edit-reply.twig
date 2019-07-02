@@ -54,7 +54,7 @@
 
 		
 	<div class="uk-margin">
-		<label class="uk-form-label" for="newTopicText">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}">?</a></label>
+		<label class="uk-form-label" for="newTopicText">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}"><span class="" uk-icon="question"></span></a></label>
 		<div class="uk-form-controls">
 			<textarea id="newTopicText" class="uk-textarea" name="t_topic" data-validation-length="min{{ config.min_length_topic_text }}">{{ reply.reply_text }}</textarea>
 		</div>
@@ -72,7 +72,7 @@
 		<pre id="abc{{ a.rm_id }}CheckText" class="abcCheckText"></pre>
 	</div>
 	<div class="uk-margin">
-		<label class="uk-form-label" for="abc{{ a.rm_id }}">{{ constant('TOPIC_TEXT_ADD_MUSIC') }} <a rel="faq.php?fid=3" href="faq.php?fid=3" class="jt" title="{{ constant('TOPIC_SHEET_INFO') }}">?</a></label>
+		<label class="uk-form-label" for="abc{{ a.rm_id }}">{{ constant('TOPIC_TEXT_ADD_MUSIC') }} <a rel="faq.php?fid=3" href="faq.php?fid=3" class="jt" title="{{ constant('TOPIC_SHEET_INFO') }}"><span class="" uk-icon="question"></span></a></label>
 		<div class="uk-form-controls">
 			<textarea class="uk-textarea" name="old_abc[{{ a.music_id }}]" id="abc{{ a.rm_id }}" cols="80" rows="15">{{ a.music_text }}</textarea>
 		</div>
@@ -98,7 +98,7 @@
 			{% if a.img %}
 				<img src="{{ a.img }}" {{ a.img_data }}><br>
 			{% endif %}
-			<li>{{ a.attachment_filename }} (<a data-id="{{ reply.reply_id }}" data-aid="{{ a.attachment_id }}" href='actions.php?action=delete_reply&ref=1&aid={{ a.attachment_id }}&id={{ reply.reply_id }}' class="item-attachment">{{ constant('TOPIC_DELETE') }}</a>)</div>
+			{{ a.attachment_filename }} (<a data-aid="{{ a.attachment_id }}" href='actions.php?action=delete_reply&ref=1&aid={{ a.attachment_id }}&id={{ reply.reply_id }}' class="item-attachment">{{ constant('TOPIC_DELETE') }}</a>)</div>
 		{% endfor %}
 		</div>
 	{% endif %}
@@ -135,10 +135,11 @@ $(".item-attachment").click(function(event) {
   event.preventDefault();
   var el = $(this);
   UIkit.modal.confirm('Do you really want to delete this attachment?').then(function() {
-		$.get( "actions.php?action=delete_reply&id=" + el.attr('data-id') + "&aid=" + el.attr('data-id') )
-		  .done(function( data ) {
-			if ( data.status == 'ok' ) {
-				el.closest("li").toggle();
+		$.get( "actions.php?action=delete_reply&id={{ reply.reply_id }}&aid=" + el.attr('data-aid') )
+		  .done(function( response ) {
+			var data = JSON.parse(response);
+			if ( data.state == 'ok' ) {
+				el.closest("div").toggle();
 				toastr["success"](data.text, data.title);
 			} else {
 				toastr["error"](data.text, data.title);

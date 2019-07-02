@@ -103,7 +103,23 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
         exit();
     }
 	else if ($action == 'deleteTopic') {
-		// todo
+		if ( !isset($_POST['topicid'])) {
+			echo json_encode(toastFeedback('nok', 'No topic given.', 'Error'));
+			exit();
+		}
+		if ( !in_array('IS_ADMIN',$user_rights) ) {
+			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			exit();
+		}
+		$topicid = (int)$_POST['topicid'];
+		
+		$db->query("delete from elo_topic_user where topic_id='".$topicid."'");
+		$db->query("delete from elo_topic_group where topic_id='".$topicid."'");
+		$db->query("delete from elo_reply where topic_id='".$topicid."'");
+		$db->query("delete from elo_topic where topic_id='".$topicid."'");
+		
+        echo json_encode(toastFeedback('ok', 'Topic deleted.', 'Success'));
+        exit();
 	}
 	else if ($action == 'changeUser') {
 		if ( isset($_POST['userid']) && isset($_POST['t_name']) && isset($_POST['t_email']) && isset($_POST['t_l']) ) {
@@ -126,7 +142,6 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ($action == 'loadTopic') {
-		$returnData = array();
 		include("loadtopic.php");
 		$html = "";
 		foreach ( $topics as $topic ) 
@@ -139,7 +154,6 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ($action == 'removeGroup') {
-		$returnData = array();
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {		
 			$user = intval($_POST['userid']);
 			$returnData['state'] = 'ok';
@@ -153,7 +167,6 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ($action == 'addGroup') {
-		$returnData = array();
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
 			$user = intval($_POST['userid']);
 			$returnData['state'] = 'ok';
@@ -167,7 +180,6 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ($action == 'removeRight') {
-		$returnData = array();
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
 			$returnData['state'] = 'ok';
 			$user = intval($_POST['userid']);
@@ -181,7 +193,6 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ($action == 'removeUserFromGoup') {
-		$returnData = array();
 		if ( isset($_POST['guid']) ) {
 			$returnData['state'] = 'ok';
 			$db->query("delete from elo_group_user where gu_id='".intval($_POST['guid'])."'");	
@@ -192,7 +203,6 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		exit();
 	}
 	else if ($action == 'deleteGroup') {
-		$returnData = array();
 		if ( isset($_POST['delete_group']) ) {
 			
 			$group_id = (int) $_POST['delete_group'];
@@ -212,7 +222,6 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		exit();
 	}
 	else if ($action == 'addRight') {
-		$returnData = array();
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
 			$returnData['state'] = 'ok';
 			$user = intval($_POST['userid']);
@@ -229,8 +238,6 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ( $action == 'getGroupUser') {
-		
-		$returnData = array();
 		if ( isset($_GET['group_id']) ) {
 			$returnData['state'] = 'ok';
 			
@@ -249,7 +256,6 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		exit();
 	}
 	else if ( $action == 'changeGoup' ) {
-		$returnData = array();
 		if ( isset($_POST['guid']) && isset($_POST['t_name']) && strlen($_POST['t_name']) > 0) {
 			$returnData['state'] = 'ok';
 			$db->query("update elo_group set group_name='".addslashes($_POST['t_name'])."' where group_id='".intval($_POST['guid'])."'");
@@ -281,7 +287,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	else if ( $action == 'delete_reply') {
 		$returnData = array();
-		if ( isset($_GET['replyid'])) {
+		if ( isset($_GET['id'])) {
 	
 			$replyid = intval($_GET['id']);
 			
@@ -294,14 +300,17 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 					
 					
 					if ( isset($_GET['aid']) ) {
-						$db->query("delete from elo_reply_attachment where reply_id='".$replyid."' and ra_id='".intval($_GET['aid'])."'");				
-						
-						$returnData['state'] = 'ok';
-						$returnData['text'] = "Attachment deleted";
-						$returnData['title'] = "Deleted";
-						if ( isset($_GET['ref']) ) {
-							header("Location: edit_reply.php?id=".$replyid);
-							exit();
+						$db->query("delete from elo_reply_attachment where reply_id='".$replyid."' and attachment_id='".intval($_GET['aid'])."'");
+						if ( $db->affected_rows() ) {						
+							$returnData['state'] = 'ok';
+							$returnData['text'] = "Attachment deleted";
+							$returnData['title'] = "Deleted";
+							if ( isset($_GET['ref']) ) {
+								header("Location: edit_reply.php?id=".$replyid);
+								exit();
+							}
+						} else {
+							$returnData = toastFeedback('nok', 'No attachment could be deleted.', 'Error');
 						}
 					} else {
 					

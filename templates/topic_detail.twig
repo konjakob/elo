@@ -91,12 +91,12 @@
 	<div id="newReplyRespond{{ topicid }}" style="display:none; "></div>
 	
 	<div class="uk-card uk-card-default uk-card-body uk-margin" id="newReply{{ topicid }}">
-		<h3>{{ constant('TOPIC_TEXT_REPLY_TEXT') }} <a rel="faq.php?fid=4" href="faq.php?fid=4" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}"><small>?</small></a></h3>
+		<h3>{{ constant('TOPIC_TEXT_REPLY_TEXT') }} <a rel="faq.php?fid=4" href="faq.php?fid=4" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}"><span class="" uk-icon="question"></span></a></h3>
 		
         <form action="addreply.php" method="post" enctype="multipart/form-data">
             <input type="hidden" value="{{ topicid }}" name="id">
             <div class="uk-margin">
-                <label class="uk-form-label" for="newReplyText{{ topicid }}">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}"><span uk-icon="question"></span></a></label>
+                <label class="uk-form-label" for="newReplyText{{ topicid }}">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}"><span class="" uk-icon="question"></span></a></label>
                 <div class="uk-form-controls">
                     <textarea id="newReplyText{{ topicid }}" class="uk-textarea" name="text"></textarea>
                 </div>
