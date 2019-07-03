@@ -17,35 +17,44 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
             exit();
         }
 
-		$query_groups = $db->query("select * from elo_group order by group_name");
+		$statement = $pdo->prepare("select * from elo_group order by group_name");
+		$statement->execute();
 		$groups = array();
-		while ( $res = $db->fetch_array($query_groups) )
+		while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 			$groups[] = $res;
-			
-		$query_right = $db->query("select * from elo_right order by right_name");
-		$rights = array();
-		while ( $res = $db->fetch_array($query_right) )
-			$rights[] = $res;	
-			
-		$query_user_rights = $db->query("select right_id from elo_right_user where user_id=".intval($_GET['userid']));
-		$saved_rights = array();
-		while ( $res2 = $db->fetch_array($query_user_rights) )
-			$saved_rights[] = $res2['right_id'];
-			
-		$query_user_groups = $db->query("select group_id from elo_group_user where user_id=".intval($_GET['userid']));
-		$saved_groups = array();
-		while ( $res2 = $db->fetch_array($query_user_groups) )
-			$saved_groups[] = $res2['group_id'];
 		
-		$query = $db->query("select user_id, user_name, user_email, lang_id, user_lastvisit from elo_user where user_id='".intval($_GET['userid'])."'");
-		$res = $db->fetch_array($query);
+                $statement = $pdo->prepare("select * from elo_right order by right_name");
+		$statement->execute();
+		$rights = array();
+		while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
+			$rights[] = $res;	
+		
+                $statement = $pdo->prepare("select right_id from elo_right_user where user_id=:userid");
+	        $statement->bindValue(':userid', filter_input(INPUT_GET, 'userid'));
+	        $statement->execute();
+		$saved_rights = array();
+		while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
+			$saved_rights[] = $res['right_id'];
+		
+                $statement = $pdo->prepare("select group_id from elo_group_user where user_id=:userid");
+	        $statement->bindValue(':userid', filter_input(INPUT_GET, 'userid'));
+	        $statement->execute();
+		$saved_groups = array();
+		while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
+			$saved_groups[] = $res['group_id'];
+		
+                $statement = $pdo->prepare("select user_id, user_name, user_email, lang_id, user_lastvisit from elo_user where user_id=:userid");
+	        $statement->bindValue(':userid', filter_input(INPUT_GET, 'userid'));
+	        $statement->execute();
+		$res = $statement->fetch(PDO::FETCH_ASSOC);
 		
 		$returnData['user_data'] = $res;
 		
 		$saved_languages = array();
-		$query_lang = $db->query("select * from elo_lang order by lang_name desc");
-		while ( $res2 = $db->fetch_array($query_lang) )
-			$saved_languages[] = $res2;
+                $statement = $pdo->prepare("select * from elo_lang order by lang_name desc");
+		$statement->execute();
+		while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
+			$saved_languages[] = $res;
 		
 		$returnData['state'] = 'ok';
 		
@@ -80,28 +89,28 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		exit();
 			
 	}
-    else if ($action == 'cropImage') {
+        else if ($action == 'cropImage') {
         if ( !isset($_POST['x1']) || !isset($_POST['x2']) || !isset($_POST['y1']) || !isset($_POST['y2']) ) {
-            $returnData['state'] = 'nok';
-            $returnData['text'] = 'Missing value for cropping.';
-            $returnData['title'] = 'Error';	
-            echo json_encode($returnData);
-            exit();
+                $returnData['state'] = 'nok';
+                $returnData['text'] = 'Missing value for cropping.';
+                $returnData['title'] = 'Error';	
+                echo json_encode($returnData);
+                exit();
         }
 		
-		$x1 = (int)$_POST['x1'];
-		$x2 = (int)$_POST['x2'];
-		$y1 = (int)$_POST['y1'];
-		$y2 = (int)$_POST['y2'];
-		
-		$filepath = "images/profile/" . $user_res['user_picture'];
-		exec($conf['convert']." ".$filepath." -crop ".($x2-$x1)."x".($y2-$y1)."+".$x1."+".$y1." ".$filepath);
-		// todo: wait and check results of crop action
+        $x1 = (int)$_POST['x1'];
+        $x2 = (int)$_POST['x2'];
+        $y1 = (int)$_POST['y1'];
+        $y2 = (int)$_POST['y2'];
+
+        $filepath = "images/profile/" . $user_res['user_picture'];
+        exec($conf['convert']." ".$filepath." -crop ".($x2-$x1)."x".($y2-$y1)."+".$x1."+".$y1." ".$filepath);
+
         $returnData['filePath'] = $filepath;
         $returnData['state'] = 'ok';
         echo json_encode($returnData);
         exit();
-    }
+        }
 	else if ($action == 'deleteTopic') {
 		if ( !isset($_POST['topicid'])) {
 			echo json_encode(toastFeedback('nok', 'No topic given.', 'Error'));
@@ -113,13 +122,24 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		}
 		$topicid = (int)$_POST['topicid'];
 		
-		$db->query("delete from elo_topic_user where topic_id='".$topicid."'");
-		$db->query("delete from elo_topic_group where topic_id='".$topicid."'");
-		$db->query("delete from elo_reply where topic_id='".$topicid."'");
-		$db->query("delete from elo_topic where topic_id='".$topicid."'");
-		
-        echo json_encode(toastFeedback('ok', 'Topic deleted.', 'Success'));
-        exit();
+                $statement = $pdo->prepare("delete from elo_topic_user where topic_id=:topicid");
+                $statement->bindValue(':topicid', $topicid);
+		$statement->execute();
+                
+                $statement = $pdo->prepare("delete from elo_topic_group where topic_id=:topicid");
+                $statement->bindValue(':topicid', $topicid);
+		$statement->execute();
+                
+                $statement = $pdo->prepare("delete from elo_reply where topic_id=:topicid");
+                $statement->bindValue(':topicid', $topicid);
+		$statement->execute();
+                
+                $statement = $pdo->prepare("delete from elo_topic where topic_id=:topicid");
+                $statement->bindValue(':topicid', $topicid);
+		$statement->execute();
+	
+                echo json_encode(toastFeedback('ok', 'Topic deleted.', 'Success'));
+                exit();
 	}
 	else if ($action == 'changeUser') {
 		if ( isset($_POST['userid']) && isset($_POST['t_name']) && isset($_POST['t_email']) && isset($_POST['t_l']) ) {
@@ -157,8 +177,12 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {		
 			$user = intval($_POST['userid']);
 			$returnData['state'] = 'ok';
-			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ )
-				$db->query("delete from elo_group_user where user_id='".$user."' and group_id='".intval($_POST['t_r'][$i])."'");
+			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ ) {
+                $statement = $pdo->prepare("delete from elo_group_user where user_id=:user and group_id=:group");
+                $statement->bindValue(':user', $user);
+                $statement->bindValue(':group',(int)$_POST['t_r'][$i]);
+                $statement->execute();
+            }
 		} else {
 			$returnData = toastFeedback('nok', 'Please select a user.', 'Error');				
 		}
@@ -168,10 +192,14 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	
 	else if ($action == 'addGroup') {
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
-			$user = intval($_POST['userid']);
+			$user = (int)$_POST['userid'];
 			$returnData['state'] = 'ok';
-			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ )
-				$db->query("insert into elo_group_user (user_id, group_id) values ('".$user."', '".intval($_POST['t_r'][$i])."')");	
+			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ ) {
+                $statement = $pdo->prepare("insert into elo_group_user (user_id, group_id) values (:user, :group)");
+                $statement->bindValue(':user', $user);
+                $statement->bindValue(':group',(int)$_POST['t_r'][$i]);
+                $statement->execute();
+            }
 		} else {
 			$returnData = toastFeedback('nok', 'Please select a user.', 'Error');			
 		}
@@ -183,8 +211,12 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
 			$returnData['state'] = 'ok';
 			$user = intval($_POST['userid']);
-			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ )
-				$db->query("delete from elo_right_user where user_id='".$user."' and right_id='".intval($_POST['t_r'][$i])."'");		
+			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ ) {	
+                $statement = $pdo->prepare("delete from elo_right_user where user_id=:user and right_id=:right");
+                $statement->bindValue(':user', $user);
+                $statement->bindValue(':right',(int)$_POST['t_r'][$i]);
+                $statement->execute();
+            }
 		} else {
 			$returnData = toastFeedback('nok', 'Please select a user.', 'Error');
 		}
@@ -195,7 +227,9 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	else if ($action == 'removeUserFromGoup') {
 		if ( isset($_POST['guid']) ) {
 			$returnData['state'] = 'ok';
-			$db->query("delete from elo_group_user where gu_id='".intval($_POST['guid'])."'");	
+            $statement = $pdo->prepare("delete from elo_group_user where gu_id=:group_user");
+            $statement->bindValue(':group_user', (int)$_POST['guid']);
+            $statement->execute();
 		} else {
 			$returnData = toastFeedback('nok', 'Please select a user.', 'Error');
 		}
