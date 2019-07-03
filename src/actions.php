@@ -379,9 +379,17 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 						}
 					} else {
 					
-						$db->query("delete from elo_reply where reply_id='".$replyid."'");
-						$db->query("delete from elo_reply_attachment where reply_id='".$replyid."'");
-						$db->query("delete from elo_reply_music where reply_id='".$replyid."'");
+                        $statement = $pdo->prepare("delete from elo_reply where reply_id=:replyid");
+                        $statement->bindValue(':replyid',$replyid );
+                        $statement->execute();
+                        
+                        $statement = $pdo->prepare("delete from elo_reply_attachment where reply_id=:replyid");
+                        $statement->bindValue(':replyid',$replyid );
+                        $statement->execute();
+                        
+                        $statement = $pdo->prepare("delete from elo_reply_music where reply_id=:replyid");
+                        $statement->bindValue(':replyid',$replyid );
+                        $statement->execute();
 						
 						$returnData = toastFeedback('ok', "Reply deleted", 'Deleted');
 						
@@ -408,8 +416,12 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		$returnData = array();
 		if ( isset($_GET['group_id'])) {
 			$returnData['state'] = 'ok';
-			$query = $db->query("select group_id, group_name from elo_group where group_id='".intval($_GET['group_id'])."'");
-			$returnData['data'] = $db->fetch_array($query);
+            
+            $statement = $pdo->prepare("select group_id, group_name from elo_group where group_id=:group_id");
+            $statement->bindValue(':group_id',(int)$_GET['group_id'] );
+            $statement->execute();
+            
+			$returnData['data'] = $statement->fetch(PDO::FETCH_ASSOC);
 		} else {
 			$returnData = toastFeedback('nok', 'Please select a group.', 'Error');
 		}
@@ -458,8 +470,9 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
                     $db->query("insert into elo_topic_user (user_id, topic_id) values ('".(int)$u."', '".$topicid."')");
 		}
 		if ( in_array('ADD_GROUP_TO_TOPIC', $user_rights) && isset($_POST['t_group'])) {
-			foreach ( $_POST['t_group'] as $g )
+			foreach ( $_POST['t_group'] as $g ) {
 				$db->query("insert into elo_topic_group (group_id, topic_id) values ('".(int)$g."', '".$topicid."')");
+            }
 		}   
 
         $topic = array('topic' => array('topic_title' => $_POST['t_topic_title'],
