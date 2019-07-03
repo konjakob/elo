@@ -29,9 +29,9 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 			$rights[] = $res;	
 		
-                $statement = $pdo->prepare("select right_id from elo_right_user where user_id=:userid");
-	        $statement->bindValue(':userid', filter_input(INPUT_GET, 'userid'));
-	        $statement->execute();
+        $statement = $pdo->prepare("select right_id from elo_right_user where user_id=:userid");
+        $statement->bindValue(':userid', filter_input(INPUT_GET, 'userid'));
+        $statement->execute();
 		$saved_rights = array();
 		while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 			$saved_rights[] = $res['right_id'];
@@ -294,7 +294,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
             $statement->execute();
 
 			$returnData['users'] = array();
-			while ($res = $db->fetch_array($query)) {
+			while (($res = $statement->fetch(PDO::FETCH_ASSOC)) !== null) {
 				$returnData['users'][$res['gu_id']] = $res['user_name'];
 			}
 		} else {
@@ -306,7 +306,10 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	else if ( $action == 'changeGoup' ) {
 		if ( isset($_POST['guid']) && isset($_POST['t_name']) && strlen($_POST['t_name']) > 0) {
 			$returnData['state'] = 'ok';
-			$db->query("update elo_group set group_name='".addslashes($_POST['t_name'])."' where group_id='".intval($_POST['guid'])."'");
+            $statement = $pdo->prepare("update elo_group set group_name=:name where group_id=:group");
+            $statement->bindValue(':name',$_POST['t_name']);
+            $statement->bindValue(':group',(int)$_POST['guid']);
+            $statement->execute();
 		} else {
 			$returnData = toastFeedback('nok', 'Please select a group and enter a name.', 'Error');
 		}
@@ -319,14 +322,21 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			exit();
 		}
 		$topicid = (int)$_POST['topicid'];
-		$query = $db->query("SELECT elo_reply.reply_id, elo_reply.user_id, elo_reply.topic_id, elo_reply.reply_date FROM elo_topic INNER JOIN elo_reply ON elo_topic.topic_id = elo_reply.topic_id WHERE (((elo_topic.topic_id)='".$topicid."')) ORDER BY elo_reply.reply_date desc limit 1 ");
-		if ( $db->num_rows($query) < 1 ) {
+        $statement = $pdo->prepare("SELECT elo_reply.reply_id, elo_reply.user_id, elo_reply.topic_id, elo_reply.reply_date FROM elo_topic INNER JOIN elo_reply ON elo_topic.topic_id = elo_reply.topic_id WHERE (((elo_topic.topic_id)=:topicid)) ORDER BY elo_reply.reply_date desc limit 1");
+        $statement->bindValue(':topicid',$topicid );
+        $statement->execute();
+		if ( $statement->rowCount() < 1 ) {
 			echo json_encode(toastFeedback('nok', 'No topic found.', 'Error'));
 			exit();
 		}
-		$res = $db->fetch_array($query);
+        $res = $statement->fetch(PDO::FETCH_ASSOC);
 		if ( ($res['user_id'] == $user_res['user_id'] && $res['reply_date'] > ($time - $conf['max_edit_time']) ) || in_array('IS_ADMIN',$user_rights)) {
-			$db->query("update elo_topic set topic_title='".addslashes($_POST['t_topic_title'])."' where topic_id='".$topicid."'");
+            
+            $statement = $pdo->prepare("update elo_topic set topic_title=:t_topic_title where topic_id=:topicid");
+            $statement->bindValue(':topicid',$topicid );
+            $statement->bindValue(':t_topic_title', $_POST['t_topic_title']);
+            $statement->execute();
+
 			echo json_encode(toastFeedback('ok', 'Successfully modified.', 'Success'));			
 		} else {
 			echo json_encode(toastFeedback('nok', 'Too late to edit.', 'Error'));
@@ -339,17 +349,24 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	
 			$replyid = intval($_GET['id']);
 			
-			$query = $db->query("select * from elo_reply where reply_id='".$replyid."'");
+            $statement = $pdo->prepare("select * from elo_reply where reply_id=:replyid");
+            $statement->bindValue(':replyid',$replyid );
+            $statement->execute();
 			
-			if ( $db->num_rows($query) ) {
+			if ( $statement->rowCount() ) {
+                $res = $statement->fetch(PDO::FETCH_ASSOC);
 				$res = $db->fetch_array($query);
 			
 				if ( ($res['user_id'] == $user_res['user_id'] && $res['reply_date'] > ($time - $conf['max_edit_time']) ) || in_array('IS_ADMIN',$user_rights) ) {
 					
 					
 					if ( isset($_GET['aid']) ) {
-						$db->query("delete from elo_reply_attachment where reply_id='".$replyid."' and attachment_id='".intval($_GET['aid'])."'");
-						if ( $db->affected_rows() ) {						
+                        $statement = $pdo->prepare("delete from elo_reply_attachment where reply_id=:replyid and attachment_id=:aid");
+                        $statement->bindValue(':replyid',$replyid );
+                        $statement->bindValue(':aid',(int)$_GET['aid'] );
+                        $statement->execute();
+
+						if (  $statement->rowCount()) {						
 							$returnData['state'] = 'ok';
 							$returnData['text'] = "Attachment deleted";
 							$returnData['title'] = "Deleted";
