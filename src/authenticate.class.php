@@ -21,16 +21,16 @@ class Authenticate {
 
 		global $pdo;
 
-		$sql = "select user_id as id, user_password as password from elo_user where user_email = :email";
+		$sql = "select user_id as id, user_password as password from elo_user where user_email = :email limit 1";
 		$statement = $pdo->prepare($sql);
 		$statement->bindValue(':email',$email);
 		$statement->execute();
 		
-		$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+		$result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if ( sizeof($result) ) {
+        if ( $result ) {
 
-            $user = $result[0]['id'];
+            $user = $result['id'];
 
         } else {
             
@@ -119,7 +119,7 @@ class Authenticate {
 
 		$sql = "insert into elo_user_login (user_id) values (:id)";
 		$statement = $pdo->prepare($sql);
-		$statement->bindValue(':id', $id, PDO::PARAM_INT);
+		$statement->bindValue(':id', (int)$id, PDO::PARAM_INT);
 		$statement->execute();
 		
         return $id;

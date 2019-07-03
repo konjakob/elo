@@ -90,14 +90,23 @@ function prepareEmailAndSend($email_text, $email_ad, $email_name,$subject="", $a
 		
 
 function processAttachment() {
-	global $db, $userid, $reply_id, $conf;
+	global $pdo, $userid, $reply_id, $conf;
 	
 	if ( strlen($_FILES['t_file']['name'] )) {
 		
-		$db->query("insert into elo_attachment (attachment_filename, user_id) values ('".$_FILES['t_file']['name']."', '".$userid."')");
-		$filename = $db->insert_id().base64_encode($_FILES['t_file']['name']);
+		$statement = $pdo->prepare("insert into elo_attachment (attachment_filename, user_id) values (:attachment_filename, :userid)");
+        $statement->bindValue(':userid', $userid, PDO::PARAM_INT);
+		$statement->bindValue(':attachment_filename', $_FILES['t_file']['name']);
+        $statement->execute();
+		
+		$attachment_id = $statement->lastInsertId();
+		$filename = $attachment_id.base64_encode($_FILES['t_file']['name']);
 		$c = @copy($_FILES['t_file']['tmp_name'],$conf['file_folder'].$filename);
-		$db->query("insert into elo_reply_attachment (reply_id, attachment_id) values ('".$reply_id."', '".$db->insert_id()."')");	
+		
+		$statement = $pdo->prepare("insert into elo_reply_attachment (reply_id, attachment_id) values (:reply_id, :attachment_id)");
+        $statement->bindValue(':reply_id', $reply_id, PDO::PARAM_INT);
+		$statement->bindValue(':attachment_id', $attachment_id, PDO::PARAM_INT);
+        $statement->execute();
 		
 		// if it is a pdf or picture, create a thumbnail
 		if (  preg_match('/[(pdf)|(gif)|(png)|(jpeg)|(jpg)]$/',$_FILES['t_file']['name']) ) {

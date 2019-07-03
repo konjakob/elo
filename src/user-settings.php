@@ -3,9 +3,12 @@
 require('includes/application_top.php');
 
 $saved_languages = array();
-$query_lang = $db->query("select * from elo_lang order by lang_name desc");
-while ( $res2 = $db->fetch_array($query_lang) )
-	$saved_languages[] = $res2;
+
+$statement = $pdo->prepare("select * from elo_lang order by lang_name desc");
+$statement->execute();
+	
+while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
+	$saved_languages[] = $res;
 
 $twig_data['saved_languages'] = $saved_languages;
 
@@ -14,28 +17,40 @@ $breadcrumb[] = array('href' => '', 'text' => 'User settings');
 
 $msgs = array();
 
+/* will be deleted, now in actions.php */
 if (isset($_POST['action'])) {
     $sql_pass = "";
     
+	$statement = $pdo->prepare("select user_id from elo_user where user_email=:t_email and user_id<>:userid");
+	$statement->bindValue(':userid', $userid, PDO::PARAM_INT);
+	$statement->bindValue(':t_email', $_POST['t_email']);
+	$statement->execute();
     
-    if ( $db->query_one("select user_id from elo_user where user_email='".addslashes($_POST['t_email'])."' and user_id<>'".$userid."'") ) {
+    if ( $statement->rowCount() ) {
         $msgs[] = array('state' => 'nok', 'text' => USER_SETTINGS_EMAIL_EXISTS);
     } else {
         
+		require_once( "PasswordHash.php" );
+		$hasher = new PasswordHash( 8, TRUE );
+			
         if ( isset($_POST['t_pass']) && strlen($_POST['t_pass'])) {
-            require_once( "PasswordHash.php" );
-            $hasher = new PasswordHash( 8, TRUE );
-            $sql_pass = ", user_password='".$hasher->HashPassword($_POST['t_pass'])."' ";
+            $sql_pass = ", user_password=:user_password ";
         }
-        $db->query("update elo_user set user_name='".addslashes($_POST['t_name'])."', user_email='".addslashes($_POST['t_email'])."' ".$sql_pass.", lang_id='".intval($_POST['t_lang'])."' where user_id='".$userid."'");
+		
+		$statement = $pdo->prepare("update elo_user set user_name=:t_name, user_email=:t_email ".$sql_pass.", lang_id=:t_lang where user_id=:userid");
+		$statement->bindValue(':userid', $userid, PDO::PARAM_INT);
+		$statement->bindValue(':t_email', $_POST['t_email']);
+		$statement->bindValue(':t_lang', (int)$_POST['t_lang'], PDO::PARAM_INT);
+		$statement->bindValue(':t_name', $_POST['t_name']);
+		if ( isset($_POST['t_pass']) && strlen($_POST['t_pass']))
+			$statement->bindValue(':user_password', $hasher->HashPassword($_POST['t_pass']));
+		$statement->execute();
+		
         header("Location: user-settings.php?saved=1");
     }
 }
 if( isset($_GET['saved']))
     $msgs[] = array('state' => 'ok', 'text' => USER_SETTINGS_SAVED);
-
-
-$db->close();
 
 $twig_data['user_email'] = $user_res['user_email'];
 $twig_data['lang_id'] = $user_res['lang_id'];

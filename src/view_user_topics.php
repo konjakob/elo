@@ -1,6 +1,5 @@
 <?php
 
-
 require('includes/application_top.php');
 	
 if ( !in_array('IS_ADMIN', $user_rights ) ) {
@@ -9,13 +8,13 @@ if ( !in_array('IS_ADMIN', $user_rights ) ) {
 }
 	
 $allUser = array();
-$query_user = $db->query("select user_id, user_name from elo_user order by user_name");
-$db->close();
 
-while ( $res = $db->fetch_array($query_user) ) {
+$statement = $pdo->prepare("select user_id, user_name from elo_user order by user_name");
+$statement->execute();
+
+while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false ) {
     $allUser[] = $res;
 }   
-
 
 $twig_data['allUser'] = $allUser;
 

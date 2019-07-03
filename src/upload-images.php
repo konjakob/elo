@@ -17,9 +17,13 @@ if (isset($_GET['mode'])) {
 			
 			// check whether it's not empty, and whether it indeed is an uploaded file
 			if( !empty( $tmpName ) && is_uploaded_file( $tmpName ) )
-			{							
-				$db->query("insert into elo_attachment (attachment_filename, user_id, attachment_time) values ('".addslashes($_FILES[ 'files' ][ 'name' ][ $index ])."', '".$userid."', now())");
-				$filename = $db->insert_id().base64_encode($_FILES[ 'files' ][ 'name' ][ $index ]);
+			{				
+				$statement = $pdo->prepare("insert into elo_attachment (attachment_filename, user_id, attachment_time) values (:file, :userid, now())");
+				$statement->bindValue(':userid', $userid, PDO::PARAM_INT);
+				$statement->bindValue(':file', $_FILES[ 'files' ][ 'name' ][ $index ]);
+				$statement->execute();
+		
+				$filename = $statement->lastInsertId().base64_encode($_FILES[ 'files' ][ 'name' ][ $index ]);
 				//$c = @copy($_FILES['t_file']['tmp_name'],$conf['file_folder'].$filename);
 				move_uploaded_file( $tmpName, $conf['file_folder'].$filename );
 				$dataAr = array();
@@ -48,7 +52,11 @@ if (isset($_GET['mode'])) {
 		if( !empty( $tmpName ) && is_uploaded_file( $tmpName ) )
 		{	
 			$tmpFileName = md5($userid).".".addslashes($imageFileType);
-			$db->query("update elo_user set user_picture='".$tmpFileName."' where user_id='" . $userid . "'");
+			
+			$statement = $pdo->prepare("update elo_user set user_picture=:tmpFileName where user_id=:userid");
+			$statement->bindValue(':userid', $userid, PDO::PARAM_INT);
+			$statement->bindValue(':tmpFileName', $tmpFileName);
+			$statement->execute();
 			
 			$destName = "images/profile/" . $tmpFileName;
 			
