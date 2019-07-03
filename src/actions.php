@@ -240,11 +240,18 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		if ( isset($_POST['delete_group']) ) {
 			
 			$group_id = (int) $_POST['delete_group'];
+            
 			// delete all user group relations
-			$db->query("delete from elo_group_user where group_id='".$group_id."'");
+            $statement = $pdo->prepare("delete from elo_group_user where group_id=:group");
+            $statement->bindValue(':group',$group_id);
+            $statement->execute();
+
 			// delete the group
-			$db->query("delete from elo_group where group_id='".$group_id."'");
-			if ( $db->affected_rows() ) {
+            $statement = $pdo->prepare("delete from elo_group where group_id=:group");
+            $statement->bindValue(':group',$group_id);
+            $statement->execute();
+            
+			if (  $statement->rowCount() ) {
 				$returnData = toastFeedback('ok', 'The group was successfully deleted.', 'Success');
 			} else {
 				$returnData = toastFeedback('nok', 'No group was deleted.', 'Error');
@@ -259,8 +266,12 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
 			$returnData['state'] = 'ok';
 			$user = intval($_POST['userid']);
-			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ )
-				$db->query("insert into elo_right_user (user_id, right_id) values ('".$user."', '".intval($_POST['t_r'][$i])."')");
+			for ( $i = 0; $i < sizeof($_POST['t_r']); $i++ ) {
+                $statement = $pdo->prepare("insert into elo_right_user (user_id, right_id) values (:user, :right)");
+                $statement->bindValue(':user',$user);
+                $statement->bindValue(':right',(int)$_POST['t_r'][$i]);
+                $statement->execute();
+            }
 		} else {
 			$returnData['state'] = 'nok';
 			$returnData['text'] = 'Please select a user.';
@@ -275,10 +286,13 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		if ( isset($_GET['group_id']) ) {
 			$returnData['state'] = 'ok';
 			
-			$query = $db->query("SELECT elo_user.user_id, elo_user.user_name, elo_group_user.gu_id
+            $statement = $pdo->prepare("SELECT elo_user.user_id, elo_user.user_name, elo_group_user.gu_id
 	FROM elo_group INNER JOIN (elo_group_user INNER JOIN elo_user ON elo_group_user.user_id = elo_user.user_id) ON elo_group.group_id = elo_group_user.group_id
 	GROUP BY elo_group.group_id, elo_user.user_id, elo_user.user_name
-	HAVING (((elo_group.group_id)=".intval($_GET['group_id'])."));");
+	HAVING (((elo_group.group_id)=:group));");
+            $statement->bindValue(':group',(int)$_GET['group_id']);
+            $statement->execute();
+
 			$returnData['users'] = array();
 			while ($res = $db->fetch_array($query)) {
 				$returnData['users'][$res['gu_id']] = $res['user_name'];
