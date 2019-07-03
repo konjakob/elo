@@ -24,8 +24,6 @@ if ( !isset($jsonMode) ) {
 $twig_data['current_url'] = $_SERVER['PHP_SELF'];
 
 require_once("dbclass.php");
-$db = new db;
-
 require_once("authenticate.class.php");
 
 $auth = new Authenticate;
@@ -39,9 +37,12 @@ if(!$auth->validateAuthCookie()) {
 	exit();
 }
 
-$query = $db->query("select * from elo_config");
+$sql = "select config_name, config_value from elo_config";
+$statement = $pdo->prepare($sql);
+$statement->execute();
+		
 $conf = array();
-while ( $res = $db->fetch_array($query) )
+while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 	$conf[$res['config_name']] = $res['config_value'];
 
 $twig_data['conf'] = $conf;
@@ -50,16 +51,25 @@ require_once("functions.php");
 
 $userid = $auth->getUserId();
 
-$query = $db->query("select r.right_key from elo_right as r, elo_right_user as ru where r.right_id=ru.right_id and ru.user_id='".$userid."'");
+/* Get the rights of the user */
+$sql = "select r.right_key from elo_right as r, elo_right_user as ru where r.right_id=ru.right_id and ru.user_id = :userid";
+$statement = $pdo->prepare($sql);
+$statement->bindValue(':userid', $userid, PDO::PARAM_INT);
+$statement->execute();
+		
 $user_rights = array();
-
-while ( $res = $db->fetch_array($query) )
+while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 	$user_rights[] = $res['right_key'];
 
 $twig_data['user_rights'] = $user_rights;
 
-$query = $db->query("select elo_user.*, elo_lang.lang_id, elo_lang.lang_code from elo_user left join elo_lang ON (elo_user.lang_id=elo_lang.lang_id) where user_id='".$userid."' limit 1");
-$user_res = $db->fetch_array($query);
+/* Get the user data of the logged user */
+$sql = "select elo_user.*, elo_lang.lang_id, elo_lang.lang_code from elo_user left join elo_lang ON (elo_user.lang_id=elo_lang.lang_id) where user_id=:userid limit 1";
+$statement = $pdo->prepare($sql);
+$statement->bindValue(':userid', $userid, PDO::PARAM_INT);
+$statement->execute();
+
+$user_res = $statement->fetch(PDO::FETCH_ASSOC);
 $username = $twig_data['user_name'] = $user_res['user_name'];
 $langcode = $user_res['lang_code'];
 $twig_data['user_picture'] = $user_res['user_picture'];

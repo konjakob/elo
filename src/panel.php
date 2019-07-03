@@ -11,7 +11,6 @@ $msg_group = "";
 
 if ( in_array('CREATE_NEW_USER', $user_rights) && isset($_POST['new_user']) && isset($_POST['t_name']) && isset($_POST['t_email']) && isset($_POST['t_pass']) )
 {
-	
 	require_once( "PasswordHash.php" );
     $hasher = new PasswordHash( 8, TRUE );
 
@@ -65,37 +64,30 @@ if ( in_array('CREATE_NEW_USER', $user_rights) && isset($_POST['new_user']) && i
 			
 		}
 	}
-	/*
-	if ( strlen($success) ) {
-		echo '<div id="correct">'.$success.'</div>';
-	}
-	if ( strlen($error) ) {
-		echo '<div id="error">'.$error.'</div>';
-	}
-	*/
 }
 
 if ( isset($_POST['new_group']) ) {
-	$db->query("insert into elo_group (group_name) values ('".addslashes($_POST['t_group'])."')");
-	$msg_group = "<div id='correct'>Saved the new group.</div>";
+	$statement = $pdo->prepare("insert into elo_group (group_name) values (:t_group)");
+	$query->bindValue(':t_group', filter_input(INPUT_POST, 'new_group'));
+	$statement->execute();
+	$msgs[] = array('state' => 'ok', 'text' => 'Saved the new group.');
 }
-/*
-if ( isset($_GET['delete_group']) ) {
-	$db->query("delete from elo_group where group_id='".intval($_GET['delete_group'])."'");
-	$msg_group = "<div id='correct'>Group deleted.</div>";	
-}
-*/
-$query_groups = $db->query("select * from elo_group order by group_name");
+
+$statement = $pdo->prepare("select * from elo_group order by group_name");
+$statement->execute();
 
 $groups = array();
-while ( $res = $db->fetch_array($query_groups) )
+while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 	$groups[] = $res;
 
 $twig_data['groups'] = $groups;
 
-$query_lang = $db->query("select * from elo_lang");
+/* Get the available languages */
+$statement = $pdo->prepare("select * from elo_lang");
+$statement->execute();
+
 $langs = array();
-while ( $res = $db->fetch_array($query_lang))
+while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 	$langs[] = $res;
 $twig_data['langs'] = $langs;	
 
@@ -110,35 +102,45 @@ if ( isset($_GET['action']) ) {
 		
 }
 
-$query_user = $db->query("select * from elo_user order by user_name");
-$query_right = $db->query("select * from elo_right order by right_name");
+$query_user = $pdo->prepare("select * from elo_user order by user_name");
+$query_user->execute();
 
-	if ( in_array('CREATE_NEW_RIGHT', $user_rights) && isset($_POST['new_right']) && isset($_POST['t_name']) && isset($_POST['t_key']) )
-	{
-		$db->query("insert into elo_right (right_name, right_key) values ('".addslashes($_POST['t_name'])."', '".addslashes($_POST['t_key'])."')");	
-		$twig_data['saved_new_right'] = 1;
-	}
+$query_right = $pdo->prepare("select * from elo_right order by right_name");
+$query_right->execute();
+
+if ( in_array('CREATE_NEW_RIGHT', $user_rights) && isset($_POST['new_right']) && isset($_POST['t_name']) && isset($_POST['t_key']) ) {
+	$query_user = $pdo->prepare("insert into elo_right (right_name, right_key) values (:t_name, :t_key)");
+	$query->bindValue(':t_name', filter_input(INPUT_POST, 't_name'));
+	$query->bindValue(':userid', filter_input(INPUT_POST, 't_key'));
+	$query_user->execute();
+	$twig_data['saved_new_right'] = 1;
+}
 
 $rights = array();
-while ( $res = $db->fetch_array($query_right) )
+while ( ($res = $query_right->fetch(PDO::FETCH_ASSOC)) !== false )
 	$rights[] = $res;
 
 $twig_data['rights'] = $rights;
 	
 $users = array();
 
-
-while ( $res = $db->fetch_array($query_user) ) {
+while ( ($res = $query_user->fetch(PDO::FETCH_ASSOC)) !== false ) {
 	$users[] = $res;
-	$query = $db->query("select right_id from elo_right_user where user_id=".$res['user_id']);
+	// todo: check if this can be done in one query
+	$query = $pdo->prepare("select right_id from elo_right_user where user_id=:userid");
+	$query->bindValue(':userid', $res['user_id'], PDO::PARAM_INT);
+	$query->execute();
+	
 	$saved_rights = array();
-	while ( $res2 = $db->fetch_array($query) )
+	while ( ($res2 = $query->fetch(PDO::FETCH_ASSOC)) !== false )
 		$saved_rights[] = $res2['right_id'];
 }
 $twig_data['users'] = $users;
 
 $msgs = array();
 
+/* this is now available in actions.php */
+/*
 $default_text = "";
 if ( isset($_POST['new_topic']) ) {
 
@@ -176,9 +178,8 @@ if ( isset($_POST['new_topic']) ) {
 	
 	}
 }
+*/
 
-
-$db->close();
 $twig_data['exampleCode'] = createCode(8);
 $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 $breadcrumb[] = array( 'text' => 'Admin Panel', 'href' => '');

@@ -19,15 +19,18 @@ class Authenticate {
 
     public function authenticate( $email, $password, $remember ) {
 
-		global $db;
+		global $pdo;
 
-		$query = $db->query("select user_id as id, user_password as password from elo_user where user_email='".addslashes($email)."'");
+		$sql = "select user_id as id, user_password as password from elo_user where user_email = :email";
+		$statement = $pdo->prepare($sql);
+		$statement->bindValue(':email',$email);
+		$statement->execute();
+		
+		$result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        $result = $db->fetch_array($query);
+        if ( sizeof($result) ) {
 
-        if ( $db->num_rows($query) == 1 ) {
-
-            $user = $result['id'];
+            $user = $result[0]['id'];
 
         } else {
             
@@ -110,13 +113,15 @@ class Authenticate {
 
     public static function getUserId() {
 
-		global $db;
+		global $pdo;
 		
         list( $id, $expiration, $hmac ) = explode( '|', $_COOKIE[COOKIE_AUTH] );
 
-		//$db->query("update elo_user set user_lastvisit='".time()."' where user_id=".intval($id));
-        $db->query("insert into elo_user_login (user_id) values ('".(int)$id."')");
-
+		$sql = "insert into elo_user_login (user_id) values (:id)";
+		$statement = $pdo->prepare($sql);
+		$statement->bindValue(':id', $id, PDO::PARAM_INT);
+		$statement->execute();
+		
         return $id;
 
     }
