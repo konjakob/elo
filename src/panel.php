@@ -4,6 +4,7 @@ require('includes/application_top.php');
 
 if ( !in_array('IS_ADMIN', $user_rights ) ) {
 	echo $twig->render("no_access.twig", $twig_data);
+	exit();
 }
 
 

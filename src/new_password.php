@@ -6,7 +6,6 @@ $error = "";
 $success = "";
 
 require_once("dbclass.php");
-$db = new db;
 
 $langcode = "en";
 	

@@ -116,7 +116,7 @@ function processAttachment() {
 }
 
 function processMusicFiles($musicid, $text) {
-	global $db,$conf;
+	global $conf;
 	
 	// save to an abc file
 	$mfolder = $conf['file_folder']."m-".$musicid;

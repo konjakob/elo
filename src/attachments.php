@@ -1,9 +1,11 @@
 <?php
 
-require_once("dbclass.php");
-$db = new db;
+require('includes/application_top.php');
 
-$userid = 1;
+if ( !in_array('IS_ADMIN', $user_rights ) ) {
+	echo $twig->render("no_access.twig", $twig_data);
+	exit();
+}
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -17,9 +19,10 @@ $userid = 1;
 <table>
 <?
 
-$query = $db->query("select * from elo_attachment");
-
-while ( $res = $db->fetch_array($query) ) {
+$statement = $pdo->prepare("select * from elo_attachment");
+$statement->execute();
+	
+while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false ) {
 
 	if ( file_exists("files/".$res['attachment_id'].base64_encode($res['attachment_filename'])) ) {
 		$filesize_s = "";

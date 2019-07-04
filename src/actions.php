@@ -366,7 +366,6 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			
 			if ( $statement->rowCount() ) {
                 $res = $statement->fetch(PDO::FETCH_ASSOC);
-				$res = $db->fetch_array($query);
 			
 				if ( ($res['user_id'] == $user_res['user_id'] && $res['reply_date'] > ($time - $conf['max_edit_time']) ) || in_array('IS_ADMIN',$user_rights) ) {
 					
@@ -528,7 +527,10 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		exit();
         /*
         // Email to admin
-        $email_text = $db->query_one("select emailtext_text from elo_emailtext where emailtext_key='NEW_TOPIC_ADMIN' and lang_id=1");
+		$statement = $pdo->prepare("select emailtext_text from elo_emailtext where emailtext_key='NEW_TOPIC_ADMIN' and lang_id=1");
+		$statement->execute();
+		$res = $statement->fetch(PDO::FETCH_ASSOC);
+		$email_text = $res['emailtext_text'];
 
         $search_array = array("{ID}", "{USER}");
         $replace_array = array($topicid, $userid);
