@@ -23,7 +23,7 @@ if (isset($_GET['mode'])) {
 				$statement->bindValue(':file', $_FILES[ 'files' ][ 'name' ][ $index ]);
 				$statement->execute();
 		
-				$filename = $statement->lastInsertId().base64_encode($_FILES[ 'files' ][ 'name' ][ $index ]);
+				$filename = $pdo->lastInsertId().base64_encode($_FILES[ 'files' ][ 'name' ][ $index ]);
 				//$c = @copy($_FILES['t_file']['tmp_name'],$conf['file_folder'].$filename);
 				move_uploaded_file( $tmpName, $conf['file_folder'].$filename );
 				$dataAr = array();
@@ -35,7 +35,7 @@ if (isset($_GET['mode'])) {
 				}
 				$dataAr['fileName'] =  $_FILES[ 'files' ][ 'name' ][ $index ];
 				$dataAr['filePath'] =  $conf['file_folder'].$filename;
-				$dataAr['fileId'] = $db->insert_id();
+				$dataAr['fileId'] = $pdo->lastInsertId();
 				echo json_encode($dataAr);
 			}
 		}

@@ -1,5 +1,0 @@
-<?php
-
-/* Not used anymore */
-
-

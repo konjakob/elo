@@ -462,7 +462,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		$statement->bindValue(':t_topic_title', $_POST['t_topic_title']);
 		$statement->execute();
 
-        $topicid = $statement->lastInsertId();
+        $topicid = $pdo->lastInsertId();
 		
 		$statement = $pdo->prepare("insert into elo_reply (user_id, topic_id, reply_date, reply_text) values (:userid, :topicid, :time, :t_topic)");
 		$statement->bindValue(':userid', $userid, PDO::PARAM_INT);
@@ -471,7 +471,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		$statement->bindValue(':t_topic', $_POST['t_topic']);
 		$statement->execute();
 		
-        $reply_id = $statement->lastInsertId();
+        $reply_id = $pdo->lastInsertId();
 		
 		$statement = $pdo->prepare("insert into elo_topic_user (user_id, topic_id) values (:userid, :topicid)");
 		$statement->bindValue(':userid', $userid, PDO::PARAM_INT);

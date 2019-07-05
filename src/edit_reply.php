@@ -14,21 +14,26 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 	
 	$replyid = isset($_GET['id']) ? (int)$_GET['id'] : (int)$_POST['id'];
 		
-	$query = $db->query("select * from elo_reply where reply_id='".$replyid."'");
+	$statement = $pdo->prepare("select * from elo_reply where reply_id=:replyid");
+	$statement->bindValue(':replyid', $replyid, PDO::PARAM_INT);
+	$statement->execute();
 	
-	if ( $db->num_rows($query) < 1 ) {
+	if ( $statement->rowCount() < 1 ) {
 		$msgs[] = array('state' => 'nok', 'text' => DELETE_REPLY_NO_RIGHTS);
 	} else {
-		$res = $db->fetch_array($query);
+		$res = $statement->fetch(PDO::FETCH_ASSOC);
 		$reply = $res;
 
 		if ( ($res['user_id'] == $user_res['user_id'] && $res['reply_date'] > ($time - $conf['max_edit_time']) ) || in_array('IS_ADMIN',$user_rights)) {
 			$topicid = $res['topic_id'];
 	
 			// music sheets
-			$query_m = $db->query("select a.*, ra.rm_id from elo_music as a, elo_reply_music as ra where ra.reply_id='".$replyid."' and ra.music_id=a.music_id");
+			$statement = $pdo->prepare("select a.*, ra.rm_id from elo_music as a, elo_reply_music as ra where ra.reply_id=:replyid and ra.music_id=a.music_id");
+			$statement->bindValue(':replyid', $replyid, PDO::PARAM_INT);
+			$statement->execute();
+	
 			$sheets = array();
-			while($r = $db->fetch_array($query_m))
+			while ( ($r = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 				$sheets[] = $r;
 			
 			// submit of edited data
@@ -36,17 +41,29 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 
 				if ( in_array('ADD_USER_TO_TOPIC',$user_rights) || in_array('ADD_GROUP_TO_TOPIC',$user_rights) ) {
 					if ( in_array('ADD_USER_TO_TOPIC',$user_rights)) {	
-						$db->query("delete from elo_topic_user where topic_id='".$topicid."'");			
+						$statement = $pdo->prepare("delete from elo_topic_user where topic_id=:topicid");
+						$statement->bindValue(':topicid', $topicid, PDO::PARAM_INT);
+						$statement->execute();
 						if ( isset( $_POST['t_user'] )) {
-							foreach ( $_POST['t_user'] as $u )
-								$db->query("insert into elo_topic_user (user_id, topic_id) values ('".$u."', '".$topicid."')");
+							foreach ( $_POST['t_user'] as $u ) {
+								$statement = $pdo->prepare("insert into elo_topic_user (user_id, topic_id) values (:u, :topicid)");
+								$statement->bindValue(':topicid', $topicid, PDO::PARAM_INT);
+								$statement->bindValue(':u', (int)$u, PDO::PARAM_INT);
+								$statement->execute();
+							}
 						}
 					}
 					if ( in_array('ADD_GROUP_TO_TOPIC',$user_rights)) {	
-						$db->query("delete from elo_topic_group where topic_id='".$topicid."'");
+						$statement = $pdo->prepare("delete from elo_topic_group where topic_id=:topicid");
+						$statement->bindValue(':topicid', $topicid, PDO::PARAM_INT);
+						$statement->execute();
 						if ( isset($_POST['t_group'])) {
-							foreach ( $_POST['t_group'] as $g )
-								$db->query("insert into elo_topic_group (group_id, topic_id) values ('".$g."', '".$topicid."')");
+							foreach ( $_POST['t_group'] as $g ) {
+								$statement = $pdo->prepare("insert into elo_topic_group (group_id, topic_id) values (:g, :topicid)");
+								$statement->bindValue(':topicid', $topicid, PDO::PARAM_INT);
+								$statement->bindValue(':g', (int)$g, PDO::PARAM_INT);
+								$statement->execute();
+							}
 						}
 					}
 				}
@@ -54,7 +71,10 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 				foreach ($sheets as $r) {
 					if ( strlen($_POST['old_abc'][$r['music_id']])) {
 						if ( $_POST['old_abc'][$r['music_id']] != $r['music_text']) {
-							$db->query("update elo_music set music_text='".addslashes( $_POST['old_abc'][$r['music_id']])."' where music_id='".$r['music_id']."'");
+							$statement = $pdo->prepare("update elo_music set music_text=:m where music_id=:music_id");
+							$statement->bindValue(':music_id', $music_id, PDO::PARAM_INT);
+							$statement->bindValue(':m', $_POST['old_abc'][$r['music_id']]);
+							$statement->execute();
 							processMusicFiles($r['music_id'], $_POST['old_abc'][$r['music_id']]);	
 						}
 					} else {
@@ -80,7 +100,7 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 				if ( in_array('CREATE_ATTACHMENTS', $user_rights) && isset($_POST['picture']) ) {
 					foreach ( $_POST['picture'] as $p ) { 
 						$statement = $pdo->prepare("insert into elo_reply_attachment (reply_id, attachment_id) values (:replyid, :p)");
-						$statement->bindValue(':reply_id', $replyid, PDO::PARAM_INT);
+						$statement->bindValue(':replyid', $replyid, PDO::PARAM_INT);
 						$statement->bindValue(':p', (int)$p, PDO::PARAM_INT);
 						$statement->execute();
 					}
@@ -137,8 +157,13 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 	}
 }
 
+$statement = $pdo->prepare("select topic_title from elo_topic where topic_id=:topicid");
+$statement->bindValue(':topicid', $topicid, PDO::PARAM_INT);
+$statement->execute();
+$res = $statement->fetch(PDO::FETCH_ASSOC);
+
 $breadcrumb[] = array('href' => 'topic.php', 'text' => 'Topics');
-$breadcrumb[] = array('href' => 'topic.php?id='.$topicid."#".$replyid, 'text' => $db->query_one("select topic_title from elo_topic where topic_id='".$topicid."'"));
+$breadcrumb[] = array('href' => 'topic.php?id='.$topicid."#".$replyid, 'text' => $res['topic_title']);
 $breadcrumb[] = array('href' => '', 'text' => TOPIC_EDIT_REPLY);
 $twig_data['reply'] = $reply;
 $twig_data['msgs'] = $msgs;

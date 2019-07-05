@@ -51,7 +51,7 @@ $statement->bindValue(':time',time());
 $statement->bindValue(':replyText',$replyText);
 $statement->execute();
 
-$reply_id = $statement->lastInsertId();
+$reply_id = $pdo->lastInsertId();
 
 if ( in_array('CREATE_ATTACHMENTS', $user_rights) && isset($_POST['picture']) ) {
 	foreach ( $_POST['picture'] as $p ) {

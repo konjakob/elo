@@ -17,6 +17,10 @@ if ( isset($_GET['id'])) {
 	require_once( "PasswordHash.php" );
     $hasher = new PasswordHash( 8, TRUE );
 
+	$statement = $pdo->prepare("select user_id from elo_pass_request where pr_code=:id and pr_time>'".(time()-3600)."' limit 1");
+	$statement->bindValue(':id', $_GET['id']);
+	$statement->execute();
+	
 	$user_id = $db->query_one("select user_id from elo_pass_request where pr_code='".addslashes($_GET['id'])."' and pr_time>'".(time()-3600)."' limit 1");
 	
 	if ( $user_id ) {

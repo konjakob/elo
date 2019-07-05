@@ -99,7 +99,7 @@ function processAttachment() {
 		$statement->bindValue(':attachment_filename', $_FILES['t_file']['name']);
         $statement->execute();
 		
-		$attachment_id = $statement->lastInsertId();
+		$attachment_id = $pdo->lastInsertId();
 		$filename = $attachment_id.base64_encode($_FILES['t_file']['name']);
 		$c = @copy($_FILES['t_file']['tmp_name'],$conf['file_folder'].$filename);
 		
@@ -137,12 +137,7 @@ function processMusicFiles($musicid, $text) {
 	
 	exec($conf['abc2ps']." ".$abcfile." ".$addFmt." ".$conf['params4ps']." -O ".$psfile);//." 2>&1");
 	exec($conf['ps2pdf']." ".$psfile." ".$pdffile);
-	//exec($conf['ps2pdf']." ".$psfile." ".$pdffile);
-	//exec($conf['convert']." ".$conf['params4png']." ".$psfile." ".$pngfile);
-	//exec("pdfcrop ".$pdffile." ".$pdffile."-crop");
-	//exec($conf['convert']." ".$conf['params4png']." ".$pdffile."-crop ".$pngfile);
-	exec($conf['convert']." \"".$mfolder."/{".$musicid.".pdf}[0]\" -colorspace RGB -trim -geometry 200 \"".$pngfile."\"");
-	
+	exec($conf['convert']." \"".$mfolder."/{".$musicid.".pdf}[0]\" -colorspace RGB -trim -geometry 200 \"".$pngfile."\"");	
 	exec($conf['convert']." \"".$mfolder."/{".$musicid.".pdf}[0]\" -colorspace RGB -trim \"".$mfolder."/".$musicid."-big.png\"");
 	
 	if(file_exists($psfile)) 
@@ -150,59 +145,18 @@ function processMusicFiles($musicid, $text) {
 }
 
 function processMusic() {
-	global $db, $reply_id,$conf;
+	global $pdo, $reply_id,$conf;
 
-	$db->query("insert into elo_music (music_text) values ('".addslashes($_POST['abc'])."')");	
-	$musicid = $db->insert_id();
-	$db->query("insert into elo_reply_music (reply_id, music_id) values ('".$reply_id."', '".$musicid."')");	
+	$statement = $pdo->prepare("insert into elo_music (music_text) values (:abc)");
+	$statement->bindValue(':abc', $_POST['abc']);
+	$statement->execute();
+		
+	$musicid = $pdo->lastInsertId();
+	
+	$statement = $pdo->prepare("insert into elo_reply_music (reply_id, music_id) values (:reply_id, :musicid)");
+	$statement->bindValue(':reply_id', $reply_id, PDO::PARAM_INT);
+	$statement->bindValue(':musicid', $musicid, PDO::PARAM_INT);
+	$statement->execute();
 	
 	processMusicFiles($musicid,$_POST['abc']);
 }
-
-/**
-* create img file
-*/
-function _createImgFile($abcFile, $fileBase) {
-	global $conf;
-	$epsFile = $fileBase.'001.eps';
-	$imgFile = $fileBase.'.png';
-
-	// create eps file
-	passthru(fullpath($this->getConf('abc2ps'))." $abcFile ".$this->getConf('params4img')." -E -O $fileBase. 2>&1");
-
-	// convert eps to png file
-	passthru(fullpath($conf['im_convert'])." $epsFile $imgFile");
-
-	if(file_exists($epsFile)) 
-		unlink($epsFile);
-}
-
-/**
- * create ps file
- */
-function _createPsFile($abcFile, $fileBase) {
-	$psFile  = $fileBase.'.ps';
-	$fmt = $this->getConf('fmt');
-	$addFmt = ($fmt && file_exists($fmt)) ? " -F ".fullpath($fmt) : "";
-	passthru(fullpath($this->getConf('abc2ps'))." $abcFile $addFmt ".$this->getConf('params4ps')." -O $psFile 2>&1");
-}
-
-/**
- * create pdf file
- */
-function _createPdfFile($abcFile, $fileBase) {
-	$psFile  = $fileBase.'.ps';
-	$pdfFile  = $fileBase.'.pdf';
-	passthru(fullpath($this->getConf('ps2pdf'))." $psFile $pdfFile");
-	if(file_exists($psFile)) 
-		unlink($psFile);
-}
-
-/**
- * create midi file
- */
-function _createMidiFile($abcFile, $fileBase) {
-	$midFile = $fileBase.'.mid';
-	passthru(fullpath($this->getConf('abc2midi'))." $abcFile -o $midFile");
-}
-
