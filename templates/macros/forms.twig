@@ -1,0 +1,46 @@
+{% import _self as forms %}
+
+{% macro ifelse(name, val1, val2) %}
+	{% if name %}
+		{{ val1 }}
+	{% else %}
+		{{ val2 }}
+	{% endif %}
+{% endmacro %}
+
+{% macro makeForm(text, argname, value, dis = 0) %}
+    <div class="uk-margin">
+        <label class="uk-form-label">{{ text|raw }}</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" name="{{ argname }}" type="text" value="{{ value }}" {{ _self.ifelse(dis, "disabled", "") }}>
+        </div>
+    </div>		
+{% endmacro %}
+
+{% macro makeAuswahl(text, argname, choosed) %}
+    <div class="uk-margin">
+        <label class="uk-form-label">{{ text|raw }}</label>
+        <div class="uk-form-controls">
+            <input class="uk-radio" type="radio" name="{{ argname }}" {{ _self.ifelse(choosed, "checked", "") }}><label>Ja</label><br>
+            <input class="uk-radio" type="radio" name="{{ argname }}" value="0" {{ _self.ifelse(choosed, "", "checked") }}><label>Nein</label>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro makeDateForm(text, argname, value, dis = 0) %}	
+    <div class="uk-margin">
+        <label class="uk-form-label" for="form-element-{{ argname }}">{{ text|raw }}</label>
+        <div class="uk-form-controls">
+            <input class="uk-input" name="{{ argname }}" id="form-element-{{ argname }}" type="text" value="{{ value }}" {{ _self.ifelse(dis, "disabled", "") }}>
+        </div>
+    </div>		
+	
+  <script>
+  $( function() {
+    $( "#form-element-{{ argname }}" ).datepicker({
+          dateFormat: "dd.mm.yy"
+        });
+  } );
+  </script>
+
+{% endmacro %}

@@ -1,0 +1,52 @@
+{% extends 'default.twig' %}
+{% import 'macros/forms.twig' as frm %}
+{% block vars %}
+{% endblock %}
+
+{% block default %}
+
+{% for m in msgs %}
+
+<div class="uk-alert-{% if m.state == 'ok' %}success{% else %}danger{% endif %}" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>{{ m.text }}</p>
+</div>
+
+{% endfor %}
+
+<div class="uk-column-1-2">
+	{% for g in settinggroups %}
+		<a href='#settinggroup{{ g.settinggroupid }}'>{{ g.title }}</a><br>
+	{% endfor %}
+</div>
+
+<form action="options.php" method="post" class="uk-form-stacked">
+
+	{% for g in settinggroups %}
+		<a name='settinggroup{{ g.settinggroupid }}'></a>
+		<h2>{{ g.title }}</h2>
+		{% for s in settings if s.settinggroupid == g.settinggroupid%}
+			{% if s.optioncode == 0 %}
+				{{ frm.makeForm("<b>" ~ s.title ~ "</b><br>" ~ s.description, "setting[" ~ s.settingid ~ "]", s.value) }}			
+			{% elseif s.optioncode == 1 %}
+				{{ frm.makeAuswahl("<b>" ~ s.title ~ "</b><br>" ~ s.description, "setting[" ~ s.settingid ~ "]", s.value) }} 
+			{% elseif s.optioncode == 3 %}
+				{{ frm.makeDateForm("<b>" ~ s.title ~ "</b><br>" ~ s.description, "setting[" ~ s.settingid ~ "]", s.value) }} 
+			{% elseif s.optioncode == 4 %}
+			
+			{% elseif s.optioncode == 5 %}
+				{{ frm.makeTextForm("<b>" ~ s.title ~ "</b><br>" ~ s.description, "setting[" ~ s.settingid ~ "]", s.value) }} 
+			{% endif %} 
+		{% endfor %}
+	{% endfor %}
+
+	<input type="hidden" name="action" value="dosave">
+	<div class="uk-text-right"><input class="uk-button uk-button-primary" type="submit" value="{{ constant('TOPIC_TEXT_SAVE') }}"></div>
+
+</form>
+
+			
+{% endblock %}		  
+
+{% block headerInjection %}		
+{% endblock %}	

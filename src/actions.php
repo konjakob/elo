@@ -98,12 +98,27 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
                 exit();
         }
 		
-        $x1 = (int)$_POST['x1'];
-        $x2 = (int)$_POST['x2'];
-        $y1 = (int)$_POST['y1'];
-        $y2 = (int)$_POST['y2'];
+        $x1 = (int)filter_input(INPUT_POST,'x1',FILTER_SANITIZE_NUMBER_INT);
+        $x2 = (int)filter_input(INPUT_POST,'x2',FILTER_SANITIZE_NUMBER_INT);
+        $y1 = (int)filter_input(INPUT_POST,'y1',FILTER_SANITIZE_NUMBER_INT);
+        $y2 = (int)filter_input(INPUT_POST,'y2',FILTER_SANITIZE_NUMBER_INT);
 
-        $filepath = "images/profile/" . $user_res['user_picture'];
+		$filepath = "images/profile/" . $user_res['user_picture'];
+		list($width, $height, $type, $attr) = getimagesize($filepath);
+		
+        if ( $width > IMAGE_CROP_MAX_WIDTH_HEIGHT || $height > IMAGE_CROP_MAX_WIDTH_HEIGHT ) {
+			$factor = 1;
+			if ( $height > IMAGE_CROP_MAX_WIDTH_HEIGHT ) {
+				$factor = $height/IMAGE_CROP_MAX_WIDTH_HEIGHT;
+			} else {
+				$factor = $width/IMAGE_CROP_MAX_WIDTH_HEIGHT;
+			}
+			$x1 *= $factor;
+			$x2 *= $factor;
+			$y1 *= $factor;
+			$y2 *= $factor;			
+		}		
+		
         exec($conf['convert']." ".$filepath." -crop ".($x2-$x1)."x".($y2-$y1)."+".$x1."+".$y1." ".$filepath);
 
         $returnData['filePath'] = $filepath;

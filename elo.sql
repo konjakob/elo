@@ -18,44 +18,61 @@ CREATE TABLE `elo_attachment` (
 
 -- --------------------------------------------------------
 
+CREATE TABLE IF NOT EXISTS `elo_settinggroup` (
+  `settinggroupid` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` char(100) NOT NULL DEFAULT '',
+  `displayorder` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`settinggroupid`)
+) DEFAULT CHARSET=utf8;
+
+INSERT INTO `elo_settinggroup` (`settinggroupid`, `title`, `displayorder`) VALUES
+(1, 'Email', 2),
+(2, 'Einstellungen', 1);
+
 --
 -- Table structure for table `elo_config`
 --
 
-CREATE TABLE `elo_config` (
-  `config_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `config_name` varchar(40) NOT NULL,
-  `config_value` text NOT NULL,
-  PRIMARY KEY (`config_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+CREATE TABLE IF NOT EXISTS `elo_config` (
+  `settingid` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `settinggroupid` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `title` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `varname` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `value` mediumtext CHARACTER SET utf8 NOT NULL,
+  `description` mediumtext CHARACTER SET utf8 NOT NULL,
+  `optioncode` int(2) NOT NULL DEFAULT '0',
+  `displayorder` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`settingid`)
+)  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `elo_config`
 --
 
-INSERT INTO `elo_config` (`config_id`, `config_name`, `config_value`) VALUES
-(1, 'abc2ps', '/kunden/planetblacknwhite.de/software/abcm2ps/abcm2ps'),
-(2, 'abc2midi', '/kunden/planetblacknwhite.de/software/abcmidi/abc2midi'),
-(3, 'ps2pdf', '/usr/bin/ps2pdf'),
-(4, 'abc2abc', '/kunden/planetblacknwhite.de/software/abcmidi/abc2abc'),
-(5, 'convert', '/usr/bin/convert'),
-(6, 'params4img', '-s 1 -w 600'),
-(7, 'file_folder', 'files/'),
-(8, 'params4ps', ''),
-(9, 'date_format', 'd.m.Y, H:i'),
-(10, 'params4png', '-density 150 -geometry 100%'),
-(12, 'from_email', 'elo@christoph-pimpl.de'),
-(13, 'from_name', 'Christoph Pimpl'),
-(14, 'smtp_server', 'smtp.christoph-pimpl.de'),
-(15, 'smtp_port', '25'),
-(16, 'smtp_username', 'elo@christoph-pimpl.de'),
-(17, 'smtp_password', 'rghqJ5S<jswe'),
-(18, 'max_edit_time', '3600'),
-(19, 'url', 'http://elo.christoph-pimpl.de/'),
-(21, 'max_filesize', '2048'),
-(22, 'min_length_topic_title', '5'),
-(23, 'min_length_topic_text', '5');
+INSERT INTO `elo_config` (`settingid`, `settinggroupid`, `title`, `varname`, `value`) VALUES
+(1, 2, 'Path to abc2ps', 'abc2ps', '/kunden/planetblacknwhite.de/software/abcm2ps/abcm2ps'),
+(2, 2, 'Path to abc2midi', 'abc2midi', '/kunden/planetblacknwhite.de/software/abcmidi/abc2midi'),
+(3, 2, 'Path to ps2pdf', 'ps2pdf', '/usr/bin/ps2pdf'),
+(4, 2, '', 'abc2abc', '/kunden/planetblacknwhite.de/software/abcmidi/abc2abc'),
+(5, 2, '', 'convert', '/usr/bin/convert'),
+(6, 2, '', 'params4img', '-s 1 -w 600'),
+(7, 2, '', 'file_folder', 'files/'),
+(8, 2, '', 'params4ps', ''),
+(9, 2, '', 'date_format', 'd.m.Y, H:i'),
+(10, 2, '', 'params4png', '-density 150 -geometry 100%'),
+(12, 1, '', 'from_email', 'elo@christoph-pimpl.de'),
+(13, 1, '', 'from_name', 'Christoph Pimpl'),
+(14, 1, '', 'smtp_server', 'smtp.christoph-pimpl.de'),
+(15, 1, '', 'smtp_port', '25'),
+(16, 1, '', 'smtp_username', 'elo@christoph-pimpl.de'),
+(17, 1, '', 'smtp_password', 'rghqJ5S<jswe'),
+(18, 2, '', 'max_edit_time', '3600'),
+(19, 2, '', 'url', 'http://elo.christoph-pimpl.de/'),
+(21, 2, '', 'max_filesize', '2048'),
+(22, 2, '', 'min_length_topic_title', '5'),
+(23, 2, '', 'min_length_topic_text', '5');
 
+update `elo_config` set displayorder=1;
 -- --------------------------------------------------------
 
 --

@@ -81,3 +81,5 @@ $twig_data['langcode'] = $langcode;
 require_once('includes/languages/'.$langcode.'.php');
 
 $time = time();
+
+define('IMAGE_CROP_MAX_WIDTH_HEIGHT', 300);

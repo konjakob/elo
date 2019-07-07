@@ -24,8 +24,13 @@
 	{% if user_picture|length > 0 %}
 	
 	{% endif %}
-	<div id="userImage">{{ img.userGraphic(user_picture, 100) }}</div>
-	
+	<div id="userImage"><img class="uk-border-circle uk-box-shadow-medium" src="images/profile/{% if user_picture|length %}{{ user_picture }}{% else %}default.png{% endif %}" id="profile-image" alt="" width="100"></div>
+
+<div id="div-image-crop"  style="display:none; " class="uk-background-muted">
+	<div id="userImageCrop">
+		<img src="" id="profile-image-crop"></div><input type="hidden" value="" name="crop-x1"><input type="hidden" value="" name="crop-x2"><input type="hidden" value="" name="crop-y1"><input type="hidden" value="" name="crop-y2">
+<p class="uk-text-left"><button class="uk-button uk-button-primary" id="btnCropImage">Crop</button></p>
+</div>	
    
    {% include 'partials/attachment.twig' %}
    
@@ -78,14 +83,16 @@
             <h2 class="uk-modal-title">Crop you profile image</h2>
         </div>
 
-        <div class="uk-modal-body" uk-overflow-auto>
+        <div class="uk-modal-body">
 
-            <p><div id="userImageCrop"></div><input type="hidden" value="" name="crop-x1"><input type="hidden" value="" name="crop-x2"><input type="hidden" value="" name="crop-y1"><input type="hidden" value="" name="crop-y2"></p>
-			<p class="uk-text-right"><button class="uk-button uk-button-primary" id="btnCropImage">Crop</button></p>
+            <p></p>
+			
         </div>
 
     </div>
 </div>
+
+
 
 <script>
 
@@ -106,8 +113,9 @@
 			},
 			success: function(data){
 				if ( data.state == 'ok' ) {
-                    $('#userImage').innerHTML = '<img src="' + data.filePath + '?timestamp=' + Date.now() + '" id="profile-image" width="100" height="100">';
-					UIkit.modal($('#modal-image-crop')).hide();
+					$("#profile-image").attr("src", data.filePath + '?timestamp=' + Date.now());
+					$('#profile-image-crop').imgAreaSelect({remove:true});
+					$('#div-image-crop').toggle();
 					toastr["success"]("Image saved", "Success");
 				} else {
 					toastr["error"]("Error", "Error");
@@ -116,6 +124,8 @@
 		});
 		
 	});
+	
+	
     
 
 </script>		
@@ -125,5 +135,5 @@
 
 {% block footerInjection %}
   <link rel="stylesheet" type="text/css" href="css/imgareaselect-default.css" />
-  <script type="text/javascript" src="js/jquery.imgareaselect.pack.js"></script>			
+  <script type="text/javascript" src="js/jquery.imgareaselect.pack.js"></script>	
 {% endblock %}	
