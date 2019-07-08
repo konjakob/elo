@@ -49,28 +49,28 @@ CREATE TABLE IF NOT EXISTS `elo_config` (
 -- Dumping data for table `elo_config`
 --
 
-INSERT INTO `elo_config` (`settingid`, `settinggroupid`, `title`, `varname`, `value`) VALUES
-(1, 2, 'Path to abc2ps', 'abc2ps', '/kunden/planetblacknwhite.de/software/abcm2ps/abcm2ps'),
-(2, 2, 'Path to abc2midi', 'abc2midi', '/kunden/planetblacknwhite.de/software/abcmidi/abc2midi'),
-(3, 2, 'Path to ps2pdf', 'ps2pdf', '/usr/bin/ps2pdf'),
-(4, 2, 'Path to abc2abc', 'abc2abc', '/kunden/planetblacknwhite.de/software/abcmidi/abc2abc'),
-(5, 2, 'Path to convert', 'convert', '/usr/bin/convert'),
+INSERT INTO `elo_config` (`settingid`, `settinggroupid`, `title`, `varname`, `value`, `description`) VALUES
+(1, 2, 'Path to abc2ps', 'abc2ps', '/kunden/planetblacknwhite.de/software/abcm2ps/abcm2ps', 'To create the PDF from the note sheets, it is necessary to have the program abc2ps. It can be downloaded from http://moinejf.free.fr/. If the command is not globally available, please specify the exact path, e.g. /local/software/abcm2ps/abcm2ps.'),
+(2, 2, 'Path to abc2midi', 'abc2midi', '/kunden/planetblacknwhite.de/software/abcmidi/abc2midi', 'To create the midi files from an abc file, the program abc2midi can be use. It can be downloaded from https://github.com/leesavide/abcmidi. If the command is not globally available, please specify the exact path, e.g. /local/software/abc2midi/abc2midi.'),
+(3, 2, 'Path to ps2pdf', 'ps2pdf', '/usr/bin/ps2pdf', 'To convert PS files to PDF files, the program ps2pdf from the ghostscript can be used. If the command is not globally available, please specify the exact path, e.g. /local/software/ps2pdf/ps2pdf.'),
+(4, 2, 'Path to abc2abc', 'abc2abc', '/kunden/planetblacknwhite.de/software/abcmidi/abc2abc', 'To check the syntax of the ABC files, the program abc2abc can be used.  It can be downloaded from https://github.com/leesavide/abcmidi. If the command is not globally available, please specify the exact path, e.g. /local/software/abc2abc/abc2abc.'),
+(5, 2, 'Path to convert', 'convert', 'convert'),
 (6, 2, 'Parameters for convert', 'params4img', '-s 1 -w 600'),
-(7, 2, 'File folder', 'file_folder', 'files/'),
+(7, 2, 'File folder', 'file_folder', 'files/', 'The folder where files are stored.'),
 (8, 2, 'Parameters for ps', 'params4ps', ''),
-(9, 2, 'Date format', 'date_format', 'd.m.Y, H:i'),
-(10, 2, 'Parameters for png', 'params4png', '-density 150 -geometry 100%'),
-(12, 1, 'From email', 'from_email', 'elo@christoph-pimpl.de'),
-(13, 1, 'From name', 'from_name', 'Christoph Pimpl'),
-(14, 1, 'SMTP server', 'smtp_server', 'smtp.christoph-pimpl.de'),
-(15, 1, 'SMTP port', 'smtp_port', '25'),
-(16, 1, 'SMTP username', 'smtp_username', 'elo@christoph-pimpl.de'),
-(17, 1, 'SMTP password', 'smtp_password', 'rghqJ5S<jswe'),
-(18, 2, 'Maximum time for editing posts', 'max_edit_time', '3600'),
-(19, 2, 'URL to page', 'url', 'http://elo.christoph-pimpl.de/'),
-(21, 2, 'Maximum file size', 'max_filesize', '2048'),
-(22, 2, 'Minimum topic title length', 'min_length_topic_title', '5'),
-(23, 2, 'Minimum text length', 'min_length_topic_text', '5');
+(9, 2, 'Date format', 'date_format', 'd.m.Y, H:i', 'To format the dates, the formating available in PHP can be used. Please see https://www.php.net/manual/en/function.date.php.'),
+(10, 2, 'Parameters for png', 'params4png', '-density 150 -geometry 100%', 'Parameters for generating the PNG files. For all options, please see https://imagemagick.org/script/command-line-options.php.'),
+(12, 1, 'From email', 'from_email', 'elo@christoph-pimpl.de', 'When sending emails out, following email will be set as from email.'),
+(13, 1, 'From name', 'from_name', 'Christoph Pimpl', 'When sending emails out, following name will be set as from name.'),
+(14, 1, 'SMTP server', 'smtp_server', 'smtp.christoph-pimpl.de', 'Address of the SMTP server for sending emails.'),
+(15, 1, 'SMTP port', 'smtp_port', '25', 'Port of the smtp server for sending emails.'),
+(16, 1, 'SMTP username', 'smtp_username', 'elo@christoph-pimpl.de', 'Username for the SMTP server for sending emails.'),
+(17, 1, 'SMTP password', 'smtp_password', 'rghqJ5S<jswe', 'Password for the SMTP server for sending emails.'),
+(18, 2, 'Maximum time for editing posts', 'max_edit_time', '3600', 'Maximum time a user can edit his post.'),
+(19, 2, 'URL to page', 'url', 'http://elo.christoph-pimpl.de/', ''),
+(21, 2, 'Maximum file size', 'max_filesize', '2048', ''),
+(22, 2, 'Minimum topic title length', 'min_length_topic_title', '5', ''),
+(23, 2, 'Minimum topic/reply text length', 'min_length_topic_text', '5', '');
 
 update `elo_config` set displayorder=1;
 -- --------------------------------------------------------
