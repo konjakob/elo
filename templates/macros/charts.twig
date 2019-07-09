@@ -1,0 +1,68 @@
+
+{% macro bar(c) %}
+var char{{ c.id }}El = document.getElementById('chart{{ c.id }}');
+new Chart(char{{ c.id }}El, {
+  type: 'bar',
+  data: {
+    labels: [{{ c.labels|raw }}],
+    datasets: [{
+      label: "{{ c.label }}",
+      backgroundColor: ["#39f", "#895df6", "#3cba9f", "#e8c3b9", "#c45850"],
+      data: [{{ c.data }}]
+    }]
+  },
+  
+  options: {
+    maintainAspectRatio: false,
+    responsiveAnimationDuration: 500,
+    legend: {
+      display: false
+    },
+    animation: {
+      duration: 2000
+    },
+    title: {
+      display: false,
+      text: '{{ c.text }}'
+    },
+	scales:
+		{"yAxes":[{"ticks":{"beginAtZero":true}}]}
+  }
+});	
+{% endmacro %}
+
+{% macro line(c) %}
+
+var char{{ c.id }}El = document.getElementById('chart{{ c.id }}');
+
+new Chart(char2El, {
+  type: 'line',
+  data: {
+    labels: [{{ c.labels|raw }}],
+    datasets: [
+		{% for dset in c.datasets %}
+	{
+      data: [{{ dset.data }}],
+      label: "{{ dset.label }}",
+      borderColor: "#39f",
+      fill: false
+    }{% if not loop.last %},{% endif %}
+		{% endfor %}
+	]
+  },
+  options: {
+    maintainAspectRatio: false,
+    responsiveAnimationDuration: 500,
+    animation: {
+      duration: 2000
+    },
+    title: {
+      display: false,
+      text: '{{ c.text }}'
+    },
+	scales:
+		{"yAxes":[{"ticks":{"beginAtZero":true}}]}
+  }
+});
+
+{% endmacro %}
