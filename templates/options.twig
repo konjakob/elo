@@ -1,10 +1,10 @@
-{% extends 'default.twig' %}
+{% extends 'layout_dashboard.twig' %}
 {% import 'macros/forms.twig' as frm %}
 {% block vars %}
 {% endblock %}
 
 {% block default %}
-
+<h1>Settings</h1>
 {% for m in msgs %}
 
 <div class="uk-alert-{% if m.state == 'ok' %}success{% else %}danger{% endif %}" uk-alert>

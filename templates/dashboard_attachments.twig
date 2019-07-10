@@ -1,0 +1,34 @@
+{% extends 'layout_dashboard.twig' %}
+
+{% block default %}
+<h1>Attachments</h1>
+{% if files|length %}
+There are {{ files|length }} files in the system.
+<table class="uk-table uk-table-striped">
+    <thead>
+        <tr>
+            <th>Filename</th>
+			<th>Filesize</th>
+			<th>Preview</th>
+        </tr>
+    </thead>
+    <tbody>
+		{% for f in files %}
+		<tr>
+			<td>{{ f.filename }}</td>
+			<td>{{ f.filesize }}</td>
+			<td>{% if f.img_file %}<img src="{{ f.img_file }}" height="200">{% endif %}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% else %}
+There are no files.
+{% endif %}
+
+{% endblock %}
+
+{% block footerInjection %}
+
+{% endblock %}
+

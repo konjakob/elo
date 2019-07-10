@@ -54,7 +54,7 @@ INSERT INTO `elo_config` (`settingid`, `settinggroupid`, `title`, `varname`, `va
 (2, 2, 'Path to abc2midi', 'abc2midi', '/kunden/planetblacknwhite.de/software/abcmidi/abc2midi', 'To create the midi files from an abc file, the program abc2midi can be use. It can be downloaded from https://github.com/leesavide/abcmidi. If the command is not globally available, please specify the exact path, e.g. /local/software/abc2midi/abc2midi.'),
 (3, 2, 'Path to ps2pdf', 'ps2pdf', '/usr/bin/ps2pdf', 'To convert PS files to PDF files, the program ps2pdf from the ghostscript can be used. If the command is not globally available, please specify the exact path, e.g. /local/software/ps2pdf/ps2pdf.'),
 (4, 2, 'Path to abc2abc', 'abc2abc', '/kunden/planetblacknwhite.de/software/abcmidi/abc2abc', 'To check the syntax of the ABC files, the program abc2abc can be used.  It can be downloaded from https://github.com/leesavide/abcmidi. If the command is not globally available, please specify the exact path, e.g. /local/software/abc2abc/abc2abc.'),
-(5, 2, 'Path to convert', 'convert', 'convert', ''),
+(5, 2, 'Path to convert', '"C:\Program Files\ImageMagick-7.0.8-Q16\magick.exe" convert', 'convert', ''),
 (6, 2, 'Parameters for convert', 'params4img', '-s 1 -w 600', ''),
 (7, 2, 'File folder', 'file_folder', 'files/', 'The folder where files are stored.'),
 (8, 2, 'Parameters for ps', 'params4ps', '', ''),
@@ -67,7 +67,7 @@ INSERT INTO `elo_config` (`settingid`, `settinggroupid`, `title`, `varname`, `va
 (16, 1, 'SMTP username', 'smtp_username', 'elo@christoph-pimpl.de', 'Username for the SMTP server for sending emails.'),
 (17, 1, 'SMTP password', 'smtp_password', 'rghqJ5S<jswe', 'Password for the SMTP server for sending emails.'),
 (18, 2, 'Maximum time for editing posts', 'max_edit_time', '3600', 'Maximum time a user can edit his post.'),
-(19, 2, 'URL to page', 'url', 'http://elo.christoph-pimpl.de/', ''),
+(19, 2, 'URL to page', 'url', 'http://localhost/elo/src/', ''),
 (21, 2, 'Maximum file size', 'max_filesize', '2048', ''),
 (22, 2, 'Minimum topic title length', 'min_length_topic_title', '5', ''),
 (23, 2, 'Minimum topic/reply text length', 'min_length_topic_text', '5', '');

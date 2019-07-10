@@ -37,7 +37,7 @@ if(!$auth->validateAuthCookie()) {
 	exit();
 }
 
-$sql = "select config_name, config_value from elo_config";
+$sql = "select varname as config_name, value as config_value from elo_config";
 $statement = $pdo->prepare($sql);
 $statement->execute();
 		

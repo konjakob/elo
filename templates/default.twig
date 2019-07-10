@@ -16,12 +16,7 @@
                                 <a class="uk-navbar-item uk-logo" href="topic.php">Logo</a>
 
                                 <ul class="uk-navbar-nav">
-								{% if 'IS_ADMIN' in user_rights %}
-
-								<li><a href="panel.php">Admin panel</a></li>
-								<li><a href="view_user_topics.php">User view</a></li>
-								<li><a href="options.php">Settings</a></li>
-								{% endif %}
+								
                                 </ul>
 								
                             </div>
@@ -29,6 +24,9 @@
 							<div class="uk-navbar-right">
 
                                 <ul class="uk-navbar-nav">
+									{% if 'IS_ADMIN' in user_rights %}
+									<li><a href="dashboard.php">Admin panel</a></li>
+									{% endif %}
 									<li><a href="user-settings.php">{{ constant('TOPIC_USER_SETTINGS') }}</a></li>
                                     <li><a href="logout.php">{{ constant('TOPIC_TEXT_LOGOUT') }}</a></li>
                                 </ul>

@@ -7,25 +7,20 @@ if ( !in_array('IS_ADMIN', $user_rights ) ) {
 	exit();
 }
 
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<link href="style.css" rel="stylesheet" type="text/css" />
-
-</head>
-
-<body>
-<table>
-<?
+$msgs = array();
 
 $statement = $pdo->prepare("select * from elo_attachment");
 $statement->execute();
-	
+
+$files = array();
+
 while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false ) {
 
-	if ( file_exists("files/".$res['attachment_id'].base64_encode($res['attachment_filename'])) ) {
-		$filesize_s = "";
+	$filesize_s = "";
+	$img_s = "";
+	$exists = 0;
+	if ( file_exists("files/".$res['attachment_id'].base64_encode($res['attachment_filename'])) ) {	
+		$exists = 1;
 		$filesize = filesize("files/".$res['attachment_id'].base64_encode($res['attachment_filename']));
 		if ( $filesize < 1024 ) {
 			$filesize_s = $filesize." Byte";
@@ -36,15 +31,22 @@ while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false ) {
 		} else {
 			$filesize_s = $filesize." Byte";
 		}
-		$img_s = "";
-		if ( file_exists("files/".$res['attachment_id'].base64_encode($res['attachment_filename']).".gif")) {
-			$img_s = "<img src='files/".$res['attachment_id'].base64_encode($res['attachment_filename']).".gif'>";
+		
+		if ( file_exists("files/".$res['attachment_id'].base64_encode($res['attachment_filename']).".png")) {
+			$img_s = "files/".$res['attachment_id'].base64_encode($res['attachment_filename']).".png";
 		}
-		echo "<tr><td>".$res['attachment_filename']."</td><td>".$filesize_s."</td><td>Delete</td><td>".$img_s."</td></tr>";	
-	} else {
-		echo "<tr><td colospan=4>".$res['attachment_filename']." does not exsit</td></tr>";
+		//echo "<tr><td>".$res['attachment_filename']."</td><td>".$filesize_s."</td><td>Delete</td><td>".$img_s."</td></tr>";	
 	}
 	
+	$files[] = array(	'filename' => $res['attachment_filename'],
+						'filesize' => $filesize_s,
+						'exists' => $exists,
+						'img_file' => $img_s
+					);
 	
 }
-?></table>
+
+$twig_data['files'] = $files;
+$twig_data['msgs'] = $msgs;
+$twig_data['breadcrumb'] = $breadcrumb;
+echo $twig->render("dashboard_attachments.twig", $twig_data);

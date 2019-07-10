@@ -74,7 +74,20 @@ $charts[] = array(	'labels' => implode(", ", $chartLabels),
 					'style' => 'line'
 				);
 
-				// SELECT count(user_id) as no, date(user_login) as day, user_id FROM `elo_user_login` group by day,user_id
+/* users online per day */				
+$chartLabels = array();
+$chartData = array();			
+foreach ( $pdo->query("SELECT count(distinct user_id) as no, str_to_date(concat(yearweek(user_login), ' monday'), '%X%V %W') as week FROM `elo_user_login` group by week order by yearweek(user_login) desc limit 5") as $res) {
+	$chartLabels[] = '"'.$res['week'].'"';
+	$chartData[] = $res['no'];
+}
+$charts[] = array(	'labels' => implode(", ", array_reverse($chartLabels)),
+					'label' => 'Users',
+					'data' => implode(", ", array_reverse($chartData)),
+					'text' => 'Online users per week',
+					'id' => 3,
+					'style' => 'bar'
+				);
 				
 $twig_data['charts'] = $charts;
 
