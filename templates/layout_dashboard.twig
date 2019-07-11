@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Dashboard</title>
-		<!-- CSS FILES -->
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/css/uikit.min.css">
-		<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
-		<link rel="stylesheet" type="text/css" href="css/dashboard.css">
-	</head>
-	<body>
+{% extends 'index.twig' %}
 
+{% block headerInjection %}
+<link rel="stylesheet" type="text/css" href="css/dashboard.css">
+{% endblock %}	
+
+{% block index %}
 		<!--HEADER-->
 		<header id="top-head" class="uk-position-fixed">
 			<div class="uk-container uk-container-expand uk-background-primary">
@@ -91,15 +85,7 @@
 		</div>
 		<!-- /CONTENT -->
 		
-		<!-- JS FILES -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit-icons.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-		<script src="js/chartScripts.js"></script>
+{% endblock %}
 {% block footerInjection %}
 
 {% endblock %}		
-		
-	</body>
-</html>

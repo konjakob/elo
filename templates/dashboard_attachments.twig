@@ -10,6 +10,7 @@ There are {{ files|length }} files in the system.
             <th>Filename</th>
 			<th>Filesize</th>
 			<th>Preview</th>
+			<th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +19,7 @@ There are {{ files|length }} files in the system.
 			<td>{{ f.filename }}</td>
 			<td>{{ f.filesize }}</td>
 			<td>{% if f.img_file %}<img src="{{ f.img_file }}" height="200">{% endif %}</td>
+			<td>Details | Delete</td>
 		</tr>
 		{% endfor %}
 	</tbody>
