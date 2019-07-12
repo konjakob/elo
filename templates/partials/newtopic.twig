@@ -3,8 +3,8 @@
 
 <form action="actions.php" method="post" class="uk-form-stacked" enctype="multipart/form-data" id="frmNewTopic"><input type="hidden" value="newTopic" name="action">
 
-{% if 'ADD_USER_TO_TOPIC' in user_rights|keys %}
 <div class="uk-child-width-1-2" uk-grid>
+{% if 'ADD_USER_TO_TOPIC' in user_rights|keys %}
 	<div>
 		<div class="uk-card uk-card-small">
 			<h4 class="uk-card-title">User for this topic</h4>

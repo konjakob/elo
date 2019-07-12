@@ -43,15 +43,38 @@
 				<label class="uk-form-label" for="user_lang">Language</label>
 				<div class="uk-form-controls">
 					<select name="t_lang" class="uk-select" id="user_lang">
-		{% for l in langs %}
-			<option value="{{ l.lang_id }}">{{ l.lang_name }}</option>
-		{% endfor %}
-		</select>
+					{% for l in langs %}
+						<option value="{{ l.lang_id }}">{{ l.lang_name }}</option>
+					{% endfor %}
+					</select>
 				</div>
 			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="user_rights">Rights</label>
+				<div class="uk-form-controls">
+					<select id='ex_users' size='5' multiple='multiple' class="js-select2 uk-select uk-width-1-1 " style="" name='t_rights[]'>
+						{% for r in rights %}
+							<option value='{{ r.right_id }}'>{{ r.right_name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="user_groups">Groups</label>
+				<div class="uk-form-controls">
+					<select id='ex_groups' class="uk-select js-select2 uk-width-1-1"  style="" size='5' multiple='multiple' name='t_group[]'>
+						{% for g in groups %}
+						<option value='{{ g.group_id }}'>{{ g.group_name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			
+			
 			<div class="uk-text-right">
 				<input type="submit" value="Save" name="new_user" class="uk-button uk-button-primary" />
 			</div>
+						
 		</form>
 	</div>
 </div>
@@ -64,221 +87,12 @@
 
 <script language="javascript">  
 
-	function deleteGroup(groupId) {
-		var el = $(this);
-		UIkit.modal.confirm('Confirm deletion').then(function() {
-			$.post("actions.php",
-			{	  
-			  delete_group:groupId,
-			  action:'deleteGroup'
-			},
-			function(data,status){
-				if ( data.state == 'ok' ) {
-					el.parent().remove();
-					toastr["success"]("Group deleted", "Success");
-				} else {
-					toastr["error"]("Error", "Error");
-				}
-			});
-		}, function () {
-			
-		});
-	}
-
-   	function removeRight() {
-		$.post("actions.php",
-		{	  
-		  userid:$('#user_id_c').val(),
-		  action:'removeRight',
-		  t_r:$("#us_rights_c").val()
-		},
-		function(data,status){
-			$('#us_rights_c option:selected').each(function(){
-				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#ex_rights_c");
-				$("#us_rights_c option[value="+$(this).val()+"]").remove();
-			});
-		});
-	}
-	function addRight() {
-		$.post("actions.php",
-		{	  
-		  userid:$('#user_id_c').val(),
-		  action:'addRight',
-		  t_r:$("#ex_rights_c").val()
-		},
-		function(data,status){
-			$('#ex_rights_c option:selected').each(function(){
-				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#us_rights_c");
-				$("#ex_rights_c option[value="+$(this).val()+"]").remove();
-			});
-		});
-	}
-	function removeGroup() {
-		$.post("actions.php",
-		{	  
-		  userid:$('#user_id_c').val(),
-		  action:'removeGroup',
-		  t_r:$("#us_groups_c").val()
-		},
-		function(data,status){
-			$('#us_groups_c option:selected').each(function(){
-				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#ex_groups_c");
-				$("#us_groups_c option[value="+$(this).val()+"]").remove();
-			});
-		});
-	}
-	function addGroup() {
-		$.post("actions.php",
-		{	  
-		  userid:$('#user_id_c').val(),
-		  action:'addGroup',
-		  t_r:$("#ex_groups_c").val()
-		},
-		function(data,status){
-			$('#ex_groups_c option:selected').each(function(){
-				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#us_groups_c");
-				$("#ex_groups_c option[value="+$(this).val()+"]").remove();
-			});
-		});
-	}
 
 	$('#use-sug-password').click(function(e) {
 		e.preventDefault();
 		$('#user_pass').val($('#suggestedPassword').text());
 	});
-	
-	$('#use-sug-password-existing').click(function(e) {
-		e.preventDefault();
-		$('#user_pass_c').val($('#suggestedPassword_existing').text());
-	});
-	
-	$('#remove-group-user').click(function() {
-		$('#users-of-group option:selected').each(function(){
-			var el = $(this);
-			$.ajax({
-				url: 'actions.php',
-				dataType: 'json',
-				method: 'POST',
-				data: 
-				{	  
-					guid:$(this).val(),
-					action:'removeUserFromGoup',
-				},
-				success: function(respond){
-					if ( respond.state == 'ok' ) {
-						$("#users-of-group option[value="+el.val()+"]").remove();
-					} else {
-						toastr["error"]("Error", "Error");
-					}
-				}
-			});			
-		});
-	});
-	
 
-	function tgldiv(divname){
-		$("#"+divname).slideToggle("slow");
-	 };
-  
-	function loadUserData(id) {
-		$.ajax({
-				url: "actions.php?action=getUser&userid="+id,
-				dataType: 'json',
-				success: function(respond)
-				{
-					if ( respond.state == 'ok' ) {
-						$('#t_name_c').val(respond.user_data.user_name);
-						$('#user_pass_c').val("");
-						$('#user_email_c').val(respond.user_data.user_email);
-						$("#user_lang_c option[id='" + respond.user_data.lang_id + "']").attr("selected", "selected");
-						$('#user_id_c').val(respond.user_data.user_id);
-						$('#suggestedPassword_existing').text(respond.exampleCode);
-						$('#ex_rights_c').empty();
-						$.each(respond.option_right_no,function(key, value) {
-							$('#ex_rights_c').append('<option value=' + key + '>' + value + '</option>');
-						});
-						
-						$('#us_rights_c').empty();
-						$.each(respond.option_right_yes,function(key, value) {
-							$('#us_rights_c').append('<option value=' + key + '>' + value + '</option>');
-						});
-						
-						$('#ex_groups_c').empty();
-						$.each(respond.option_group_no,function(key, value) {
-							$('#ex_groups_c').append('<option value=' + key + '>' + value + '</option>');
-						});
-						
-						$('#us_groups_c').empty();
-						$.each(respond.option_group_yes,function(key, value) {
-							$('#us_groups_c').append('<option value=' + key + '>' + value + '</option>');
-						});
-						
-						//$('#modal-body').html(respond);
-						UIkit.modal($('#edit-user-model')).show();
-					} else {
-						toastr["error"]("Error", "Error");
-					}
-				}
-		});
-	}
-  
-  function loadGroupData(id) {
-	  $.ajax({
-				url: "actions.php?action=getGroupUser&group_id="+id,
-				dataType: 'json',
-				success: function(respond)
-				{
-					if ( respond.state == 'ok' ) {
-						$('#users-of-group').empty();
-						$.each(respond.users,function(key, value) {
-							$('#users-of-group').append('<option value=' + key + '>' + value + '</option>');
-						});
-						UIkit.modal($('#modal-group-users')).show();
-					} else {
-						toastr["error"](respond.text, respond.title);
-					}
-				}
-		});
-  }
-  
-  function changeGroupData(id) {
-	var el = $(this);
-	var ael = $('#group-list-' + id);
-	UIkit.modal.prompt('Group:', ael.text()).then(function (name) {
-		if ( name ) {
-			var strName = name;
-			$.ajax({
-				url: 'actions.php',
-				dataType: 'json',
-				method: 'POST',
-				data: 
-				{	  
-				  guid: id,
-				  action: 'changeGoup',
-				  t_name: strName
-				},
-				success: function(respond){
-					if ( respond.state == 'ok' ) {
-						ael.text(strName);
-						toastr["success"]("Group modified", "Success");
-					} else {
-						toastr["error"]("Error", "Error");
-					}
-				}
-			});
-		}
-	});
-
-  }
-  
-
-	function selectAllOptions(selStr)
-	{
-	  var selObj = document.getElementById(selStr);
-	  for (var i=0; i<selObj.options.length; i++) {
-		selObj.options[i].selected = true;
-	  }
-	}
 	
 	$("#frmNewTopic").submit(function(e){
         e.preventDefault();
@@ -300,13 +114,5 @@
   });
 	
 </script>
-
-	{% if 'CREATE_SHEETS' in user_rights %}
-		<script type="text/javascript">
-			window.onload = function() {	
-				abc_editor = new ABCJS.Editor("abc", { paper_id: "paper0", midi_id:"midi", warnings_id:"warnings" });
-			}
-		</script>
-	{% endif %}
 			
 {% endblock %}	
