@@ -16,15 +16,15 @@ if ( isset($_POST['new_user']) ) {
 	$newUserLang = (int)filter_input(INPUT_POST, 't_lang', FILTER_VALIDATE_INT);
 	
 	if ( !filter_var($newUserEmail, FILTER_VALIDATE_EMAIL) ) {
-		$msgs[] = array('state' => 'nok', 'text' => 'Please provide a valid email address.')	
+		$msgs[] = array('state' => 'nok', 'text' => 'Please provide a valid email address.');
 	}
 	
 	if ( !isset($_POST['t_pass']) || strlen($_POST['t_pass']) < 1 ) {
-		$msgs[] = array('state' => 'nok', 'text' => 'Please provide a password.')	
+		$msgs[] = array('state' => 'nok', 'text' => 'Please provide a password.');	
 	}
 	
 	if ( strlen($newUserName) < 1 ) {
-		$msgs[] = array('state' => 'nok', 'text' => 'Please provide a user name.')	
+		$msgs[] = array('state' => 'nok', 'text' => 'Please provide a user name.');	
 	}
 
 	if ( sizeof($msgs) < 1 ) {	
@@ -46,8 +46,24 @@ if ( isset($_POST['new_user']) ) {
 			$statement->bindValue(':pass', $hasher->HashPassword(filter_input(INPUT_POST, 't_pass')));
 			$statement->bindValue(':t_lang', $newUserLang, PDO::PARAM_INT);
 			$statement->execute();
+			
+			$newUserId= $pdo->lastInsertId();
 		
 			$msgs[] = array('state' => 'ok', 'text' => 'Created new user: '.filter_input(INPUT_POST, 't_name'));
+			
+			foreach ( $_POST['t_group'] as $g ) {
+				$statement = $pdo->prepare("insert into elo_group_user (user_id, group_id) values (:user, :group)");
+                $statement->bindValue(':user', $newUserId, PDO::PARAM_INT);
+                $statement->bindValue(':group',(int)$g, PDO::PARAM_INT);
+                $statement->execute();
+			}
+			
+			foreach ( $_POST['t_rights'] as $r ) {
+				$statement = $pdo->prepare("insert into elo_right_user (user_id, right_id) values (:user, :right)");
+                $statement->bindValue(':user',$newUserId, PDO::PARAM_INT);
+                $statement->bindValue(':right',(int)$r, PDO::PARAM_INT);
+                $statement->execute();
+			}
 			
 			if ( isset($_POST['t_send_email']) ) {
 				
@@ -123,8 +139,6 @@ while ( ($res = $query_right->fetch(PDO::FETCH_ASSOC)) !== false )
 	$rights[] = $res;
 
 $twig_data['rights'] = $rights;
-
-
 
 $twig_data['exampleCode'] = createCode(8);
 $twig_data['msgs'] = $msgs;

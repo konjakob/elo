@@ -140,47 +140,6 @@ $twig_data['users'] = $users;
 
 $msgs = array();
 
-/* this is now available in actions.php */
-/*
-$default_text = "";
-if ( isset($_POST['new_topic']) ) {
-
-	if ( isset( $_POST['t_topic_title'] ) && strlen($_POST['t_topic_title'] )) {
-		$db->query("insert into elo_topic (topic_title) values ('".addslashes($_POST['t_topic_title'])."')");
-		
-		$topicid = $db->insert_id();
-		$db->query("insert into elo_reply (user_id, topic_id, reply_date, reply_text) values ('".$userid."', '".$topicid."', '".time()."', '".addslashes($_POST['t_topic'])."')");
-		$reply_id = $db->insert_id();
-		if ( isset( $_POST['t_user'] )) {
-			foreach ( $_POST['t_user'] as $u )
-				$db->query("insert into elo_topic_user (user_id, topic_id) values ('".$u."', '".$topicid."')");
-		}
-		if ( isset($_POST['t_group'])) {
-			foreach ( $_POST['t_group'] as $g )
-				$db->query("insert into elo_topic_group (group_id, topic_id) values ('".$g."', '".$topicid."')");
-		}
-		
-		if ( in_array('CREATE_ATTACHMENTS', $user_rights) && isset($_POST['picture']) ) {
-			//processAttachment();
-			foreach ( $_POST['picture'] as $p ) 
-				$db->query("insert into elo_reply_attachment (reply_id, attachment_id) values ('".$reply_id."', '".(int)$p."')");
-		}
-		
-		if ( in_array('CREATE_SHEETS', $user_rights) && isset($_POST['abc']) && strlen($_POST['abc'])) {
-			processMusic();
-		}
-		$msgs[] = array('state' => 'ok', 'text' => 'New topic was created.');
-	} else {
-		$default_text = $_POST['t_topic'];
-		if ( isset($_POST['abc']) && strlen($_POST['abc']) ) {
-			$default_text .= " # Please add this text to the music box: ".$_POST['abc'];
-		}
-		$msgs[] = array('state' => 'nok', 'text' => 'Please enter a title.');
-	
-	}
-}
-*/
-
 $twig_data['exampleCode'] = createCode(8);
 $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 $breadcrumb[] = array( 'text' => 'Admin Panel', 'href' => '');

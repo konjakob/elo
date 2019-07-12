@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS `elo_settinggroup` (
 
 INSERT INTO `elo_settinggroup` (`settinggroupid`, `title`, `displayorder`) VALUES
 (1, 'Email', 2),
-(2, 'Einstellungen', 1);
+(2, 'Einstellungen', 1),
+(3, 'Validierungsanforderungen', 2);
 
 --
 -- Table structure for table `elo_config`
@@ -69,8 +70,9 @@ INSERT INTO `elo_config` (`settingid`, `settinggroupid`, `title`, `varname`, `va
 (18, 2, 'Maximum time for editing posts', 'max_edit_time', '3600', 'Maximum time a user can edit his post.'),
 (19, 2, 'URL to page', 'url', 'http://localhost/elo/src/', ''),
 (21, 2, 'Maximum file size', 'max_filesize', '2048', ''),
-(22, 2, 'Minimum topic title length', 'min_length_topic_title', '5', ''),
-(23, 2, 'Minimum topic/reply text length', 'min_length_topic_text', '5', '');
+(22, 3, 'Minimum topic title length', 'min_length_topic_title', '5', ''),
+(23, 3, 'Minimum topic/reply text length', 'min_length_topic_text', '5', '');
+(24, 3, 'Minimum user name length', 'min_length_username', '5', '');
 
 update `elo_config` set displayorder=1;
 -- --------------------------------------------------------

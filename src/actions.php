@@ -288,6 +288,48 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		echo json_encode($returnData);
 		exit();
 	}
+	else if ($action == 'validate') {
+		$response = array(
+		  'valid' => false,
+		  'message' => 'No argument given.'
+		);
+
+		if( isset($_POST['t_email']) ) {
+			
+			if ( !filter_var($_POST['t_email'], FILTER_VALIDATE_EMAIL) ) {
+				$response = array('valid' => false, 'message' => 'Please provide a valid email address.');
+			} else {
+				$statement = $pdo->prepare("select user_id from elo_user where user_email=:t_email");
+				$statement->bindValue(':t_email', filter_input(INPUT_POST, 't_email', FILTER_SANITIZE_EMAIL));
+				$statement->execute();	
+				
+				if ( $statement->rowCount() ) {
+					$response = array('valid' => false, 'message' => 'This email is already registered.');
+				} else {
+					// email not yet registered
+					$response = array('valid' => true);
+				}
+			}
+		} else if ($_POST['t_email_c']) {
+			if ( !filter_var($_POST['t_email_c'], FILTER_VALIDATE_EMAIL) ) {
+				$response = array('valid' => false, 'message' => 'Please provide a valid email address.');
+			} else {
+				$statement = $pdo->prepare("select user_id from elo_user where user_email=:t_email and user_id<>:user_id");
+				$statement->bindValue(':t_email', filter_input(INPUT_POST, 't_email_c', FILTER_SANITIZE_EMAIL));
+				$statement->bindValue(':user_id', (int)filter_input(INPUT_POST, 'userid'), PDO::PARAM_INT);
+				$statement->execute();	
+				
+				if ( $statement->rowCount() ) {
+					$response = array('valid' => false, 'message' => 'This email is already registered.');
+				} else {
+					// email not yet registered
+					$response = array('valid' => true);
+				}
+			}
+		}
+		echo json_encode($response);
+		exit();
+	}
 	else if ($action == 'addRight') {
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
 			$returnData['state'] = 'ok';
