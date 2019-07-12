@@ -203,24 +203,6 @@
 	  }
 	}
 	
-	$("#frmNewTopic").submit(function(e){
-        e.preventDefault();
-		$.ajax({
-			url: 'actions.php',
-			dataType: 'json',
-			method: 'POST',
-			data: $('#frmNewTopic').serialize(),
-			success: function(respond){
-				if ( respond.state == 'ok' ) {
-					$("#submitTopic").closest('form').find("input[type=text], textarea").val("");
-					toastr["success"]("Successfully posted", "Success");
-				} else {
-					toastr["error"]("Error", "Error");
-				}
-			}
-		});		  
-  
-  });
 	
 </script>
 			
