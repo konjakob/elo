@@ -7,14 +7,12 @@ if ( !in_array('IS_ADMIN', $user_rights ) ) {
 	exit();
 }
 
-if ( isset($_POST['new_group']) ) {
-	$statement = $pdo->prepare("insert into elo_group (group_name) values (:t_group)");
-	$statement->bindValue(':t_group', filter_input(INPUT_POST, 't_group'));
-	$statement->execute();
-	$msgs[] = array('state' => 'ok', 'text' => 'Saved the new group.');
-}
+$start = isset($_GET['start']) ? (int)filter_input(INPUT_GET, 'start', FILTER_SANITIZE_NUMBER_INT) : 0;
 
-$statement = $pdo->prepare("select * from elo_group order by group_name");
+$twig_data['maxElements'] = query_one("select count(*) as no from elo_group");
+
+$statement = $pdo->prepare("select * from elo_group order by group_name LIMIT :start, 20");
+$statement->bindValue(':start',$start, PDO::PARAM_INT);
 $statement->execute();
 
 $groups = array();
@@ -23,12 +21,10 @@ while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 
 $twig_data['groups'] = $groups;
 
-
 $msgs = array();
 
+$twig_data['navElements'] = createAdminMenu();
 $twig_data['exampleCode'] = createCode(8);
-$breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
-$breadcrumb[] = array( 'text' => 'Admin Panel', 'href' => '');
-$twig_data['breadcrumb'] = $breadcrumb;
 $twig_data['msgs'] = $msgs;
+
 echo $twig->render("groups.twig", $twig_data);
