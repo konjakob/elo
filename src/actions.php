@@ -349,7 +349,16 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		echo json_encode($returnData);
 		exit();
 	}
-	
+	else if ($action == 'newGroup' ) {
+		if ( isset($_POST['t_group']) ) {
+			$statement = $pdo->prepare("insert into elo_group (group_name) values (:t_group)");
+			$statement->bindValue(':t_group', filter_input(INPUT_POST, 't_group'));
+			$statement->execute();
+			echo json_encode(toastFeedback('ok', 'Successfully modified.', 'Success'));	
+		} else {
+			echo json_encode(toastFeedback('nok', 'No group name given.', 'Error'));	
+		}
+	}
 	else if ( $action == 'getGroupUser') {
 		if ( isset($_GET['group_id']) ) {
 			$returnData['state'] = 'ok';
