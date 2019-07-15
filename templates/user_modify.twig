@@ -122,7 +122,14 @@
 </div>
 
 </div>
-	
+
+<div class="uk-text-center">
+    <ul class="uk-pagination">
+        {% for p in pages %}
+            <li class="{% if p.active %}uk-active{% endif %}"><a href="{{ p.href }}">{{ p.text }}</a></li>
+        {% endfor %}
+    </ul>
+</div>	
 	
 {% endblock %}		  
 
