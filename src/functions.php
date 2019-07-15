@@ -9,9 +9,30 @@ function createCode($no) {
 	return $word;
 }
 
+function preparePagination($start, $maxElements, $limit = 20, $url = "") {
+	
+	if ( $url == "" )
+		$url = basename($_SERVER['REQUEST_URI']);
+	
+	$data = array();
+
+	$pages = (int) $maxElements / $limit;
+	$pages += (($maxElements/$limit) % $limit) ? 1 : 0;
+
+	for ( $i = 0; $i < $pages; $i++)
+		$data['pages'][] = array('text' => ($i+1),'href' => $url.'?start='.($i*$limit), 'active' => ($i*$limit == $start) ? 1 : 0);
+
+	$data['prevPage'] = array('href' => $url.'?start='.($start/$limit - 1), 'active' => ($start/$limit) ? 0 : 1);
+	$data['nextPage'] = array('href' => $url.'?start='.($start/$limit + 1), 'active' => (($start/$limit +1) > $maxElements) ? 0 : 1);
+
+	return $data;
+}	
+
 function query_one($sql) {
     global $pdo;
-    $row = $pdo->query( $sql )->fetch();
+    $stmt = $pdo->prepare( $sql );
+	$stmt->execute(); 
+	$row = $stmt->fetch();
     return $row[0];
 }
 

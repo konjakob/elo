@@ -44,17 +44,12 @@ while ( ($res = $query_right->fetch(PDO::FETCH_ASSOC)) !== false )
 	$rights[] = $res;
 
 $twig_data['rights'] = $rights;
-	
+$twig_data['pages'] = array();
 /* Get the users */
 $start = isset($_GET['start']) ? (int)filter_input(INPUT_GET, 'start', FILTER_SANITIZE_NUMBER_INT) : 0;
 
-$maxElements = query_one("select count(*) as no from user_name");
-$pages = (int) $maxElements / 20;
-$pages += ($maxElements % 20) ? 1 : 0 
-$twig_data['pages'] = array('pages' => $pages, 'limit' => 20, 'current' => (int) $start / 20);
-for ( $i = 1; $i < $pages; $i++)
-    $twig_data['pages'][] = array('text' => $i,'href' => $pages, 'active' => ($i*20 == $start) ? 1 : 0);
-
+$maxElements = query_one("select count(*) as no from elo_user");
+$twig_data['pagination'] = preparePagination($start, $maxElements);
 
 $query_user = $pdo->prepare("select * from elo_user order by user_name LIMIT :start, 20");
 $query_user->bindValue(':start',$start, PDO::PARAM_INT);

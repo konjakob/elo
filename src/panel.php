@@ -139,10 +139,7 @@ while ( ($res = $query_user->fetch(PDO::FETCH_ASSOC)) !== false ) {
 $twig_data['users'] = $users;
 
 $msgs = array();
-
+$twig_data['navElements'] = createAdminMenu();
 $twig_data['exampleCode'] = createCode(8);
-$breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
-$breadcrumb[] = array( 'text' => 'Admin Panel', 'href' => '');
-$twig_data['breadcrumb'] = $breadcrumb;
 $twig_data['msgs'] = $msgs;
 echo $twig->render("panel.twig", $twig_data);

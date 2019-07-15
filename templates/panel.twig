@@ -5,46 +5,6 @@
 
 {% block default %}
 
-<div id="popup" style="display:none; "><div id="popupclose" onClick="tgldiv('popup');"><strong>X</strong></a></div><div id="popupcontent"></div></div>
-
-
-<div class="uk-child-width-1-2@m uk-child-width-1-1@s uk-margin-top" uk-grid>
-
-
-
-{{ msg_group }}
-
-{% if 'CREATE_GROUPS' in user_rights %}	
-<div>
-	<div class="uk-card uk-card-default uk-card-body uk-margin">
-		<h2 class="uk-card-title">New Group</h2>
-		<form action="{{ current_url }}" class="uk-form-stacked" method="post">
-			<div class="uk-margin">
-				<label class="uk-form-label" for="group_name">Name</label>
-				<div class="uk-form-controls">
-					<input class="uk-input" id="group_name" type="text" name="t_group" placeholder="Name">
-				</div>
-			</div>
-			<div class="uk-text-right">
-				<input type="submit" value="Save" name="new_group" class="uk-button uk-button-primary" />
-			</div>
-		</form>
-	</div>
-</div>
-{% endif %}
-
-<div>
-	<div class="uk-card uk-card-default uk-card-body uk-margin">
-		<h2 class="uk-card-title">Groups</h2>
-{% for g in groups %}
-	<span><a onclick="javascript:loadGroupData({{ g.group_id }});" id="group-list-{{ g.group_id }}">{{ g.group_name }}</a>
-	(<a onclick="javascript:deleteGroup({{ g.group_id }});">Delete</a> | <a onclick="javascript:changeGroupData({{ g.group_id }});">Modify</a>)</span><br>
-
-{% endfor %}
-	</div>			
-</div>
-
-</div>
 		
 <a name="newtopic"></a>
 

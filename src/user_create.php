@@ -139,7 +139,7 @@ while ( ($res = $query_right->fetch(PDO::FETCH_ASSOC)) !== false )
 	$rights[] = $res;
 
 $twig_data['rights'] = $rights;
-
+$twig_data['navElements'] = createAdminMenu();
 $twig_data['exampleCode'] = createCode(8);
 $twig_data['msgs'] = $msgs;
 echo $twig->render("user_create.twig", $twig_data);

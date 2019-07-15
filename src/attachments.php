@@ -45,7 +45,7 @@ while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false ) {
 					);
 	
 }
-
+$twig_data['navElements'] = createAdminMenu();
 $twig_data['files'] = $files;
 $twig_data['msgs'] = $msgs;
 $twig_data['breadcrumb'] = $breadcrumb;
