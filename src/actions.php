@@ -200,6 +200,10 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ($action == 'removeGroup') {
+        if ( !in_array('IS_ADMIN',$user_rights) ) {
+			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			exit();
+		}
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {		
 			$user = intval($_POST['userid']);
 			$returnData['state'] = 'ok';
@@ -350,14 +354,23 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		exit();
 	}
 	else if ($action == 'newGroup' ) {
+        if ( !in_array('IS_ADMIN',$user_rights) && !in_array('CREATE_GROUPS',$user_rights)) {
+			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			exit();
+		}
 		if ( isset($_POST['t_group']) ) {
 			$statement = $pdo->prepare("insert into elo_group (group_name) values (:t_group)");
 			$statement->bindValue(':t_group', filter_input(INPUT_POST, 't_group'));
 			$statement->execute();
-			echo json_encode(toastFeedback('ok', 'Successfully modified.', 'Success'));	
+            $returnData['groupId'] = $pdo->lastInsertId();
+            $returnData['state'] = 'ok';
+			$returnData['text'] = 'Successfully created.';
+			$returnData['title'] = 'Success';
+            echo json_encode($returnData);
 		} else {
 			echo json_encode(toastFeedback('nok', 'No group name given.', 'Error'));	
 		}
+        exit();
 	}
 	else if ( $action == 'getGroupUser') {
 		if ( isset($_GET['group_id']) ) {
