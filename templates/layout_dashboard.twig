@@ -40,20 +40,21 @@
 			<div class="left-nav-wrap">
 				<ul class="uk-nav uk-nav-default uk-nav-parent-icon" data-uk-nav>
 					<li class="uk-nav-header">ACTIONS</li>
-					<li><a href="panel.php"><span data-uk-icon="icon: comments" class="uk-margin-small-right"></span>Create topic</a></li>
-					<li><a href="view_user_topics.php"><span data-uk-icon="icon: users" class="uk-margin-small-right"></span>User view</a></li>
-					<li class="uk-parent"><a href="#"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Templates</a></li>
-					<li><a href="attachments.php"><span data-uk-icon="icon: album" class="uk-margin-small-right"></span>Attachments</a></li>
-					<li class="uk-parent">
-						<a href="#"><span data-uk-icon="icon: comments" class="uk-margin-small-right"></span>Users</a>
-						<ul class="uk-nav-sub">
-							<li><a href="user_create.php">Create</a></li>
-							<li><a href="user_modify.php">Modify</a></li>
-						</ul>
-					</li>
-				</ul>
-
-				
+                    {% for navEl in navElements %}
+                        {% if navEl.group %}
+                            <li class="uk-parent">
+                                <a href="#"><span data-uk-icon="icon: {{ navEl.icon }}" class="uk-margin-small-right"></span>{{ navEl.text }}</a>
+                                <ul class="uk-nav-sub">
+                                    {% for el in navEl.subElements %}
+                                        <li class="{% if el.active %}uk-active{% endif %}"><a href="{{ el.href }}">{{ el.text }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>                        
+                        {% else %}
+                            <li class="{% if navEl.active %}uk-active{% endif %}"><a href="{{ navEl.href }}"><span data-uk-icon="icon: {{ navEl.icon }}" class="uk-margin-small-right"></span>{{ navEl.text }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+				</ul>		
 			</div>
 			<div class="bar-bottom">
 				<ul class="uk-subnav uk-flex uk-flex-center uk-child-width-1-5" data-uk-grid>
