@@ -90,7 +90,7 @@ $charts[] = array(	'labels' => implode(", ", array_reverse($chartLabels)),
 				);
 				
 $twig_data['charts'] = $charts;
-
+$twig_data['navElements'] = createAdminMenu();
 $twig_data['data'] = $data;
 $twig_data['msgs'] = $msgs;
 $twig_data['breadcrumb'] = $breadcrumb;
