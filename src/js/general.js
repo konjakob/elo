@@ -39,4 +39,26 @@ $(document).ready(function(){
 				}
 		});
 	});
+	
+	$('.deleteFileAttachment').click(function(e) {
+		e.preventDefault();  
+		var el = $(this);
+		var id = $(this).attr("data-id");
+		var row = $(this).closest("tr");
+		$.ajax({
+				url: "actions.php?action=deleteFileAttachment&aid="+id,
+				dataType: 'json',
+				success: function(respond)
+				{
+					if ( respond.state == 'ok' ) {
+						row.hide();
+						toastr["success"](respond.text, respond.title);
+					} else {
+						toastr["error"](respond.text, respond.title);
+					}
+				}
+		});
+	})
+	
+	
 });

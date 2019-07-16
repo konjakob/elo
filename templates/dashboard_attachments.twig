@@ -19,7 +19,7 @@ There are {{ files|length }} files in the system.
 			<td>{{ f.filename }}</td>
 			<td>{{ f.filesize }}</td>
 			<td>{% if f.img_file %}<img src="{{ f.img_file }}" height="200">{% endif %}</td>
-			<td>Details | Delete {% if not f.img_file %}<span>| <a class="generateFilePreview" data-id="{{ f.fileId }}">Generate Preview</a></span>{% endif %}</td>
+			<td>Details | <a class="deleteFileAttachment" data-id="{{ f.fileId }}">Delete</a> {% if not f.img_file %}<span>| <a class="generateFilePreview" data-id="{{ f.fileId }}">Generate Preview</a></span>{% endif %}</td>
 		</tr>
 		{% endfor %}
 	</tbody>

@@ -543,6 +543,32 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		echo json_encode($returnData);
 		exit();
 	}
+	else if ( $action == 'deleteFileAttachment') {
+		if ( !in_array('IS_ADMIN',$user_rights) ) {
+			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			exit();
+		}
+		if ( isset($_GET['aid']) ) {
+			$statement = $pdo->prepare("delete from elo_reply_attachment where attachment_id=:aid");
+			$statement->bindValue(':aid',(int)$_GET['aid'], PDO::PARAM_INT);
+			$statement->execute();
+			
+			$statement = $pdo->prepare("delete from elo_attachment where attachment_id=:aid");
+			$statement->bindValue(':aid',(int)$_GET['aid'], PDO::PARAM_INT);
+			$statement->execute();
+
+			if (  $statement->rowCount()) {						
+				$returnData['state'] = 'ok';
+				$returnData['text'] = "Attachment deleted";
+				$returnData['title'] = "Deleted";
+			} else {
+				$returnData = toastFeedback('nok', 'No attachment could be deleted.', 'Error');
+			}	
+			echo json_encode($returnData);
+			exit();
+		}
+		
+	}
 	else if ( $action == 'newTopic') {
         $returnData = array();
         // check the rights
