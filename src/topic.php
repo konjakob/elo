@@ -23,12 +23,24 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 			$statement->bindValue(':topicid', $topicid, PDO::PARAM_INT);
 			$statement->execute();
 			$res = $statement->fetch(PDO::FETCH_ASSOC);
-			if ( !$res )
-			{
+			if ( !$res ) {
 				echo $twig->render("no_access.twig", $twig_data);
 				exit();
 			}
 		}
+        
+        /* Get the topic information */
+		$statement = $pdo->prepare("select topic_title from elo_topic where topic_id=:topicid and elo_topic.visible_from<NOW() and elo_topic.visible_till>NOW()");
+		$statement->bindValue(':topicid', $topicid, PDO::PARAM_INT);
+		$statement->execute();
+		$res = $statement->fetch(PDO::FETCH_ASSOC);
+        if ( !$res ) {
+            // does not exist, or not visible
+            echo $twig->render("no_access.twig", $twig_data);
+            exit();
+        }
+        
+        $twig_data['page_title'] = $res['topic_title'];
 		
 		// attachments
 		$statement = $pdo->prepare("select r.reply_id, a.* from elo_attachment as a, elo_reply_attachment as ra, elo_reply as r where r.topic_id=:topicid and r.reply_id=ra.reply_id and ra.attachment_id=a.attachment_id");
@@ -56,14 +68,7 @@ $breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
 		
 		$twig_data['attachments'] = $attachments;
 		$twig_data['sheets'] = $sheets;
-		
-		/* Get the topic title */
-		$statement = $pdo->prepare("select topic_title from elo_topic where topic_id=:topicid");
-		$statement->bindValue(':topicid', $topicid, PDO::PARAM_INT);
-		$statement->execute();
-		$res = $statement->fetch(PDO::FETCH_ASSOC);
-		$twig_data['page_title'] = $res['topic_title'];
-		
+				
 		if ( in_array('IS_ADMIN',$user_rights) ) {
 			
 			/* Users who can see this topic */

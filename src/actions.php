@@ -10,13 +10,18 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	
 	if ( $action == 'getUser' ) {
 	    
+        if ( !in_array('IS_ADMIN',$user_rights) ) {
+			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			exit();
+		}
+        
         if ( !isset($_GET['userid']) ) {
             $returnData['state'] = 'nok';
             $returnData['text'] = 'No user given.';
             json_encode($returnData);
             exit();
         }
-
+        
 		$statement = $pdo->prepare("select * from elo_group order by group_name");
 		$statement->execute();
 		$groups = array();
@@ -30,21 +35,21 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			$rights[] = $res;	
 		
         $statement = $pdo->prepare("select right_id from elo_right_user where user_id=:userid");
-        $statement->bindValue(':userid', filter_input(INPUT_GET, 'userid'), PDO::PARAM_INT);
+        $statement->bindValue(':userid', filter_input(INPUT_GET, 'userid', FILTER_SANITIZE_NUMBER_INT), PDO::PARAM_INT);
         $statement->execute();
 		$saved_rights = array();
 		while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 			$saved_rights[] = $res['right_id'];
 		
 		$statement = $pdo->prepare("select group_id from elo_group_user where user_id=:userid");
-		$statement->bindValue(':userid', filter_input(INPUT_GET, 'userid'), PDO::PARAM_INT);
+		$statement->bindValue(':userid', filter_input(INPUT_GET, 'userid', FILTER_SANITIZE_NUMBER_INT), PDO::PARAM_INT);
 		$statement->execute();
 		$saved_groups = array();
 		while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 			$saved_groups[] = $res['group_id'];
 		
 		$statement = $pdo->prepare("select user_id, user_name, user_email, lang_id, user_lastvisit from elo_user where user_id=:userid");
-		$statement->bindValue(':userid', filter_input(INPUT_GET, 'userid'), PDO::PARAM_INT);
+		$statement->bindValue(':userid', filter_input(INPUT_GET, 'userid', FILTER_SANITIZE_NUMBER_INT), PDO::PARAM_INT);
 		$statement->execute();
 		$res = $statement->fetch(PDO::FETCH_ASSOC);
 		
@@ -89,7 +94,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		exit();
 			
 	}
-        else if ($action == 'cropImage') {
+    else if ($action == 'cropImage') {
         if ( !isset($_POST['x1']) || !isset($_POST['x2']) || !isset($_POST['y1']) || !isset($_POST['y2']) ) {
                 $returnData['state'] = 'nok';
                 $returnData['text'] = 'Missing value for cropping.';
@@ -125,16 +130,19 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
         $returnData['state'] = 'ok';
         echo json_encode($returnData);
         exit();
-        }
+    }
 	else if ($action == 'deleteTopic') {
+        
+        if ( !in_array('IS_ADMIN',$user_rights) || !in_array('CAN_DELETE_TOPICS',$user_rights)) {
+			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			exit();
+		}
+        
 		if ( !isset($_POST['topicid'])) {
 			echo json_encode(toastFeedback('nok', 'No topic given.', 'Error'));
 			exit();
 		}
-		if ( !in_array('IS_ADMIN',$user_rights) ) {
-			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
-			exit();
-		}
+		
 		$topicid = (int)$_POST['topicid'];
 		
 		$statement = $pdo->prepare("delete from elo_topic_user where topic_id=:topicid");
@@ -157,8 +165,15 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		exit();
 	}
 	else if ($action == 'changeUser') {
+        
+        if ( !in_array('IS_ADMIN',$user_rights) || !in_array('CAN_MODIFY_USERS',$user_rights)) {
+			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			exit();
+		}
+        
 		if ( isset($_POST['userid']) && isset($_POST['t_name']) && isset($_POST['t_email']) && isset($_POST['t_l']) ) {
-			if (strlen($_POST['t_name']) && strlen($_POST['t_email'])) {
+            
+			if ( strlen($_POST['t_name']) < $conf['min_length_username'] && strlen($_POST['t_email'])) {
 				$sql_pass = "";
 				
 				require_once( "PasswordHash.php" );
@@ -178,7 +193,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 				$statement->execute();
 		
 			} else {
-				$returnData = toastFeedback('nok', 'Please enter an email address and a name.', 'Error');				
+				$returnData = toastFeedback('nok', 'Please enter an email address and a name with '.$conf['min_length_username'].' characters.', 'Error');				
 			}
 		} else {
 			$returnData = toastFeedback('nok', 'Please enter all the data', 'Error');				
@@ -200,7 +215,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ($action == 'removeGroup') {
-        if ( !in_array('IS_ADMIN',$user_rights) ) {
+        if ( !in_array('IS_ADMIN',$user_rights)  || !in_array('CAN_DELETE_GROUPS',$user_rights)) {
 			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
 			exit();
 		}
@@ -221,6 +236,10 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ($action == 'addGroup') {
+        if ( !in_array('IS_ADMIN',$user_rights)  || !in_array('CAN_ADD_USERS_TO_GROUPS',$user_rights)) {
+			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			exit();
+		}
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
 			$user = (int)$_POST['userid'];
 			$returnData['state'] = 'ok';
@@ -238,6 +257,10 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ($action == 'removeRight') {
+        if ( !in_array('IS_ADMIN',$user_rights)  || !in_array('CAN_DELETE_USER_RIGHTS',$user_rights)) {
+			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			exit();
+		}
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
 			$returnData['state'] = 'ok';
 			$user = intval($_POST['userid']);
@@ -281,6 +304,10 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		exit();
 	}	
 	else if ($action == 'removeUserFromGoup') {
+        if ( !in_array('IS_ADMIN',$user_rights)  || !in_array('CAN_DELETE_USER_FROM_GROUP',$user_rights)) {
+			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			exit();
+		}
 		if ( isset($_POST['guid']) ) {
 			$returnData['state'] = 'ok';
             $statement = $pdo->prepare("delete from elo_group_user where gu_id=:group_user");
@@ -293,6 +320,10 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		exit();
 	}
 	else if ($action == 'deleteGroup') {
+        if ( !in_array('IS_ADMIN',$user_rights)  || !in_array('CAN_DELETE_GROUPS',$user_rights)) {
+			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			exit();
+		}
 		if ( isset($_POST['delete_group']) ) {
 			
 			$group_id = (int) $_POST['delete_group'];

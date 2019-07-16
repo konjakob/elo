@@ -17,7 +17,7 @@
 			<div class="uk-margin">
 				<label class="uk-form-label" for="user_name">Name</label>
 				<div class="uk-form-controls">
-					<input class="uk-input" id="user_name" type="text" name="t_name" placeholder="Name" data-validation-length="min{{ config.min_length_username }}">
+					<input class="uk-input" id="user_name" type="text" name="t_name" placeholder="Name" data-validation="length" data-validation-length="min{{ conf.min_length_username }}">
 				</div>
 			</div>
 			<div class="uk-margin">
@@ -42,7 +42,7 @@
 			<div class="uk-margin">
 				<label class="uk-form-label" for="user_lang">Language</label>
 				<div class="uk-form-controls">
-					<select name="t_lang" class="uk-select" id="user_lang">
+					<select name="t_lang" class="uk-select" id="user_lang" data-validation="required">
 					{% for l in langs %}
 						<option value="{{ l.lang_id }}">{{ l.lang_name }}</option>
 					{% endfor %}
@@ -87,32 +87,11 @@
 
 <script language="javascript">  
 
-
 	$('#use-sug-password').click(function(e) {
 		e.preventDefault();
 		$('#user_pass').val($('#suggestedPassword').text());
 		$('#user_pass').keyup();
 	});
-
-	
-	$("#frmNewTopic").submit(function(e){
-        e.preventDefault();
-		$.ajax({
-			url: 'actions.php',
-			dataType: 'json',
-			method: 'POST',
-			data: $('#frmNewTopic').serialize(),
-			success: function(respond){
-				if ( respond.state == 'ok' ) {
-					$("#submitTopic").closest('form').find("input[type=text], textarea").val("");
-					toastr["success"]("Successfully posted", "Success");
-				} else {
-					toastr["error"]("Error", "Error");
-				}
-			}
-		});		  
-  
-  });
 	
 </script>
 			

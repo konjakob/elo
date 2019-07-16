@@ -15,7 +15,7 @@
 				<div class="uk-margin">
 					<label class="uk-form-label" for="user_name_c">Name</label>
 					<div class="uk-form-controls">
-						<input class="uk-input" id="t_name_c" type="text" name="t_name_c">
+						<input class="uk-input" id="t_name_c" type="text" name="t_name_c" data-validation="length" data-validation-length="min{{ conf.min_length_username }}">
 					</div>
 				</div>
 				<div class="uk-margin">
@@ -34,7 +34,7 @@
 				<div class="uk-margin">
 					<label class="uk-form-label" for="user_lang_c">Language</label>
 					<div class="uk-form-controls">
-						<select name="t_lang_c" class="uk-select" id="user_lang_c">
+						<select name="t_lang_c" class="uk-select" id="user_lang_c" data-validation="required">
 						{% for l in langs %}
 							<option value="{{ l.lang_id }}">{{ l.lang_name }}</option>
 						{% endfor %}

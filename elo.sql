@@ -313,7 +313,13 @@ INSERT INTO `elo_right` (`right_id`, `right_name`, `right_key`) VALUES
 (12, 'Is Administrator', 'IS_ADMIN'),
 (13, 'Can add users to topic', 'ADD_USER_TO_TOPIC'),
 (14, 'Can add groups to topic', 'ADD_GROUP_TO_TOPIC'),
-(15, 'Can reply to topics', 'CAN_REPLY');
+(15, 'Can reply to topics', 'CAN_REPLY'),
+(16, 'Can delete topics', 'CAN_DELETE_TOPICS'),
+(17, 'Can modify users', 'CAN_MODIFY_USERS'),
+(18, 'Can delete groups', 'CAN_DELETE_GROUPS'),
+(19, 'Can add users to groups', 'CAN_ADD_USERS_TO_GROUPS'),
+(20, 'Can remove rights from users', 'CAN_DELETE_USER_RIGHTS'),
+(21, 'Can remove users from groups', 'CAN_DELETE_USER_FROM_GROUP');
 
 -- --------------------------------------------------------
 
@@ -358,6 +364,8 @@ INSERT INTO `elo_right_user` (`ru_id`, `user_id`, `right_id`) VALUES
 CREATE TABLE `elo_topic` (
   `topic_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
   `topic_title` text NOT NULL,
+  `visible_from` datetime NOT NULL,
+  `visible_till` datetime NOT NULL,
   PRIMARY KEY (`topic_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 

@@ -23,8 +23,8 @@ if ( isset($_POST['new_user']) ) {
 		$msgs[] = array('state' => 'nok', 'text' => 'Please provide a password.');	
 	}
 	
-	if ( strlen($newUserName) < 1 ) {
-		$msgs[] = array('state' => 'nok', 'text' => 'Please provide a user name.');	
+	if ( strlen($newUserName) < $conf['min_length_username'] ) {
+		$msgs[] = array('state' => 'nok', 'text' => 'Please provide a user name with minimum '.$conf['min_length_username'].' characters.');	
 	}
 
 	if ( sizeof($msgs) < 1 ) {	
