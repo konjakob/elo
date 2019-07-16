@@ -41,7 +41,8 @@ while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false ) {
 	$files[] = array(	'filename' => $res['attachment_filename'],
 						'filesize' => $filesize_s,
 						'exists' => $exists,
-						'img_file' => $img_s
+						'img_file' => $img_s,
+						'fileId' => $res['attachment_id']
 					);
 	
 }

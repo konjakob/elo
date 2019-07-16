@@ -9,7 +9,8 @@ if ( !in_array('IS_ADMIN', $user_rights ) ) {
 
 $start = isset($_GET['start']) ? (int)filter_input(INPUT_GET, 'start', FILTER_SANITIZE_NUMBER_INT) : 0;
 
-$twig_data['maxElements'] = query_one("select count(*) as no from elo_group");
+$maxElements = query_one("select count(*) as no from elo_group");
+$twig_data['pagination'] = preparePagination($start, $maxElements);
 
 $statement = $pdo->prepare("select * from elo_group order by group_name LIMIT :start, 20");
 $statement->bindValue(':start',$start, PDO::PARAM_INT);

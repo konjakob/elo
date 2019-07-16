@@ -18,3 +18,25 @@ function checkAbcSyntax(id) {
 		});
 	  });
   };	
+
+$(document).ready(function(){  
+	$('.generateFilePreview').click(function(e) {
+		e.preventDefault();  
+		var el = $(this);
+		var id = $(this).attr("data-id");
+		var cell = $(this).closest("td").prev();
+		$.ajax({
+				url: "actions.php?action=generatePreview&fileid="+id,
+				dataType: 'json',
+				success: function(respond)
+				{
+					if ( respond.state == 'ok' ) {
+						el.parent().html("");
+						cell.html('<img src="' + respond.preview + '" height="200">');
+					} else {
+						toastr["error"](respond.text, respond.title);
+					}
+				}
+		});
+	});
+});

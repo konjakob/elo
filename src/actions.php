@@ -253,7 +253,33 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		echo json_encode($returnData);
 		exit();
 	}
-	
+	else if ( $action == 'generatePreview' ) {
+		if ( isset($_GET['fileid']) ) {
+		
+			$statement = $pdo->prepare("select * from elo_attachment where attachment_id=:aid");
+			$statement->bindValue(':aid', (int)$_GET['fileid'], PDO::PARAM_INT);
+			$statement->execute();
+			
+			$res = $statement->fetch(PDO::FETCH_ASSOC);
+			
+			$filename = $res['attachment_id'].base64_encode($res['attachment_filename']);
+			
+			if (  preg_match('/[(pdf)|(gif)|(png)|(jpeg)|(jpg)]$/',$res['attachment_filename']) ) {
+				exec($conf['convert']." \"".$conf['file_folder']."{".$filename."}[0]\" -colorspace RGB -geometry 200 \"".$conf['file_folder'].$filename.".png\"");
+				
+				$returnData['preview'] = $conf['file_folder'].$filename.".png";
+				$returnData['state'] = 'ok';
+				$returnData['text'] = 'Preview generated.';
+				$returnData['title'] = 'Success';
+				echo json_encode($returnData);
+			} else {
+				echo json_encode(toastFeedback('nok', 'Not a file, which can be previewed.', 'Error'));
+			}
+		} else {
+			echo json_encode(toastFeedback('nok', 'No attachment given.', 'Error'));
+		}	
+		exit();
+	}	
 	else if ($action == 'removeUserFromGoup') {
 		if ( isset($_POST['guid']) ) {
 			$returnData['state'] = 'ok';

@@ -11,6 +11,9 @@ $allUser = array();
 
 $start = isset($_GET['start']) ? (int)filter_input(INPUT_GET, 'start', FILTER_SANITIZE_NUMBER_INT) : 0;
 
+$maxElements = query_one("select count(*) as no from elo_user");
+$twig_data['pagination'] = preparePagination($start, $maxElements);
+
 $statement = $pdo->prepare("select user_id, user_name from elo_user order by user_name LIMIT :start, 20");
 $statement->bindValue(':start',$start, PDO::PARAM_INT);
 $statement->execute();

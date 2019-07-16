@@ -2,12 +2,11 @@
     <ul class="uk-pagination uk-flex-center uk-margin-medium-top">
 		
 		{% if pagination.prevPage.active %}
-			<li class="uk-disabled"><a href="#"><span uk-pagination-previous></span></li>
+			<li class="uk-disabled"><a href="#"><span uk-pagination-previous></span></a></li>
 		{% else %}
 			<li><a href="{{ pagination.prevPage.href }}"><span uk-pagination-previous></span></a></li>
 		{% endif %}
-		{% for p in pagination.pages %}
-			
+		{% for p in pagination.pages %}		
 			{% if p.active %}
 			<li class="uk-active">{{ p.text }}</li>
 			{% else %}
@@ -15,7 +14,7 @@
 			{% endif %}
         {% endfor %}
 		{% if pagination.nextPage.active %}
-			<li class="uk-disabled"><a href="#"><span uk-pagination-next></span></li>
+			<li class="uk-disabled"><a href="#"><span uk-pagination-next></span></a></li>
 		{% else %}
 			<li><a href="{{ pagination.nextPage.href }}"><span uk-pagination-next></span></a></li>
 		{% endif %}
