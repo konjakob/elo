@@ -14,9 +14,9 @@ if ( $fid == 1 ) {
 		echo NEW_TEXT_HTML_NOT_ALLOWED;	
 	}
 	
-	echo "<hr>".TOPIC_TEXT_BBCODES."<ul>";	
+	echo "<hr>".TOPIC_TEXT_BBCODES;	
 	?>
-	<div class="uk-column-1-6">
+	<div class="uk-column-1-6"><ul>
 	<?php
 	
 	$ubbParser = new SBBCodeParser_Document();
@@ -24,7 +24,7 @@ if ( $fid == 1 ) {
 		echo "<li>".$c;
 	
 	echo "</ul></div>";
-	}
+}
 else if ( $fid == 2 ) {
 	echo TOPIC_MAX_FILESIZE;
 	if ($conf['max_filesize'] < 1024)

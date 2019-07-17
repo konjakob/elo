@@ -54,7 +54,7 @@
 
 		
 	<div class="uk-margin">
-		<label class="uk-form-label" for="newTopicText">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <a rel="faq.php?fid=1&width=475" href="faq.php?fid=1&width=475" class="jt" title="{{ constant('TOPIC_TEXT_RULES') }}"><span class="" uk-icon="question"></span></a></label>
+		<label class="uk-form-label" for="newTopicText">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <span class="" uk-icon="question" uk-tooltip="{{ constant('TOPIC_TEXT_RULES') }}"></span></label>
 		<div class="uk-form-controls">
 			<textarea id="newTopicText" class="uk-textarea" name="t_topic" data-validation-length="min{{ config.min_length_topic_text }}">{{ reply.reply_text }}</textarea>
 		</div>
@@ -72,7 +72,7 @@
 		<pre id="abc{{ a.rm_id }}CheckText" class="abcCheckText"></pre>
 	</div>
 	<div class="uk-margin">
-		<label class="uk-form-label" for="abc{{ a.rm_id }}">{{ constant('TOPIC_TEXT_ADD_MUSIC') }} <a rel="faq.php?fid=3" href="faq.php?fid=3" class="jt" title="{{ constant('TOPIC_SHEET_INFO') }}"><span class="" uk-icon="question"></span></a></label>
+		<label class="uk-form-label" for="abc{{ a.rm_id }}">{{ constant('TOPIC_TEXT_ADD_MUSIC') }} <span class="" uk-icon="question"></span><div uk-dropdown>{{ constant('TOPIC_SHEET_INFO') }}</div></label>
 		<div class="uk-form-controls">
 			<textarea class="uk-textarea" name="old_abc[{{ a.music_id }}]" id="abc{{ a.rm_id }}" cols="80" rows="15">{{ a.music_text }}</textarea>
 		</div>

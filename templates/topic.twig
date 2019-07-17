@@ -69,7 +69,6 @@
 
 $(document).ready(function(){
   $("#btnCreateTopic").click(function(){
-    //$("#createNewTopic").toggle();
 	$("#newTopic2").toggle();
 	$(this).toggle();
   });
@@ -87,8 +86,13 @@ $(document).ready(function(){
 					$("#newTopic2").toggle();
 					$("#btnCreateTopic").toggle();
 					$("#submitTopic").closest('form').find("input[type=text], textarea").val("");
-					$("#gridTopics").prepend(respond.html);
-					//$('body').scrollTo('#gridTopics'); 
+                    if ( respond.addComment ) {
+                        toastr["info"](respond.addComment);
+                    }
+                    if ( respond.html ) {
+                        $("#gridTopics").prepend(respond.html);
+                        $('body').scrollTo('#gridTopics');
+                    }                        
 				} else {
 					toastr["error"]("Error", "Error");
 				}
@@ -99,13 +103,7 @@ $(document).ready(function(){
   {% endif %}
   
 });	
-	  
-		
-  
-		function tgldivnow(divname){
-			$("#"+divname).hide();
-		}
-  
+	    
 	function addReply(topicid){
 		var t;
 		t = $("#newReplyText"+topicid).val();
@@ -166,22 +164,6 @@ $(document).ready(function(){
 		}
 	
 	});
-		  
-	$(document).ready(function() {
-		$('a.jt').cluetip({
-		  cluetipClass: 'jtip',
-		  width: 350,
-		  arrows: true,
-		  dropShadow: false,
-		  hoverIntent: false,
-		  sticky: true,
-		  mouseOutClose: true,
-		  closePosition: 'title',
-		  closeText: '<img src="includes/images/cross.png" alt="close" />'
-		});
-	});
-	
-
 
   </script>
 

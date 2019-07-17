@@ -674,20 +674,28 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 				$statement->bindValue(':topicid', $topicid, PDO::PARAM_INT);
 				$statement->execute();	
             }
-		}   
-
-        $topic = array('topic' => array('topic_title' => $_POST['t_topic_title'],
-										'no_replies' => 0,
-										'reply_date' => $time,
-										'reply_text' => $_POST['t_topic'],
-										'username' => $username,
-										'last_reply_date' => '',
-										'topic_id' => $topicid,
-										'href' => $conf['url']."topic.php?id=".$topicid
-					));        
+		}
         
-		
-		$returnData['html'] = $twig->render("partials/topicblock.twig", $topic);
+        $dateNow = new DateTime();
+        if (  $dateNow->getTimestamp() > $startTime->getTimestamp() && $dateNow->getTimestamp() < $endTime->getTimestamp() ) {
+
+            $topic = array('topic' => array('topic_title' => $_POST['t_topic_title'],
+                                            'no_replies' => 0,
+                                            'reply_date' => $time,
+                                            'reply_text' => $_POST['t_topic'],
+                                            'username' => $username,
+                                            'last_reply_date' => '',
+                                            'topic_id' => $topicid,
+                                            'href' => $conf['url']."topic.php?id=".$topicid,
+                                            'user_picture' => $user_res['user_picture']
+                        ));        
+                    
+            $returnData['html'] = $twig->render("partials/topicblock.twig", $topic);
+            
+        } else {
+            $returnData['addComment'] = "Your topic is not visible, due to the start and end time you entered.";
+        }
+              
 		$returnData['state'] = 'ok';
 
 		echo json_encode($returnData);
