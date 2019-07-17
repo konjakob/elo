@@ -3,6 +3,13 @@
 {% block vars %}
 {% endblock %}
 
+{% block headerInjection %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css">
+{{ parent() }}
+{% endblock %}
+
+
 {% block default %}
 
 		
@@ -39,6 +46,18 @@
 					<label class="uk-form-label" for="user_email_c">Email</label>
 					<div class="uk-form-controls">
 						<input class="uk-input" id="user_email_c" type="text" name="t_email_c">
+					</div>
+				</div>
+				<div class="uk-margin">
+					<label class="uk-form-label" for="date_start">Start showing this topic</label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="date_start_c" type="text" name="date_start">
+					</div>
+				</div>
+				<div class="uk-margin">
+					<label class="uk-form-label" for="date_end">End showing this topic</label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="date_end_c" type="text" name="date_end">
 					</div>
 				</div>
 				<div class="uk-margin">
@@ -137,8 +156,26 @@
 
 {% block footerInjection %}
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js"></script>
 
 <script language="javascript">  
+
+  $( function() {
+    $( "#date_end" ).datetimepicker({
+          dateFormat: "{{ conf.format_dates_topic }}"
+        });
+	$( "#date_start" ).datetimepicker({
+          dateFormat: "{{ conf.format_dates_topic }}"
+        });
+	$( "#date_end_c" ).datetimepicker({
+          dateFormat: "{{ conf.format_dates_topic }}"
+        });
+	$( "#date_start_c" ).datetimepicker({
+          dateFormat: "{{ conf.format_dates_topic }}"
+        });
+  } );
+
 
 	function deleteGroup(groupId) {
 		var el = $(this);

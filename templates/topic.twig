@@ -62,6 +62,8 @@
 
 {% block headerInjection %}
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css">
 
 	<script type="text/javascript">
 
@@ -75,12 +77,6 @@ $(document).ready(function(){
   {% if 'CREATE_TOPICS' in user_rights %}
   $("#frmNewTopic").submit(function(e){
         e.preventDefault();
-		{% if 'ADD_USER_TO_TOPIC' in user_rights %}
-		selectAllOptions('t_user');
-		{% endif %}
-		{% if 'ADD_GROUP_TO_TOPIC' in user_rights %}
-		selectAllOptions('t_group');
-		{% endif %}
 		$.ajax({
 			url: 'actions.php',
 			dataType: 'json',
@@ -92,7 +88,7 @@ $(document).ready(function(){
 					$("#btnCreateTopic").toggle();
 					$("#submitTopic").closest('form').find("input[type=text], textarea").val("");
 					$("#gridTopics").prepend(respond.html);
-					$('body').scrollTo('#gridTopics'); 
+					//$('body').scrollTo('#gridTopics'); 
 				} else {
 					toastr["error"]("Error", "Error");
 				}
@@ -191,3 +187,21 @@ $(document).ready(function(){
 
 			
 {% endblock %}	
+
+{% block footerInjection %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js"></script>
+
+<script language="javascript">  
+
+  $( function() {
+    $( "#date_end" ).datetimepicker({
+          dateFormat: "{{ conf.format_dates_topic }}"
+        });
+	$( "#date_start" ).datetimepicker({
+          dateFormat: "{{ conf.format_dates_topic }}"
+        });
+  } );
+</script>
+{% endblock %}	  

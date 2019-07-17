@@ -619,9 +619,14 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
             $_POST['t_topic_title'] = htmlentities($_POST['t_topic_title']);
             $_POST['t_topic'] = htmlentities($_POST['t_topic']);
         }
-        
-		$statement = $pdo->prepare("insert into elo_topic (topic_title) values (:t_topic_title)");
+
+		$startTime = DateTime::createFromFormat("d.m.Y H:i", $_POST['date_start']);
+		$endTime = DateTime::createFromFormat("d.m.Y H:i", $_POST['date_end']);
+		
+		$statement = $pdo->prepare("insert into elo_topic (topic_title, visible_from, visible_till) values (:t_topic_title, :from, :till)");
 		$statement->bindValue(':t_topic_title', $_POST['t_topic_title']);
+		$statement->bindValue(':from', $startTime->format('Y-m-d H:i:s'));
+		$statement->bindValue(':till', $endTime->format('Y-m-d H:i:s'));
 		$statement->execute();
 
         $topicid = $pdo->lastInsertId();

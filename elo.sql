@@ -59,7 +59,7 @@ INSERT INTO `elo_config` (`settingid`, `settinggroupid`, `title`, `varname`, `va
 (6, 2, 'Parameters for convert', 'params4img', '-s 1 -w 600', ''),
 (7, 2, 'File folder', 'file_folder', 'files/', 'The folder where files are stored.'),
 (8, 2, 'Parameters for ps', 'params4ps', '', ''),
-(9, 2, 'Date format', 'date_format', 'd.m.Y, H:i', 'To format the dates, the formating available in PHP can be used. Please see https://www.php.net/manual/en/function.date.php.'),
+(9, 2, 'Date format', 'date_format', 'd.m.Y, H:i', 'To format the dates, the formating available in PHP can be used. Please see <a href="https://www.php.net/manual/en/function.date.php" target="_blank">https://www.php.net/manual/en/function.date.php</a>.'),
 (10, 2, 'Parameters for png', 'params4png', '-density 150 -geometry 100%', 'Parameters for generating the PNG files. For all options, please see https://imagemagick.org/script/command-line-options.php.'),
 (12, 1, 'From email', 'from_email', 'elo@christoph-pimpl.de', 'When sending emails out, following email will be set as from email.'),
 (13, 1, 'From name', 'from_name', 'Christoph Pimpl', 'When sending emails out, following name will be set as from name.'),
@@ -71,8 +71,9 @@ INSERT INTO `elo_config` (`settingid`, `settinggroupid`, `title`, `varname`, `va
 (19, 2, 'URL to page', 'url', 'http://localhost/elo/src/', ''),
 (21, 2, 'Maximum file size', 'max_filesize', '2048', ''),
 (22, 3, 'Minimum topic title length', 'min_length_topic_title', '5', ''),
-(23, 3, 'Minimum topic/reply text length', 'min_length_topic_text', '5', '');
-(24, 3, 'Minimum user name length', 'min_length_username', '5', '');
+(23, 3, 'Minimum topic/reply text length', 'min_length_topic_text', '5', ''),
+(24, 3, 'Minimum user name length', 'min_length_username', '5', ''),
+(25, 3, 'Date format for start and end date of topics', 'format_dates_topic', 'dd.mm.YY hh:mm', 'To format the dates, the formating available in PHP can be used. Please see <a href="https://www.php.net/manual/en/function.date.php" target="_blank">https://www.php.net/manual/en/function.date.php</a>.');
 
 update `elo_config` set displayorder=1;
 -- --------------------------------------------------------
