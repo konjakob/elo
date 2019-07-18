@@ -124,8 +124,13 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			$y2 *= $factor;			
 		}		
 		
-        exec($conf['convert']." ".$filepath." -crop ".($x2-$x1)."x".($y2-$y1)."+".$x1."+".$y1." ".$filepath);
+		$retAr = array();
+        exec($conf['convert']." ".$filepath." -crop ".($x2-$x1)."x".($y2-$y1)."+".$x1."+".$y1." ".$filepath, $retAr);
 
+		$returnData['debug'] = array($conf['convert']." ".$filepath." -crop ".($x2-$x1)."x".($y2-$y1)."+".$x1."+".$y1." ".$filepath);
+		foreach ( $retAr as $r )
+			$returnData['debug'][] = $r;
+		
         $returnData['filePath'] = $filepath;
         $returnData['state'] = 'ok';
         echo json_encode($returnData);

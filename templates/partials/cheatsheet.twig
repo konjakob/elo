@@ -4,7 +4,7 @@
 				<div id="newMusicSheet" style="display:none">
 		
 					<div class="uk-margin">
-						<label class="uk-form-label" for="newTopicText">{{ constant('TOPIC_TEXT_ADD_MUSIC') }} <a rel="faq.php?fid=3" href="faq.php?fid=3" class="jt" title="{{ constant('TOPIC_SHEET_INFO') }}"><span class="" uk-icon="question"></span></a></label>
+						<label class="uk-form-label" for="newTopicText">{{ constant('TOPIC_TEXT_ADD_MUSIC') }} <span class="" uk-icon="question"></span><div uk-dropdown>{{ constant('TOPIC_SHEET_INFO') }}<hr>{% include 'partials/help_abc.twig' %}</div></label>
 						<div class="uk-form-controls">
 							<textarea class="uk-textarea" name="abc" id="abc" cols="80" rows="15"></textarea>
 						</div>

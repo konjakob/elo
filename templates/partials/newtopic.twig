@@ -42,7 +42,23 @@
 	{% endif %}
 
 	<div class="uk-text-right">
-		<input class="uk-button uk-button-primary" type="submit" value="Save" name="new_topic" />
+		<span class="" uk-icon="question"></span><div uk-dropdown>
+		You can edit or delete your reply till 
+		{% set max_time = conf.max_edit_time %}
+		{% if  max_time < 60 %}
+			{{ max_time }} seconds
+		{% elseif ( max_time < 3600 ) %}
+			{{ max_time/60 }} minutes
+		{% elseif max_time < 24*3600 %}
+			{{ max_time/3600 }} hours
+		{% elseif ( max_time < 24*3600*7 ) %}
+			{{ max_time/3600/24 }} days
+		{% else %}
+			{{ max_time }} seconds	
+		{% endif %}
+		after posting it
+		</div> <input class="uk-button uk-button-primary" type="submit" value="Save" name="new_topic" />
+		
 	</div>
 </form>
 </div>

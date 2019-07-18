@@ -1,63 +1,14 @@
-<?
+<?php
 
 require('includes/application_top.php');
+require_once('SBBCodeParser.php');
 
-$fid = isset($_GET['fid']) ? (int)$_GET['fid'] : 1;
+$codes = array();
+$ubbParser = new SBBCodeParser_Document();
+foreach ( $ubbParser->list_bbcodes() as $c ) 
+	$codes[] = $c;
 
-if ( $fid == 1 ) {
-	
-	require_once('SBBCodeParser.php');
-
-	if ( in_array('ALLOW_HTML', $user_rights) ) {
-		echo NEW_TEXT_HTML_ALLOWED;
-	} else {
-		echo NEW_TEXT_HTML_NOT_ALLOWED;	
-	}
-	
-	echo "<hr>".TOPIC_TEXT_BBCODES;	
-	?>
-	<div class="uk-column-1-6"><ul>
-	<?php
-	
-	$ubbParser = new SBBCodeParser_Document();
-	foreach ( $ubbParser->list_bbcodes() as $c ) 
-		echo "<li>".$c;
-	
-	echo "</ul></div>";
-}
-else if ( $fid == 2 ) {
-	echo TOPIC_MAX_FILESIZE;
-	if ($conf['max_filesize'] < 1024)
-		echo $conf['max_filesize']." kB";	
-	else
-		echo round($conf['max_filesize']/1024,2)." MB";
-} else if ( $fid == 4 ) {
-	$max_time = $conf['max_edit_time'];
-	if ( $max_time < 60 )
-		$max_time = $max_time." seconds";
-	else if ( $max_time < 3600 )
-		$max_time = ($max_time/60)." minutes";
-	else if ( $max_time < 24*3600 )
-		$max_time = ($max_time/3600)." hours";
-	else if ( $max_time < 24*3600*7 )
-		$max_time = ($max_time/3600/24)." days";
-	else
-		$max_time = $max_time." seconds";	
-	echo "You can edit or delete your reply till ".$max_time." after posting it.";	
-	
-} else if ( $fid == 3) {
-	?>
-    More information about the ABC notation can be found on following websites:
-<ul style="list-style:disc;padding-left:10px;"><li><a href="http://penzeng.de/Geige/Abc.htm">http://penzeng.de/Geige/Abc.htm</a> (de)</li>
-<li><a href="http://abcnotation.com/blog/2010/01/31/how-to-understand-abc-the-basics/">http://abcnotation.com/blog/2010/01/31/how-to-understand-abc-the-basics/</a> (en)</li></ul>
-    <?
-/*
-	require_once('SBBCodeParser.php');
-	$ubbParser = new SBBCodeParser_Document();
-	foreach ( $ubbParser->list_bbcodes() as $c )  {
-		$ubbParser2 = new SBBCodeParser_Document();
-		echo "<li>"."[".$c."]text[/".$c."] ".$ubbParser2->parse("[".$c."]text[/".$c."]")->get_html()." ".htmlentities($ubbParser2->get_html());
-	}
-	echo "</ul>";
-*/
-}
+$breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
+$twig_data['codes'] = $codes;
+$twig_data['breadcrumb'] = $breadcrumb;
+echo $twig->render("faq.twig", $twig_data);

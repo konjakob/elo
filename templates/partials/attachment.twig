@@ -5,7 +5,13 @@
                 <div uk-form-custom>
                     <input type="file" multiple>
                     <span class="uk-link">selecting one</span>
-                </div>
+                </div> <span class="" uk-icon="question"></span><div uk-dropdown>{{ constant('TOPIC_MAX_FILESIZE') }}
+				{% if conf.max_filesize < 1024 %}
+					{{ conf.max_filesize }} kB	
+				{% else %}
+					{{ (conf.max_filesize/1024)|round(1, 'floor') }} MB
+				{% endif %}
+				</div>
             </div>
 
             <progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>

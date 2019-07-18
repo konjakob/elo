@@ -1,0 +1,27 @@
+{% extends 'default.twig' %}
+
+{% block vars %}
+{% endblock %}
+
+{% block default %}
+
+<h1>FAQ</h1>
+<h2>HTML</h2>
+{% if 'CREATE_TOPICS' in user_rights %}
+	{{ constant('NEW_TEXT_HTML_ALLOWED') }}
+{% else %}
+	
+{% endif %}
+<h2>{{ constant('TOPIC_TEXT_BBCODES') }}</h2>
+
+<div class="uk-column-1-6">
+	<ul>
+{% for c in codes %}
+		<li>{{ c }}</li>
+{% endfor %}
+	</ul>
+</div>
+			
+{% endblock %}		  
+
+  
