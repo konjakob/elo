@@ -13,8 +13,10 @@
 			<div class="uk-position-bottom-center uk-position-small uk-visible@m">
 				<span class="uk-text-small uk-text-muted"><a href="http://www.jakob-wankel.de">Created by Jakob Wankel</a> | Built with <a href="http://getuikit.com" title="Visit UIkit 3 site" target="_blank" data-uk-tooltip><span data-uk-icon="uikit"></span></a></span>
 			</div>
+
             
-            {% for m in msgs %}
+			<div class="uk-width-medium uk-padding-small">
+		{% for m in msgs %}
 
             <div class="uk-alert-{% if m.state == 'ok' %}success{% else %}danger{% endif %}" uk-alert>
                 <a class="uk-alert-close" uk-close></a>
@@ -22,21 +24,25 @@
             </div>
 
             {% endfor %}
-            
-            
-			<div class="uk-width-medium uk-padding-small">
-		
         {% if showForgotten %}
 
-		{{ constant('LOGIN_PASSFORGOTTEN_TEXT') }}
-
-
-<form action="{{ current_url }}" method="post">
-Email: <input type="text" name="t_email" /><br />
-<input type="submit" value="{{ constant('LOGIN_PASSFORGOTTEN_BUTTON') }}" name="action_passforgotten" />
-</form>
-              {% else %}
-				<form action="{{ current_url }}" method="POST">
+			{{ constant('LOGIN_PASSFORGOTTEN_TEXT') }}
+			<form action="login.php" method="post">
+				<input type="hidden" name="action_passforgotten" value="1">
+				<fieldset class="uk-fieldset">
+					<div class="uk-margin">
+						<div class="uk-inline uk-width-1-1">
+							<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: user"></span>
+							<input class="uk-input uk-form-large" required placeholder="Email" type="text" name="t_email">
+						</div>
+					</div>
+					<div class="uk-margin">
+						<button type="submit" class="uk-button uk-button-primary uk-button-primary uk-button-large uk-width-1-1">{{ constant('LOGIN_PASSFORGOTTEN_BUTTON') }}</button>
+					</div>
+				</fieldset>
+			</form>
+		{% else %}
+				<form action="login.php" method="POST">
 					<input type="hidden" name="action" value="login">
 					<input type="hidden" name="action_login" value="1">
 					<input type="hidden" value="{{ ref }}" name="ref" />

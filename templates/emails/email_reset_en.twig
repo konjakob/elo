@@ -1,10 +1,10 @@
-{% extends 'email/default.twig' %}
+{% extends 'emails/default.twig' %}
 
-{% block salutation %}Hello <strong>{user_name}</strong>{% endblock %}
+{% block salutation %}Hello <strong>{{ user_name }}</strong>{% endblock %}
 
 {% block maintext %}On ELO it was requested to reset your password. Your new password is:<br>
   <br>
-  <strong>{new_password}</strong>
+  <strong>{{ new_password }}</strong>
 <br>
 <br>
 Please log into:{% endblock %}

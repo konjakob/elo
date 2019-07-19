@@ -93,7 +93,7 @@ function prepareAttachments($attachments) {
 
 function prepareEmailAndSend($email_text, $email_ad, $email_name,$subject="", $alt_text="") {
 		global $conf;
-	
+
 		date_default_timezone_set('Etc/UTC');
 		require_once 'class.phpmailer.php';
 		
@@ -103,7 +103,7 @@ function prepareEmailAndSend($email_text, $email_ad, $email_name,$subject="", $a
 		$mail->IsSMTP();                                      // Set mailer to use SMTP
 		$mail->Host = $conf['smtp_server'];  // Specify main and backup server
 		$mail->Port = $conf['smtp_port'];
-		$mail->SMTPAuth = true;                               // Enable SMTP authentication
+		//$mail->SMTPAuth = true;                               // Enable SMTP authentication
 		$mail->CharSet = 'UTF-8';
 		$mail->Username = $conf['smtp_username'];                            // SMTP username
 		$mail->Password = $conf['smtp_password'];                           // SMTP password
@@ -111,7 +111,7 @@ function prepareEmailAndSend($email_text, $email_ad, $email_name,$subject="", $a
 		
 		$mail->SetFrom($conf['from_email'], $conf['from_name']);
 		$mail->FromName = $conf['from_name'];
-		$mail->WordWrap = 80;                                 // Set word wrap to 50 characters
+		$mail->WordWrap = 80;
 		$mail->IsHTML(true); 
 		
 		$mail->AddAddress($email_ad, $email_name);  // Add a recipient
@@ -124,10 +124,10 @@ function prepareEmailAndSend($email_text, $email_ad, $email_name,$subject="", $a
 		$success = "";
 		
 		if(!$mail->Send()) {
-		   $error = 'Message could not be sent.';
-		   $error .= 'Mailer Error: ' . $mail->ErrorInfo;
+			$error = 'Message could not be sent. ';
+			$error .= 'Mailer Error: ' . $mail->ErrorInfo;
 		} else {
-			$success = "<br>Email successfully send.";
+			$success = "Email successfully send.";
 		}
 		return array($success, $error);
 		

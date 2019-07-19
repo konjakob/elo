@@ -452,6 +452,13 @@ INSERT INTO `elo_topic_user` (`tu_id`, `user_id`, `topic_id`) VALUES
 
 -- --------------------------------------------------------
 
+CREATE TABLE `elo_pass_request` (
+  `pr_id` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(6) unsigned NOT NULL,
+  `pr_code` varchar(100) NOT NULL,
+  `pr_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`pr_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 CREATE TABLE `elo_user_login` (
   `ul_id` int(6) unsigned NOT NULL AUTO_INCREMENT,

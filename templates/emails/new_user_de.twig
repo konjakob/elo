@@ -1,11 +1,11 @@
-{% extends 'email/default.twig' %}
+{% extends 'emails/default.twig' %}
 
-{% block salutation %}Hallo <strong>{user_name}</strong>{% endblock %}
+{% block salutation %}Hallo <strong>{{ user_name }}</strong>{% endblock %}
 
-{% block maintext %}Du wurdest bei ELO von {admin_name} angemeldet. Deine Benutzerdaten zum anmelden sind:<br>
+{% block maintext %}Du wurdest bei ELO von {{ admin_name }} angemeldet. Deine Benutzerdaten zum anmelden sind:<br>
 <br>
-Emailadresse: {user_email}<br>
-Passwort: {user_passwort}<br>
+Emailadresse: {{ user_email }}<br>
+Passwort: {{ user_passwort }}<br>
 <br>
 Nach dem anmelden kannst du deine pers&ouml;nlichen Informationen, wie deinen Namen, dein Passwort oder deine Spracheinstellungen &auml;ndern.
 
@@ -13,5 +13,5 @@ Nach dem anmelden kannst du deine pers&ouml;nlichen Informationen, wie deinen Na
 
 {% block maintwo %}
 Mit freundlichen Gr&uuml;&szlig;en.<br>
-<i>{admin_name}</i><br><br><br><strong>Falls du {admin_name} nicht kennst, ignoriere bitte diese Email.</strong>
+<i>{{ admin_name }}</i><br><br><br><strong>Falls du {{ admin_name }} nicht kennst, ignoriere bitte diese Email.</strong>
 {% endblock %}

@@ -1,7 +1,5 @@
 <?php
 
-header("Content-type: text/html; charset=utf-8");
-
 $breadcrumb = array();
 
 require_once 'ext/Twig/Autoloader.php';
@@ -11,6 +9,14 @@ $loader = new Twig_Loader_Filesystem('C:\\wamp\www\\elo\\templates');
 $twig = new Twig_Environment($loader);
 
 require_once("dbclass.php");
+
+$sql = "select varname as config_name, value as config_value from elo_config";
+$statement = $pdo->prepare($sql);
+$statement->execute();
+		
+$conf = array();
+while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
+	$conf[$res['config_name']] = $res['config_value'];
 
 $ref = "";
 
@@ -44,11 +50,9 @@ if ( isset($_GET['id'])) {
 		// Update the user with a new password
 		$statement = $pdo->prepare("update elo_user set user_password=:pass where user_id=:user");
 		$statement->bindValue(':user', $user_id, PDO::PARAM_INT);
-		$statement->bindValue(':pass', $code);
+		$statement->bindValue(':pass', $hasher->HashPassword($code));
 		$statement->execute();
-	
-		$query = $db->query("select elo_user.*, elo_lang.lang_code from elo_user left join elo_lang ON (elo_user.lang_id=elo_lang.lang_id) where user_id='".$user_id."' limit 1");
-		
+			
 		$statement = $pdo->prepare("select elo_user.*, elo_lang.lang_code from elo_user left join elo_lang ON (elo_user.lang_id=elo_lang.lang_id) where user_id=:user limit 1");
 		$statement->bindValue(':user', $user_id, PDO::PARAM_INT);
 		$statement->execute();
@@ -60,10 +64,7 @@ if ( isset($_GET['id'])) {
 		$email_data['url'] = $conf['url']."login.php";
 		
 		$email_text = $twig->render("emails/email_reset_".$user_res['lang_code'].".twig", $email_data);
-	 		 
-		$email_text_text = preg_replace('/(\<style)(.*)(style>)/s','',$email_text);
-		$email_text_text = str_replace(array("<!DOCTYPE html>","<br>"),array("","\n"),$email_text_text);
-		$email_text_text = preg_replace('/(<\/?)(\w+)([^>]*>)/e','',$email_text_text);
+	 	$email_text_text = strip_tags($email_text);
 		
 		$res = prepareEmailAndSend($email_text, $user_res['user_email'], $user_res['user_name'],'Password reseted',$email_text_text);
 		if ( strlen($res[1])) {

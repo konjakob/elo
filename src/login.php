@@ -1,17 +1,25 @@
 <?php
-
+require_once("dbclass.php");
 require_once 'ext/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
 $loader = new Twig_Loader_Filesystem('C:\\wamp\www\\elo\\templates'); 
 $twig = new Twig_Environment($loader);
 
+$sql = "select varname as config_name, value as config_value from elo_config";
+$statement = $pdo->prepare($sql);
+$statement->execute();
+		
+$conf = array();
+while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
+	$conf[$res['config_name']] = $res['config_value'];
+
 $twig_data['current_url'] = $_SERVER['PHP_SELF'];
 
 $ref = "";
 $msgs = array();
 
-require_once("dbclass.php");
+
 	
 $twig_data['showForgotten'] = (isset($_GET['pass']) && $_GET['pass'] == 'forgotten');
 
@@ -49,21 +57,17 @@ if ( isset($_POST['action_login'])) {
 		 
 		 $code = createCode(8);
 		 
-		$statement = $pdo->prepare("insert into elo_pass_request (user_id, pr_code, pr_time) values (:user_id, :code, :time)");
+		$statement = $pdo->prepare("insert into elo_pass_request (user_id, pr_code, pr_time) values (:user_id, :code, now())");
 		$statement->bindValue(':user_id', $user_res['user_id'], PDO::PARAM_INT);
 		$statement->bindValue(':code', $code);
-		$statement->bindValue(':time', time());
 		$statement->execute();
 		 
 		$email_data = array();
 		$email_data['user_name'] = $user_res['user_name'];
 		$email_data['url'] = $conf['url']."new_password.php?id=".$code;
 		
-		$email_text = $twig->render("emails/email_forgotten_".$user_res['lang_code'].".twig", $email_data);
-		 
-		$email_text_text = preg_replace('/(\<style)(.*)(style>)/s','',$email_text);
-		$email_text_text = str_replace(array("<!DOCTYPE html>","<br>"),array("","\n"),$email_text_text);
-		$email_text_text = preg_replace('/(<\/?)(\w+)([^>]*>)/e','',$email_text_text);
+		$email_text = $twig->render("emails/email_forgotten_".$user_res['lang_code'].".twig", $email_data);		 
+		$email_text_text = strip_tags($email_text);
 		
 		$res = prepareEmailAndSend($email_text, $user_res['user_email'], $user_res['user_name'],'Password reset requested',$email_text_text);
 
@@ -71,7 +75,7 @@ if ( isset($_POST['action_login'])) {
             $msgs[] = array('state' => 'nok', 'text' => $res[1]);
 		}
 		if ( strlen($res[0])) {
-            $msgs[] = array('state' => 'ok', 'text' => $res[1]);
+            $msgs[] = array('state' => 'ok', 'text' => $res[0]);
 		}
 	} else {
          $msgs[] = array('state' => 'nok', 'text' => 'Email is not known.');

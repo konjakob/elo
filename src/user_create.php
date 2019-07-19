@@ -81,10 +81,7 @@ if ( isset($_POST['new_user']) ) {
 				$email_data['url'] = $conf['url'];
 				
 				$email_text = $twig->render("emails/new_user_".$user_lang.".twig", $email_data);
-				 
-				$email_text_text = preg_replace('/(\<style)(.*)(style>)/s','',$email_text);
-				$email_text_text = str_replace(array("<!DOCTYPE html>","<br>"),array("","\n"),$email_text_text);
-				$email_text_text = preg_replace('/(<\/?)(\w+)([^>]*>)/e','',$email_text_text);
+				$email_text_text = strip_tags($email_text);
 				
 				$res = prepareEmailAndSend($email_text, $newUserEmail, $newUserName, EMAIL_NEW_USER_TEXT_TITLE, $email_text_text);
 				

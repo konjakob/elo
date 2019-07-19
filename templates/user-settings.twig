@@ -35,7 +35,7 @@
    {% include 'partials/attachment.twig' %}
    
    <h2>Profile data</h2>
-   <form action="$_SERVER['PHP_SELF']" method="post" class="uk-form-stacked">
+   <form action="{{ current_url }}" method="post" class="uk-form-stacked">
    
     <div class="uk-margin">
         <label class="uk-form-label" for="form-element1">{{ constant('USER_SETTINGS_USERNAME') }}</label>
