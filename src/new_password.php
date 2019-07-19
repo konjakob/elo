@@ -1,19 +1,27 @@
 <?php
 
+header("Content-type: text/html; charset=utf-8");
+
+$breadcrumb = array();
+
+require_once 'ext/Twig/Autoloader.php';
+Twig_Autoloader::register();
+
+$loader = new Twig_Loader_Filesystem('C:\\wamp\www\\elo\\templates'); 
+$twig = new Twig_Environment($loader);
+
+require_once("dbclass.php");
+
 $ref = "";
 
 $error = "";
 $success = "";
 
-require_once("dbclass.php");
-
 $langcode = "en";
 	
 if ( isset($_GET['id'])) {
 
-	require("functions.php");
-
-	
+	require_once("functions.php");	
 	require_once( "PasswordHash.php" );
     $hasher = new PasswordHash( 8, TRUE );
 
@@ -21,65 +29,61 @@ if ( isset($_GET['id'])) {
 	$statement->bindValue(':id', $_GET['id']);
 	$statement->execute();
 	
-	$user_id = $db->query_one("select user_id from elo_pass_request where pr_code='".addslashes($_GET['id'])."' and pr_time>'".(time()-3600)."' limit 1");
+	$res = $statement->fetch(PDO::FETCH_ASSOC);
+	$user_id = $res['user_id'];
 	
 	if ( $user_id ) {
 		
-		$db->query("delete from elo_pass_request where pr_code='".addslashes($_GET['id'])."'");
+		// Delete any password reset request
+		$statement = $pdo->prepare("delete from elo_pass_request where pr_code=:code");
+		$statement->bindValue(':code', $_GET['id']);
+		$statement->execute();
 		
 		$code = createCode(8);
+		
+		// Update the user with a new password
+		$statement = $pdo->prepare("update elo_user set user_password=:pass where user_id=:user");
+		$statement->bindValue(':user', $user_id, PDO::PARAM_INT);
+		$statement->bindValue(':pass', $code);
+		$statement->execute();
 	
-		$db->query("update elo_user set user_password='".addslashes($hasher->HashPassword($code))."' where user_id='".$user_id."'");
-
-
 		$query = $db->query("select elo_user.*, elo_lang.lang_code from elo_user left join elo_lang ON (elo_user.lang_id=elo_lang.lang_id) where user_id='".$user_id."' limit 1");
-		 
-		$success = "";
-	
-		$user_res = $db->fetch_array($query);
+		
+		$statement = $pdo->prepare("select elo_user.*, elo_lang.lang_code from elo_user left join elo_lang ON (elo_user.lang_id=elo_lang.lang_id) where user_id=:user limit 1");
+		$statement->bindValue(':user', $user_id, PDO::PARAM_INT);
+		$statement->execute();
+			
+		$user_res = $statement->fetch(PDO::FETCH_ASSOC);
 	 
-		$email_text = str_replace(array("{user_name}", "{new_password}", "{url}"), array($user_res['user_name'], $code, $conf['url']."login.php"), file_get_contents("includes/languages/template_email_reset_".$user_res['lang_code'].".html"));
-		 
+		$email_data['user_name'] = $user_res['user_name'];
+		$email_data['new_password'] = $code;
+		$email_data['url'] = $conf['url']."login.php";
+		
+		$email_text = $twig->render("emails/email_reset_".$user_res['lang_code'].".twig", $email_data);
+	 		 
 		$email_text_text = preg_replace('/(\<style)(.*)(style>)/s','',$email_text);
 		$email_text_text = str_replace(array("<!DOCTYPE html>","<br>"),array("","\n"),$email_text_text);
 		$email_text_text = preg_replace('/(<\/?)(\w+)([^>]*>)/e','',$email_text_text);
 		
 		$res = prepareEmailAndSend($email_text, $user_res['user_email'], $user_res['user_name'],'Password reseted',$email_text_text);
-		$success = $res[0];
 		if ( strlen($res[1])) {
-			$error = "<div id='warning'>".$res[1]."</div><br>";
+			$msgs[] = array('state' => 'nok', 'text' => $res[1]);
 		}
 		if ( strlen($res[0])) {
-			$success = 	"<div id='correct'>".$res[0]."</div>";
+			$msgs[] = array('state' => 'ok', 'text' => $res[0]);
 		}
 		
 		$langcode = $user_res['lang_code'];
 	
 	} else {
-		$error = "<div id='warning'>No password request found.</div><br>";
+		$msgs[] = array('state' => 'nok', 'text' => 'No password request found.');
 	}
 
 } else {
-	$error = "<div id='warning'>No password request found.</div><br>";	
+	$msgs[] = array('state' => 'nok', 'text' => 'No password request found.');
 }
+
 require_once('includes/languages/'.$langcode.'.php');
-?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<link href="style.css" rel="stylesheet" type="text/css" />
 
-</head>
-
-<body><br />
-<?
-	if( strlen($error)) 
-		echo $error;
-	
-	if ( strlen($success ) )
-		echo $success;
-		
-		?>
-<div id="panel-header"><?=PASSWORT_RESET?></div>
-<div id="panel-box"><?=PASSWORT_RESET_TEXT?>
-</div></body></html>
+$twig_data['msgs'] = $msgs;
+echo $twig->render("login.twig", $twig_data);

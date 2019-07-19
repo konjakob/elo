@@ -1,4 +1,4 @@
-<?
+<?php
 define('PASSWORT_RESET','Password reset request');
 define('PASSWORT_RESET_TEXT','After a sent password reset request, the request is valid for 60 minutes. After that time a new password reset request has to be send.<br><br>If the password reset request was successful, please check your email box for an email with the new password.');
 

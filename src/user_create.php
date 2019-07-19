@@ -40,7 +40,7 @@ if ( isset($_POST['new_user']) ) {
 			$msgs[] = array('state' => 'nok', 'text' => 'There is already an user with the given email address. Please use another email address.');
 		} else {
 
-			$statement = $pdo->prepare("insert into elo_user (user_name, user_email, user_password, lang_id, user_lastvisit) values (:t_name, :t_email, :pass, :t_lang, '".time()."')"); //todo, change time to be default of DB
+			$statement = $pdo->prepare("insert into elo_user (user_name, user_email, user_password, lang_id) values (:t_name, :t_email, :pass, :t_lang)"); 
 			$statement->bindValue(':t_name', $newUserName);
 			$statement->bindValue(':t_email', $newUserEmail);
 			$statement->bindValue(':pass', $hasher->HashPassword(filter_input(INPUT_POST, 't_pass')));
@@ -73,40 +73,26 @@ if ( isset($_POST['new_user']) ) {
 				
 				$res = $statement->fetch(PDO::FETCH_ASSOC);
 				$user_lang = $res['lang_code'];
+						
+				$email_data = array();
+				$email_data['user_name'] = $newUserName;
+				$email_data['user_email'] = $newUserEmail;
+				$email_data['admin_name'] = $username;
+				$email_data['url'] = $conf['url'];
 				
-				$email_text = str_replace(array("{user_name}", "{user_email}", "{admin_name}", "{url}"), array($newUserName, $newUserEmail, $username, $conf['url']), file_get_contents("includes/languages/template_new_user_".$user_lang.".html"));
-		
-				date_default_timezone_set('Etc/UTC');
-				require_once 'class.phpmailer.php';
+				$email_text = $twig->render("emails/new_user_".$user_lang.".twig", $email_data);
+				 
+				$email_text_text = preg_replace('/(\<style)(.*)(style>)/s','',$email_text);
+				$email_text_text = str_replace(array("<!DOCTYPE html>","<br>"),array("","\n"),$email_text_text);
+				$email_text_text = preg_replace('/(<\/?)(\w+)([^>]*>)/e','',$email_text_text);
 				
-				$mail = new PHPMailer;
+				$res = prepareEmailAndSend($email_text, $newUserEmail, $newUserName, EMAIL_NEW_USER_TEXT_TITLE, $email_text_text);
 				
-				$mail->SMTPDebug  = 0;
-				$mail->IsSMTP();                                      // Set mailer to use SMTP
-				$mail->Host = $conf['smtp_server'];  // Specify main and backup server
-				$mail->Port = $conf['smtp_port'];
-				$mail->SMTPAuth = true;                               // Enable SMTP authentication
-				$mail->Username = $conf['smtp_username'];                            // SMTP username
-				$mail->Password = $conf['smtp_password'];                           // SMTP password
-				$mail->SMTPSecure = '';                            // Enable encryption, 'ssl' also accepted tls
-				
-				$mail->SetFrom($conf['from_email'], $conf['from_name']);
-				$mail->FromName = $conf['from_name'];
-				$mail->WordWrap = 80;                                 // Set word wrap to 50 characters
-				$mail->IsHTML(true); 
-				
-				$mail->AddAddress($newUserEmail, $newUserName);  // Add a recipient
-				
-				$mail->Subject = EMAIL_NEW_USER_TEXT_TITLE;
-				$mail->Body    = $email_text; // html text
-				$mail->AltBody = EMAIL_TEXT_NOSUPPORT;
-				
-				if(!$mail->Send()) {
+				if(!$res) {
 				   $msgs[] = array('state' => 'nok', 'text' => 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo);
 				} else {
 					$msgs[] = array('state' => 'ok', 'text' => 'Sent a registration email with all information to the user.');	
 				}
-
 				
 			}
 		}

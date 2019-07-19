@@ -1,0 +1,19 @@
+{% extends 'email/default.twig' %}
+
+{% block salutation %}Hello <strong>{user_name}</strong>{% endblock %}
+
+{% block maintext %}You were registered at ELO by {admin_name}. Please log yourself in on:<br><br><a href="{url}">{url}</a><br>
+<br>
+Your user data to log in is:<br>
+<br>
+Email: {user_email}<br>
+Password: {user_passwort}<br>
+<br> 
+After you logged into the site, you can change your personal settings like your user name, your password or your language.
+
+{% endblock %}
+
+{% block maintwo %}
+Best regards.<br>
+<i>{admin_name}</i><br><br><br><strong>In the case you don't know {admin_name}, please ignore this email.</strong>
+{% endblock %}

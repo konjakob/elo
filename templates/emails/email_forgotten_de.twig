@@ -1,0 +1,12 @@
+{% extends 'email/default.twig' %}
+
+{% block salutation %}Hallo <strong>{user_name}</strong>{% endblock %}
+
+{% block maintext %}Auf ELO wurde beantragt, dein Passwort zur&uuml;ckzusetzen. Falls diese Aktion von dir ausgel&ouml;st wurde, klicke bitte auf folgenden Link um ein neues Passwort zu erhalten:{% endblock %}
+
+{% block maintwo %}
+Dann erh&auml;lst du ein neues Passwort zugeschickt.
+Falls du dein Passwort nicht zur&uuml;cksetzten m&ouml;chtest, bitte ignoriere diese Email.<br>
+<br><br>
+Mit freundlichen Gr&uuml;&szlig;en.
+{% endblock %}

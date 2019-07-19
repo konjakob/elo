@@ -13,6 +13,8 @@ $msgs = array();
 
 require_once("dbclass.php");
 	
+$twig_data['showForgotten'] = (isset($_GET['pass']) && $_GET['pass'] == 'forgotten');
+
 if ( isset($_POST['action_login'])) {
 
 	require("authenticate.class.php");
@@ -43,7 +45,7 @@ if ( isset($_POST['action_login'])) {
 	if ( $statement->rowCount() ) {
 		$user_res = $statement->fetch(PDO::FETCH_ASSOC);
 
-		require("functions.php");
+		require_once("functions.php");
 		 
 		 $code = createCode(8);
 		 
@@ -53,7 +55,11 @@ if ( isset($_POST['action_login'])) {
 		$statement->bindValue(':time', time());
 		$statement->execute();
 		 
-		$email_text = str_replace(array("{user_name}", "{url}"), array($user_res['user_name'], $conf['url']."new_password.php?id=".$code), file_get_contents("includes/languages/template_email_forgotten_".$user_res['lang_code'].".html"));
+		$email_data = array();
+		$email_data['user_name'] = $user_res['user_name'];
+		$email_data['url'] = $conf['url']."new_password.php?id=".$code;
+		
+		$email_text = $twig->render("emails/email_forgotten_".$user_res['lang_code'].".twig", $email_data);
 		 
 		$email_text_text = preg_replace('/(\<style)(.*)(style>)/s','',$email_text);
 		$email_text_text = str_replace(array("<!DOCTYPE html>","<br>"),array("","\n"),$email_text_text);
@@ -67,10 +73,10 @@ if ( isset($_POST['action_login'])) {
 		if ( strlen($res[0])) {
             $msgs[] = array('state' => 'ok', 'text' => $res[1]);
 		}
-	 } else {
+	} else {
          $msgs[] = array('state' => 'nok', 'text' => 'Email is not known.');
-	 }
-	 $_GET['pass'] = 'forgotten';
+	}
+	$twig_data['showForgotten'] = 1;
 } else {
 	if ( isset($_GET['ref']))
 		$ref = $_GET['ref'];
@@ -78,7 +84,6 @@ if ( isset($_POST['action_login'])) {
 
 $langcode = "en";
 require_once('includes/languages/'.$langcode.'.php');
-$twig_data['showForgotten'] = (isset($_GET['pass']) && $_GET['pass'] == 'forgotten');
 $twig_data['ref'] = $ref;
 $twig_data['msgs'] = $msgs;
 echo $twig->render("login.twig", $twig_data);
