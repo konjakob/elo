@@ -18,9 +18,9 @@
 {% endfor %}   
    
 
-	<h2>Profile picture</h2>
+	<h2>{% trans %}Profile picture{% endtrans %}</h2>
    
-	Your current profile image is shown below:
+	{% trans %}Your current profile image is shown below:{% endtrans %}
 	{% if user_picture|length > 0 %}
 	
 	{% endif %}
@@ -29,7 +29,7 @@
 <div id="div-image-crop"  style="display:none; " class="uk-background-muted">
 	<div id="userImageCrop">
 		<img src="" id="profile-image-crop"></div><input type="hidden" value="" name="crop-x1"><input type="hidden" value="" name="crop-x2"><input type="hidden" value="" name="crop-y1"><input type="hidden" value="" name="crop-y2">
-<p class="uk-text-left"><button class="uk-button uk-button-primary" id="btnCropImage">Crop</button></p>
+<p class="uk-text-left"><button class="uk-button uk-button-primary" id="btnCropImage">{% trans %}Crop{% endtrans %}</button></p>
 </div>	
    
    {% include 'partials/attachment.twig' %}
@@ -70,7 +70,7 @@
     </div>
 
 		
-<div class="uk-text-right"><input class="uk-button uk-button-primary" type="submit" value="{{ constant('TOPIC_TEXT_SAVE') }}" name="action"></div>
+<div class="uk-text-right"><input class="uk-button uk-button-primary" type="submit" value="{% trans %}Save{% endtrans %}" name="action"></div>
 </form>
 
 {# Modal for image cropping #}

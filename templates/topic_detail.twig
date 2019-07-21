@@ -14,15 +14,15 @@
 		<div class="uk-child-width-1-2@s" uk-grid>		
 			<div>
 				<div class="uk-card uk-card-default uk-card-primary uk-card-small uk-card-body">
-					<h4 class="uk-card-title">{{ constant('TOPIC_USER_OF_TOPIC') }}</h4>
-					<p>{% if ar_user_see_topic|length %}{{ ar_user_see_topic|join(', ', ' and ') }}{% else %}No users.{% endif %}</p>
+					<h4 class="uk-card-title">{% trans %}Users of this topic:{% endtrans %}</h4>
+					<p>{% if ar_user_see_topic|length %}{{ ar_user_see_topic|join(', ', ' and ') }}{% else %}{% trans %}No users.{% endtrans %}{% endif %}</p>
 				</div>
 			</div>
 		
 			<div>
 				<div class="uk-card uk-card-default uk-card-primary uk-card-small uk-card-body">
 					<h4 class="uk-card-title">{{ constant('TOPIC_GROUP_OF_TOPIC') }}</h4>
-					<p>{% if ar_group_see_topic|length %}{{ ar_group_see_topic|join(', ', ' and ') }}{% else %}No groups.{% endif %}</p>
+					<p>{% if ar_group_see_topic|length %}{{ ar_group_see_topic|join(', ', ' and ') }}{% else %}{% trans %}No groups.{% endtrans %}{% endif %}</p>
 				</div>
 			</div>	
 	</div>
@@ -45,7 +45,7 @@
 					</div>
 					<div class="uk-position-top-right uk-position-small uk-hidden-hover">
 						{% if reply.can_edit %}
-							<a class="uk-link-muted" href='edit_reply.php?id={{ reply.reply_id }}'>{{ constant('TOPIC_EDIT') }}</a> | <a href='actions.php?action=delete_reply&ref=1&id={{ reply.reply_id }}' data-id="{{ reply.reply_id }}" class="uk-link-muted reply-delete">{{ constant('TOPIC_DELETE') }}</a>
+							<a class="uk-link-muted" href='edit_reply.php?id={{ reply.reply_id }}'>{{ constant('TOPIC_EDIT') }}</a> | <a href='actions.php?action=delete_reply&ref=1&id={{ reply.reply_id }}' data-id="{{ reply.reply_id }}" class="uk-link-muted reply-delete">{% trans %}Delete{% trans %}</a>
 						{% endif %}
 					</div>
 				</header>
@@ -68,14 +68,14 @@
 						{% endif %}
 					
 						{% if reply.attachments|length > 0 %}
-							<hr><strong>{{ constant('TOPIC_TEXT_ATTACHMENTS') }}</strong><br>
+							<hr><strong>{% trans %}Attachments{% endtrans %}</strong><br>
 							<div uk-grid>
 							{% for a in reply.attachments %}
 								<div>
 								{% if a.img %}
 									<img src="{{ a.img }}" {{ a.img_data }}><br>
 								{% endif %}
-								{{ a.attachment_filename }} (<a href='download.php?aid={{ a.attachment_id }}'>{{ constant('TOPIC_TEXT_DOWNLOAD') }}</a>, {{ a.filesize }})</div>
+								{{ a.attachment_filename }} (<a href='download.php?aid={{ a.attachment_id }}'>{% trans %}Download{% endtrans %}</a>, {{ a.filesize }})</div>
 							{% endfor %}
 							</div>
 						{% endif %}
@@ -91,12 +91,12 @@
 	<div id="newReplyRespond{{ topicid }}" style="display:none; "></div>
 	
 	<div class="uk-card uk-card-default uk-card-body uk-margin" id="newReply{{ topicid }}">
-		<h3>{{ constant('TOPIC_TEXT_REPLY_TEXT') }} <span class="" uk-icon="question"></span><div uk-dropdown>{{ constant('TOPIC_TEXT_RULES') }}</div></h3>
+		<h3>{{ constant('TOPIC_TEXT_REPLY_TEXT') }} <span class="" uk-icon="question"></span><div uk-dropdown>{% trans %}Text rules:{% endtrans %}</div></h3>
 		
         <form action="addreply.php" method="post" enctype="multipart/form-data">
             <input type="hidden" value="{{ topicid }}" name="id">
             <div class="uk-margin">
-                <label class="uk-form-label" for="newReplyText{{ topicid }}">{{ constant('TOPIC_TEXT_TOPIC_TEXT') }} <span class="" uk-icon="question"></span><div uk-dropdown>{{ constant('TOPIC_TEXT_RULES') }}</div></label>
+                <label class="uk-form-label" for="newReplyText{{ topicid }}">{% trans %}Text{% endtrans %} <span class="" uk-icon="question"></span><div uk-dropdown>{% trans %}Text rules:{% endtrans %}</div></label>
                 <div class="uk-form-controls">
                     <textarea id="newReplyText{{ topicid }}" class="uk-textarea" name="text"></textarea>
                 </div>
@@ -110,7 +110,7 @@
                 {% include 'partials/attachment.twig' %}						
             {% endif %}
                             
-            <div class="uk-text-right"><input type="submit" class="uk-button uk-button-primary" value="{{ constant('TOPIC_TEXT_SAVE') }}"></div>
+            <div class="uk-text-right"><input type="submit" class="uk-button uk-button-primary" value="{% trans %}Save{% endtrans %}"></div>
 
         </form>
 	
@@ -138,7 +138,7 @@
 $("#editTopicTitle").click(function(event) {
   event.preventDefault();
   var el = $(this);
-  UIkit.modal.prompt('Change the topic title:', $('#topicTitle').text()).then(function(name) {
+  UIkit.modal.prompt('{% trans %}Change the topic title:{% endtrans %}', $('#topicTitle').text()).then(function(name) {
 		if ( name ) {
 			$.ajax({
 				url: 'actions.php',
@@ -166,7 +166,7 @@ $("#editTopicTitle").click(function(event) {
 $("#deleteTopic").click(function(event) {
   event.preventDefault();
   var el = $(this);
-  UIkit.modal.confirm('Do you really want to delete the whole topic?').then(function() {
+  UIkit.modal.confirm('{% trans %}Do you really want to delete the whole topic?{% endtrans %}').then(function() {
 		$.get( "actions.php?action=deleteTopic&id={{ topicid }}" )
 		  .done(function( data ) {
 			if ( data.status == 'ok' ) {
@@ -184,7 +184,7 @@ $("#deleteTopic").click(function(event) {
 $(".reply-delete").click(function(event) {
   event.preventDefault();
   var el = $(this);
-  UIkit.modal.confirm('Do you really want to delete this reply?').then(function() {
+  UIkit.modal.confirm('{% trans %}Do you really want to delete this reply?{% endtrans %}').then(function() {
 		$.get( "actions.php?action=delete_reply&id=" + el.attr('data-id') )
 		  .done(function( data ) {
 			if ( data.status == 'ok' ) {

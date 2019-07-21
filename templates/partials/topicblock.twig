@@ -15,10 +15,10 @@
 				<p>{{ topic.reply_text }}</p>
 			</div>
 			<div class="uk-card-footer">
-				<p class="uk-text-meta uk-margin-remove-top">{{ topic.no_replies }} {{ constant('TOPIC_TEXT_TOPIC_ANSWERS') }} | {{ constant('TOPIC_TEXT_TOPIC_CREATED') }} {{ topic.reply_date|date(conf.date_format) }} {{ constant('TOPIC_TEXT_TOPIC_BY') }} {{ topic.username }}
+				<p class="uk-text-meta uk-margin-remove-top">{{ topic.no_replies }} {% trans %}Answers{% endtrans %} | {% trans %}Created:{% endtrans %} {{ topic.reply_date|date(conf.date_format) }} {% trans %}by{% endtrans %} {{ topic.username }}
 					{% if topic.reply_date != topic.last_reply_date %}
-						 | {{ constant('TOPIC_TEXT_TOPIC_LAST_RESPONSE') }} : {{ topic.last_reply_date|date(conf.date_format) }}
-						{% endif %} | <a href="{{ topic.href }}">View</a></p>
+						 | {% trans %}Last response:{% endtrans %} {{ topic.last_reply_date|date(conf.date_format) }}
+						{% endif %} | <a href="{{ topic.href }}">{% trans %}View{% endtrans %}</a></p>
 			</div>
 		</div>
 	</div>

@@ -11,36 +11,36 @@
 
 <div>
 	<div class="uk-card uk-card-default uk-card-body">
-		<h2 class="uk-card-title">New user</h2>
+		<h2 class="uk-card-title">{% trans %}New user{% endtrans %}</h2>
 		<form class="uk-form-stacked" action="{{ current_url }}" method="post" id="myform">
 
 			<div class="uk-margin">
-				<label class="uk-form-label" for="user_name">Name</label>
+				<label class="uk-form-label" for="user_name">{% trans %}Name{% endtrans %}</label>
 				<div class="uk-form-controls">
-					<input class="uk-input" id="user_name" type="text" name="t_name" placeholder="Name" data-validation="length" data-validation-length="min{{ conf.min_length_username }}">
+					<input class="uk-input" id="user_name" type="text" name="t_name" placeholder="{% trans %}Name{% endtrans %}" data-validation="length" data-validation-length="min{{ conf.min_length_username }}">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="user_email">Email</label>
+				<label class="uk-form-label" for="user_email">{% trans %}Email{% endtrans %}</label>
 				<div class="uk-form-controls">
-					<input class="uk-input" id="user_email" type="text" name="t_email" placeholder="Email" data-validation="server" data-validation-url="actions.php?action=validate">
+					<input class="uk-input" id="user_email" type="text" name="t_email" placeholder="{% trans %}Email{% endtrans %}" data-validation="server" data-validation-url="actions.php?action=validate">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="user_pass">Password</label>
+				<label class="uk-form-label" for="user_pass">{% trans %}Password{% endtrans %}</label>
 				<div class="uk-form-controls">
-						<input class="uk-input" id="user_pass" type="text" name="t_pass" placeholder="Password" data-validation-strength="3">
+						<input class="uk-input" id="user_pass" type="text" name="t_pass" placeholder="{% trans %}Password{% endtrans %}" data-validation-strength="3">
 				</div>
-				 {{ constant('PANEL_EXAMPLE_PASSWORD') }} <code id="suggestedPassword">{{ exampleCode }}</code> <small><a href="#" id="use-sug-password">Use this password</a></small>
+				 {% trans %}For example:{% endtrans %} <code id="suggestedPassword">{{ exampleCode }}</code> <small><a href="#" id="use-sug-password">{% trans %}Use this password{% endtrans %}</a></small>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="user_reg_email">Send registration email</label>
+				<label class="uk-form-label" for="user_reg_email">{% trans %}Send registration email{% endtrans %}</label>
 				<div class="uk-form-controls">
 					<input class="uk-checkbox" id="user_reg_email" type="checkbox" name="t_send_email">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="user_lang">Language</label>
+				<label class="uk-form-label" for="user_lang">{% trans %}Language{% endtrans %}</label>
 				<div class="uk-form-controls">
 					<select name="t_lang" class="uk-select" id="user_lang" data-validation="required">
 					{% for l in langs %}
@@ -50,7 +50,7 @@
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="user_rights">Rights</label>
+				<label class="uk-form-label" for="user_rights">{% trans %}Rights{% endtrans %}</label>
 				<div class="uk-form-controls">
 					<select id='ex_users' size='5' multiple='multiple' class="js-select2 uk-select uk-width-1-1 " style="" name='t_rights[]'>
 						{% for r in rights %}
@@ -60,7 +60,7 @@
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="user_groups">Groups</label>
+				<label class="uk-form-label" for="user_groups">{% trans %}Groups{% endtrans %}</label>
 				<div class="uk-form-controls">
 					<select id='ex_groups' class="uk-select js-select2 uk-width-1-1"  style="" size='5' multiple='multiple' name='t_group[]'>
 						{% for g in groups %}
@@ -72,7 +72,7 @@
 			
 			
 			<div class="uk-text-right">
-				<input type="submit" value="Save" name="new_user" class="uk-button uk-button-primary" />
+				<input type="submit" value="{% trans %}Save{% endtrans %}" name="new_user" class="uk-button uk-button-primary" />
 			</div>
 						
 		</form>

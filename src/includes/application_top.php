@@ -1,5 +1,17 @@
 <?php
 
+// Set language
+$language = "de_DE.UTF-8";
+putenv("LANGUAGE=" . $language);
+setlocale(LC_ALL, $language);
+
+// Specify the location of the translation tables
+$domain = "elo";
+bindtextdomain($domain, __DIR__ . '/locale');
+bind_textdomain_codeset($domain, 'UTF-8');	
+// Choose domain
+textdomain($domain);
+
 header("Content-type: text/html; charset=utf-8");
 
 $breadcrumb = array();
@@ -9,7 +21,12 @@ if ( !isset($jsonMode) ) {
 	Twig_Autoloader::register();
 
 	$loader = new Twig_Loader_Filesystem('C:\\wamp\www\\elo\\templates'); 
-	$twig = new Twig_Environment($loader);
+	$twig = new Twig_Environment($loader, array(
+		'cache' => false
+	));
+	
+	$twig->addExtension(new Twig_Extensions_Extension_I18n());
+
 }
  /*, array(
 		'cache' => 'ext/twig-cache',
@@ -78,7 +95,6 @@ if ( strlen($langcode) <1 )
 	$langcode = "en";
 
 $twig_data['langcode'] = $langcode;
-require_once('includes/languages/'.$langcode.'.php');
 
 $time = time();
 

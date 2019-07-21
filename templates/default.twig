@@ -25,10 +25,10 @@
 
                                 <ul class="uk-navbar-nav">
 									{% if 'IS_ADMIN' in user_rights %}
-									<li><a href="dashboard.php">Admin panel</a></li>
+									<li><a href="dashboard.php">{% trans %}Admin panel{% endtrans %}</a></li>
 									{% endif %}
-									<li><a href="user-settings.php">{{ constant('TOPIC_USER_SETTINGS') }}</a></li>
-                                    <li><a href="logout.php">{{ constant('TOPIC_TEXT_LOGOUT') }}</a></li>
+									<li><a href="user-settings.php">{% trans %}Personal data{% endtrans %}</a></li>
+                                    <li><a href="logout.php">{% trans %}Logout{% endtrans %}</a></li>
                                 </ul>
 								
                             </div>

@@ -9,7 +9,7 @@
 		<span class="uk-text-small"><span data-uk-icon="icon:{{ d.icon }}" class="uk-margin-small-right uk-text-primary"></span>{{ d.title }}</span>
 		<h1 class="uk-heading-primary uk-margin-remove  uk-text-primary">{{ d.total }}</h1>
 		<div class="uk-text-small">
-			<span class="uk-text-{% if d.change > 0 %}success{% else %}warning{% endif %}" data-uk-icon="icon: {% if d.change > 0 %}triangle-up{% else %}triangle-down{% endif %}">{{ d.change }}</span> more than last week.
+			<span class="uk-text-{% if d.change > 0 %}success{% else %}warning{% endif %}" data-uk-icon="icon: {% if d.change > 0 %}triangle-up{% else %}triangle-down{% endif %}">{{ d.change }}</span> {% trans %}more than last week.{% endtrans %}
 		</div>
 	</div>
 	{% endfor %}

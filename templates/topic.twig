@@ -11,8 +11,7 @@
 </div>
 <div id="board_messages" style="display: none;"></div>
 
-	
-	<div>{{ constant('TOPIC_TEXT_HELLO') }} <strong>{{ user_name }}</strong>{{ constant('TOPIC_TEXT_WELCOME') }}</div>
+{% trans %}<strong>{{ user_name }}</strong>, welcome back. These are your topics:{% endtrans %}</div>
 	<hr>
 	<div id="placeholder" style="display:none;border:thin;border-style:dashed;padding:10px"></div>
 	
@@ -25,7 +24,7 @@
 
     <div id="createNewTopic" class="uk-margin">
 		<div>
-			<input class="uk-button uk-button-primary uk-margin-bottom" type="button" id="btnCreateTopic" value="{{ constant('TOPIC_TEXT_NEW_TOPIC') }}">
+			<input class="uk-button uk-button-primary uk-margin-bottom" type="button" id="btnCreateTopic" value="{% trans %}Create a new topic{% endtrans %}">
 		</div>
 		<div id="newTopic2" style="display:none">
 		
@@ -155,7 +154,7 @@ $(document).ready(function(){
 							start = start + 10;
 						} else {
 							stopscrol = 1;
-							$("#postswrapper").append('<div class="uk-text-center">{{ constant('NO_MORE_POSTS') }}</div>');
+							$("#postswrapper").append('<div class="uk-text-center">{% trans %}No more posts to show.{% endtrans %}</div>');
 							$('div#loadmoreajaxloader').hide();
 						}
 					}

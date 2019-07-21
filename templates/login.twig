@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>{{ constant('LOGIN_INFO') }}</title>
+		<title>{% trans %}Login{% endtrans %}</title>
 		<link rel="icon" href="img/favicon.ico">
 		<!-- CSS FILES -->
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css">
@@ -26,7 +26,7 @@
             {% endfor %}
         {% if showForgotten %}
 
-			{{ constant('LOGIN_PASSFORGOTTEN_TEXT') }}
+			{% trans %}Please insert your email address below. You will receive an email with a link to reset your password.{% endtrans %}
 			<form action="login.php" method="post">
 				<input type="hidden" name="action_passforgotten" value="1">
 				<fieldset class="uk-fieldset">
@@ -37,7 +37,7 @@
 						</div>
 					</div>
 					<div class="uk-margin">
-						<button type="submit" class="uk-button uk-button-primary uk-button-primary uk-button-large uk-width-1-1">{{ constant('LOGIN_PASSFORGOTTEN_BUTTON') }}</button>
+						<button type="submit" class="uk-button uk-button-primary uk-button-primary uk-button-large uk-width-1-1">{% trans %}Reset password{% endtrans %}</button>
 					</div>
 				</fieldset>
 			</form>
@@ -47,25 +47,25 @@
 					<input type="hidden" name="action_login" value="1">
 					<input type="hidden" value="{{ ref }}" name="ref" />
 					<fieldset class="uk-fieldset">
-						<legend class="uk-legend">{{ constant('LOGIN_INFO') }}</legend>
+						<legend class="uk-legend">{% trans %}Login{% endtrans %}</legend>
 						<div class="uk-margin">
 							<div class="uk-inline uk-width-1-1">
 								<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: user"></span>
-								<input class="uk-input uk-form-large" required placeholder="Email" type="text" name="t_email">
+								<input class="uk-input uk-form-large" required placeholder="{% trans %}Email{% endtrans %}" type="text" name="t_email">
 							</div>
 						</div>
 						<div class="uk-margin">
 							<div class="uk-inline uk-width-1-1">
 								<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
-								<input class="uk-input uk-form-large" required placeholder="Passwort" type="password" name="t_pass">
+								<input class="uk-input uk-form-large" required placeholder="{% trans %}Passwort{% endtrans %}" type="password" name="t_pass">
 							</div>
 						</div>
 						<div class="uk-margin">
-							<button type="submit" class="uk-button uk-button-primary uk-button-primary uk-button-large uk-width-1-1">{{ constant('LOGIN_BUTTON') }}</button>
+							<button type="submit" class="uk-button uk-button-primary uk-button-primary uk-button-large uk-width-1-1">{% trans %}Login{% endtrans %}</button>
 						</div>
 					</fieldset>
 				</form>
-				<a href="{{ current_url }}?pass=forgotten">{{ constant('LOGIN_PASSWORD_FORGOTTEN') }}</a>
+				<a href="{{ current_url }}?pass=forgotten">{% trans %}Password forgotten{% endtrans %}</a>
 			  {% endif %}
 			</div>
 		</div>
