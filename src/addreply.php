@@ -3,12 +3,12 @@
 require('includes/application_top.php');
 
 if ( !isset($_POST['id'])) {
-	echo "No topic ID.";
+	echo _("No topic ID.");
 	exit();
 }
 
 if ( !in_array('CAN_REPLY', $user_rights) ) {
-    echo "No rights.";
+    echo _("No rights.");
     exit();
 }
 
@@ -29,13 +29,13 @@ if ( !$statement->fetch(PDO::FETCH_ASSOC) ) {
 	$statement->execute();
 
 	if ( !$statement->fetch(PDO::FETCH_ASSOC) ) {
-		echo "Sorry, there is nothing.";
+		echo _("Sorry, there is nothing.");
 		exit();
 	}
 }
 
 if ( strlen($_POST['text']) < 1 ) {
-	echo "No text.";
+	echo _("No text.");
 	exit;	
 }
 
@@ -67,7 +67,7 @@ if ( in_array('CREATE_SHEETS', $user_rights) && isset($_POST['abc']) && strlen($
 }
 
 if ( isset($_POST['noref']) ) {
-	echo "Reply saved.";
+	echo _("Reply saved.");
 } else {
 	header("Location: topic.php?id=".$topicid."#".$reply_id);	
 }

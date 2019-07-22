@@ -16,15 +16,15 @@ if ( isset($_POST['new_user']) ) {
 	$newUserLang = (int)filter_input(INPUT_POST, 't_lang', FILTER_VALIDATE_INT);
 	
 	if ( !filter_var($newUserEmail, FILTER_VALIDATE_EMAIL) ) {
-		$msgs[] = array('state' => 'nok', 'text' => 'Please provide a valid email address.');
+		$msgs[] = array('state' => 'nok', 'text' => _('Please provide a valid email address.'));
 	}
 	
 	if ( !isset($_POST['t_pass']) || strlen($_POST['t_pass']) < 1 ) {
-		$msgs[] = array('state' => 'nok', 'text' => 'Please provide a password.');	
+		$msgs[] = array('state' => 'nok', 'text' => _('Please provide a password.'));	
 	}
 	
 	if ( strlen($newUserName) < $conf['min_length_username'] ) {
-		$msgs[] = array('state' => 'nok', 'text' => 'Please provide a user name with minimum '.$conf['min_length_username'].' characters.');	
+		$msgs[] = array('state' => 'nok', 'text' => sprintf(_('Please provide a user name with minimum %d characters.'),$conf['min_length_username']));	
 	}
 
 	if ( sizeof($msgs) < 1 ) {	
@@ -37,7 +37,7 @@ if ( isset($_POST['new_user']) ) {
 		$statement->execute();	
 		
 		if ( $statement->rowCount() ) {
-			$msgs[] = array('state' => 'nok', 'text' => 'There is already an user with the given email address. Please use another email address.');
+			$msgs[] = array('state' => 'nok', 'text' => _('There is already an user with the given email address. Please use another email address.'));
 		} else {
 
 			$statement = $pdo->prepare("insert into elo_user (user_name, user_email, user_password, lang_id) values (:t_name, :t_email, :pass, :t_lang)"); 
@@ -49,7 +49,7 @@ if ( isset($_POST['new_user']) ) {
 			
 			$newUserId= $pdo->lastInsertId();
 		
-			$msgs[] = array('state' => 'ok', 'text' => 'Created new user: '.filter_input(INPUT_POST, 't_name'));
+			$msgs[] = array('state' => 'ok', 'text' => sprintf(_('Created new user: %s'), filter_input(INPUT_POST, 't_name')));
 			
 			foreach ( $_POST['t_group'] as $g ) {
 				$statement = $pdo->prepare("insert into elo_group_user (user_id, group_id) values (:user, :group)");
@@ -80,15 +80,15 @@ if ( isset($_POST['new_user']) ) {
 				$email_data['admin_name'] = $username;
 				$email_data['url'] = $conf['url'];
 				
-				$email_text = $twig->render("emails/new_user_".$user_lang.".twig", $email_data);
+				$email_text = $twig->render("emails/new_user.twig", $email_data);
 				$email_text_text = strip_tags($email_text);
 				
-				$res = prepareEmailAndSend($email_text, $newUserEmail, $newUserName, EMAIL_NEW_USER_TEXT_TITLE, $email_text_text);
+				$res = prepareEmailAndSend($email_text, $newUserEmail, $newUserName, _('Welcome to ELO'), $email_text_text);
 				
 				if(!$res) {
-				   $msgs[] = array('state' => 'nok', 'text' => 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo);
+				   $msgs[] = array('state' => 'nok', 'text' => sprintf(_('Message could not be sent. Mailer Error: %s'), $mail->ErrorInfo));
 				} else {
-					$msgs[] = array('state' => 'ok', 'text' => 'Sent a registration email with all information to the user.');	
+					$msgs[] = array('state' => 'ok', 'text' => _('Sent a registration email with all information to the user.'));	
 				}
 				
 			}

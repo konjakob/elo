@@ -15,9 +15,17 @@
 				<p>{{ topic.reply_text }}</p>
 			</div>
 			<div class="uk-card-footer">
-				<p class="uk-text-meta uk-margin-remove-top">{{ topic.no_replies }} {% trans %}Answers{% endtrans %} | {% trans %}Created:{% endtrans %} {{ topic.reply_date|date(conf.date_format) }} {% trans %}by{% endtrans %} {{ topic.username }}
+				<p class="uk-text-meta uk-margin-remove-top">
+                
+                {% trans %}
+                    {{ topic.no_replies }} Answer
+                {% plural topic.no_replies  %}
+                    {{ topic.no_replies }} Answers
+                {% endtrans %}
+
+                | {% trans %}Created:{% endtrans %} {{ topic.reply_date|date(conf.date_format) }} {% trans %}by{% endtrans %} {{ topic.username }}
 					{% if topic.reply_date != topic.last_reply_date %}
-						 | {% trans %}Last response:{% endtrans %} {{ topic.last_reply_date|date(conf.date_format) }}
+						 | {% trans %}Last response:{% endtrans %} {{ topic.last_reply_date|time_diff }}
 						{% endif %} | <a href="{{ topic.href }}">{% trans %}View{% endtrans %}</a></p>
 			</div>
 		</div>

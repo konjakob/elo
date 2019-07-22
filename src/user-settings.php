@@ -12,8 +12,8 @@ while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 
 $twig_data['saved_languages'] = $saved_languages;
 
-$breadcrumb[] = array('href' => 'topic.php', 'text' => 'Topics');
-$breadcrumb[] = array('href' => '', 'text' => 'User settings');
+$breadcrumb[] = array('href' => 'topic.php', 'text' => _('Topics'));
+$breadcrumb[] = array('href' => '', 'text' => _('User settings'));
 
 $msgs = array();
 
@@ -27,7 +27,7 @@ if (isset($_POST['action'])) {
 	$statement->execute();
     
     if ( $statement->rowCount() ) {
-        $msgs[] = array('state' => 'nok', 'text' => USER_SETTINGS_EMAIL_EXISTS);
+        $msgs[] = array('state' => 'nok', 'text' => _('There is already an user with the given email address. Please use another email address.'));
     } else {
         
 		require_once( "PasswordHash.php" );
@@ -50,7 +50,7 @@ if (isset($_POST['action'])) {
     }
 }
 if( isset($_GET['saved']))
-    $msgs[] = array('state' => 'ok', 'text' => USER_SETTINGS_SAVED);
+    $msgs[] = array('state' => 'ok', 'text' => _('Saved'));
 
 $twig_data['user_email'] = $user_res['user_email'];
 $twig_data['lang_id'] = $user_res['lang_id'];

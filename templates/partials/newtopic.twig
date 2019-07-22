@@ -1,5 +1,5 @@
 	<div class="uk-card uk-card-default uk-card-body uk-margin">
-		<h2 class="uk-card-title">New topic</h2>
+		<h2 class="uk-card-title">{% trans %}New topic{% endtrans %}</h2>
 
 <form action="actions.php" method="post" class="uk-form-stacked" enctype="multipart/form-data" id="frmNewTopic"><input type="hidden" value="newTopic" name="action">
 
@@ -7,7 +7,7 @@
 {% if 'ADD_USER_TO_TOPIC' in user_rights|keys %}
 	<div>
 		<div class="uk-card uk-card-small">
-			<h4 class="uk-card-title">User for this topic</h4>
+			<h4 class="uk-card-title">{% trans %}User for this topic{% endtrans %}</h4>
 			<p>
 			<select id='ex_users' size='5' multiple='multiple' class="js-select2 uk-select uk-width-1-1 " style="width: 75%" name='t_user[]'>
 				{% for u in users %}
@@ -21,7 +21,7 @@
 {% if 'ADD_GROUP_TO_TOPIC' in user_rights|keys %}	
 	<div>
 		<div class="uk-card  uk-card-small">
-			<h4 class="uk-card-title">Groups for this topic</h4>
+			<h4 class="uk-card-title">{% trans %}Groups for this topic{% endtrans %}</h4>
 			<p><select id='ex_groups' class="uk-select js-select2 uk-width-1-1"  style="width: 75%" size='5' multiple='multiple' name='t_group[]'>
 	{% for g in groups %}
 	<option value='{{ g.group_id }}'>{{ g.group_name }}</option>
@@ -43,7 +43,7 @@
 
 	<div class="uk-text-right">
 		<span class="" uk-icon="question"></span><div uk-dropdown>
-		You can edit or delete your reply till 
+		{% trans %}You can edit or delete your reply till{% endtrans %} {# todo: i18n #}
 		{% set max_time = conf.max_edit_time %}
 		{% if  max_time < 60 %}
 			{{ max_time }} seconds

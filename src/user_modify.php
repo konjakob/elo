@@ -30,15 +30,6 @@ $twig_data['langs'] = $langs;
 $query_right = $pdo->prepare("select * from elo_right order by right_name");
 $query_right->execute();
 
-/* moved to actions 
-if ( in_array('CREATE_NEW_RIGHT', $user_rights) && isset($_POST['new_right']) && isset($_POST['t_name']) && isset($_POST['t_key']) ) {
-	$query_user = $pdo->prepare("insert into elo_right (right_name, right_key) values (:t_name, :t_key)");
-	$query->bindValue(':t_name', filter_input(INPUT_POST, 't_name'));
-	$query->bindValue(':userid', filter_input(INPUT_POST, 't_key'));
-	$query_user->execute();
-	$twig_data['saved_new_right'] = 1;
-}*/
-
 $rights = array();
 while ( ($res = $query_right->fetch(PDO::FETCH_ASSOC)) !== false )
 	$rights[] = $res;
@@ -74,8 +65,8 @@ $msgs = array();
 
 $twig_data['navElements'] = createAdminMenu();
 $twig_data['exampleCode'] = createCode(8);
-$breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
-$breadcrumb[] = array( 'text' => 'Admin Panel', 'href' => '');
+$breadcrumb[] = array( 'text' => _('Topics'), 'href' => 'topic.php');
+$breadcrumb[] = array( 'text' => _('Admin Panel'), 'href' => '');
 $twig_data['breadcrumb'] = $breadcrumb;
 $twig_data['msgs'] = $msgs;
 echo $twig->render("user_modify.twig", $twig_data);

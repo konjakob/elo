@@ -71,7 +71,7 @@ if ( isset($_POST['new_group']) ) {
 	$statement = $pdo->prepare("insert into elo_group (group_name) values (:t_group)");
 	$query->bindValue(':t_group', filter_input(INPUT_POST, 'new_group'));
 	$statement->execute();
-	$msgs[] = array('state' => 'ok', 'text' => 'Saved the new group.');
+	$msgs[] = array('state' => 'ok', 'text' => _('Saved the new group.'));
 }
 
 $statement = $pdo->prepare("select * from elo_group order by group_name");

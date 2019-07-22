@@ -9,7 +9,7 @@ $msgs = array();
 $reply = array();
 
 if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
-	$msgs[] = array('state' => 'nok', 'text' => DELETE_REPLY_NO_ID);
+	$msgs[] = array('state' => 'nok', 'text' => _('No ID given.'));
 } else {
 	
 	$replyid = isset($_GET['id']) ? (int)$_GET['id'] : (int)$_POST['id'];
@@ -19,7 +19,7 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 	$statement->execute();
 	
 	if ( $statement->rowCount() < 1 ) {
-		$msgs[] = array('state' => 'nok', 'text' => DELETE_REPLY_NO_RIGHTS);
+		$msgs[] = array('state' => 'nok', 'text' => _('No rights to delete the reply.'));
 	} else {
 		$res = $statement->fetch(PDO::FETCH_ASSOC);
 		$reply = $res;
@@ -111,7 +111,7 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 				}
 		
 				if ( isset($_POST['noref']) ) {
-					$msgs[] = array('state' => 'ok', 'text' => "Reply saved.");
+					$msgs[] = array('state' => 'ok', 'text' => _("Reply saved."));
 				} else {
 					header("Location: topic.php?id=".$res['topic_id']."#".$replyid);	
 					exit();
@@ -152,7 +152,7 @@ if ( !isset( $_GET['id'] ) && !isset($_POST['id']) ) {
 			}
 
 		} else {
-			$msgs[] = array('state' => 'nok', 'text' => DELETE_REPLY_NO_RIGHTS);
+			$msgs[] = array('state' => 'nok', 'text' => _('No rights to delete the reply.'));
 		}
 	}
 }
@@ -162,9 +162,9 @@ $statement->bindValue(':topicid', $topicid, PDO::PARAM_INT);
 $statement->execute();
 $res = $statement->fetch(PDO::FETCH_ASSOC);
 
-$breadcrumb[] = array('href' => 'topic.php', 'text' => 'Topics');
+$breadcrumb[] = array('href' => 'topic.php', 'text' => _('Topics'));
 $breadcrumb[] = array('href' => 'topic.php?id='.$topicid."#".$replyid, 'text' => $res['topic_title']);
-$breadcrumb[] = array('href' => '', 'text' => TOPIC_EDIT_REPLY);
+$breadcrumb[] = array('href' => '', 'text' => _('Change reply'));
 $twig_data['reply'] = $reply;
 $twig_data['msgs'] = $msgs;
 $twig_data['breadcrumb'] = $breadcrumb;

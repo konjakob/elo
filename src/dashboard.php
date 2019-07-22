@@ -13,7 +13,7 @@ if ( !in_array('IS_ADMIN', $user_rights ) ) {
 $data = array();
 // Number of users total
 $data['users']['icon'] = 'users';
-$data['users']['title'] = 'Users';
+$data['users']['title'] = _('Users');
 $statement = $pdo->prepare("SELECT count(user_id) as no FROM `elo_user` ");
 $statement->execute();
 $res = $statement->fetch(PDO::FETCH_ASSOC);
@@ -27,7 +27,7 @@ $data['users']['change'] = $data['users']['total'] - $res['no'];
 
 // Number of posts
 $data['posts']['icon'] = 'social';
-$data['posts']['title'] = 'Posts';
+$data['posts']['title'] = _('Posts');
 $statement = $pdo->prepare("SELECT count(reply_id) as no FROM `elo_reply`");
 $statement->execute();
 $res = $statement->fetch(PDO::FETCH_ASSOC);
@@ -52,9 +52,9 @@ GROUP BY elo_group.group_id order by no desc limit 5") as $res) {
 }
 
 $charts[] = array(	'labels' => implode(", ", $chartLabels),
-					'label' => 'Groups',
+					'label' => _('Groups'),
 					'data' => implode(", ", $chartData),
-					'text' => 'Most active groups (top 5)',
+					'text' => _('Most active groups (top 5)'),
 					'id' => 1,
 					'style' => 'bar'
 				);
@@ -67,9 +67,9 @@ foreach ( $pdo->query("SELECT count(*) as no, str_to_date(concat(yearweek(attach
 	$chartData[] = $res['no'];
 }
 $charts[] = array(	'labels' => implode(", ", $chartLabels),
-					'label' => 'Attachments',
-					'datasets' => array(array('label' => 'Attachments', 'data' => implode(", ", $chartData))),
-					'text' => 'Files per week',
+					'label' => _('Attachments'),
+					'datasets' => array(array('label' => _('Attachments'), 'data' => implode(", ", $chartData))),
+					'text' => _('Files per week'),
 					'id' => 2,
 					'style' => 'line'
 				);
@@ -82,9 +82,9 @@ foreach ( $pdo->query("SELECT count(distinct user_id) as no, str_to_date(concat(
 	$chartData[] = $res['no'];
 }
 $charts[] = array(	'labels' => implode(", ", array_reverse($chartLabels)),
-					'label' => 'Users',
+					'label' => _('Users'),
 					'data' => implode(", ", array_reverse($chartData)),
-					'text' => 'Online users per week',
+					'text' => _('Online users per week'),
 					'id' => 3,
 					'style' => 'bar'
 				);

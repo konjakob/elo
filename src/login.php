@@ -42,7 +42,7 @@ if ( isset($_POST['action_login'])) {
 		}
 		exit;
 	} catch(  AuthException $a)  {
-        $msgs[] = array('state' => 'nok', 'text' => "Login failed.");
+        $msgs[] = array('state' => 'nok', 'text' => _("Login failed."));
 	}
 } else if (isset($_POST['action_passforgotten'])) {
 	
@@ -65,11 +65,12 @@ if ( isset($_POST['action_login'])) {
 		$email_data = array();
 		$email_data['user_name'] = $user_res['user_name'];
 		$email_data['url'] = $conf['url']."new_password.php?id=".$code;
+        $email_data['urlText'] = _('Reset password');
 		
-		$email_text = $twig->render("emails/email_forgotten_".$user_res['lang_code'].".twig", $email_data);		 
+		$email_text = $twig->render("emails/email_forgotten.twig", $email_data);		 
 		$email_text_text = strip_tags($email_text);
 		
-		$res = prepareEmailAndSend($email_text, $user_res['user_email'], $user_res['user_name'],'Password reset requested',$email_text_text);
+		$res = prepareEmailAndSend($email_text, $user_res['user_email'], $user_res['user_name'],_('Password reset requested'),$email_text_text);
 
 		if ( strlen($res[1])) {
             $msgs[] = array('state' => 'nok', 'text' => $res[1]);
@@ -78,7 +79,7 @@ if ( isset($_POST['action_login'])) {
             $msgs[] = array('state' => 'ok', 'text' => $res[0]);
 		}
 	} else {
-         $msgs[] = array('state' => 'nok', 'text' => 'Email is not known.');
+         $msgs[] = array('state' => 'nok', 'text' => _('Email is not known.'));
 	}
 	$twig_data['showForgotten'] = 1;
 } else {
@@ -86,8 +87,6 @@ if ( isset($_POST['action_login'])) {
 		$ref = $_GET['ref'];
 }
 
-$langcode = "en";
-require_once('includes/languages/'.$langcode.'.php');
 $twig_data['ref'] = $ref;
 $twig_data['msgs'] = $msgs;
 echo $twig->render("login.twig", $twig_data);

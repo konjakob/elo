@@ -4,7 +4,7 @@ require_once('includes/application_top.php');
 
 require_once('SBBCodeParser.php');
 
-$breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
+$breadcrumb[] = array( 'text' => _('Topics'), 'href' => 'topic.php');
 
 	if ( isset($_GET['id']) ) {
 		$twig_data['topicid'] = $topicid = (int)$_GET['id'];

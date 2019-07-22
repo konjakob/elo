@@ -41,15 +41,15 @@ function createAdminMenu() {
     $currentPage = basename($_SERVER['PHP_SELF']);
     
     $elements = array();
-    $elements[] = array('text' => 'Create topic', 'href' => 'panel.php', 'icon' => 'comments', 'active' => ($currentPage == 'panel.php') ? 1 : 0);
-    $elements[] = array('text' => 'User view', 'href' => 'view_user_topics.php', 'icon' => 'users', 'active' => ($currentPage == 'view_user_topics.php') ? 1 : 0);
-    $elements[] = array('text' => 'Attachments', 'href' => 'attachments.php', 'icon' => 'album', 'active' => ($currentPage == 'attachments.php') ? 1 : 0);
-    $elements[] = array('text' => 'Groups', 'href' => 'groups.php', 'icon' => 'users', 'active' => ($currentPage == 'groups.php') ? 1 : 0);
+    $elements[] = array('text' => _('Create topic'), 'href' => 'panel.php', 'icon' => 'comments', 'active' => ($currentPage == 'panel.php') ? 1 : 0);
+    $elements[] = array('text' => _('User view'), 'href' => 'view_user_topics.php', 'icon' => 'users', 'active' => ($currentPage == 'view_user_topics.php') ? 1 : 0);
+    $elements[] = array('text' => _('Attachments'), 'href' => 'attachments.php', 'icon' => 'album', 'active' => ($currentPage == 'attachments.php') ? 1 : 0);
+    $elements[] = array('text' => _('Groups'), 'href' => 'groups.php', 'icon' => 'users', 'active' => ($currentPage == 'groups.php') ? 1 : 0);
     
     $tempEl = array();
-    $tempEl[] = array('text' => 'Create', 'href' => 'user_create.php', 'active' => ($currentPage == 'user_create.php') ? 1 : 0);
-    $tempEl[] = array('text' => 'Modify', 'href' => 'user_modify.php', 'active' => ($currentPage == 'user_modify.php') ? 1 : 0);
-    $elements[] = array('text' => 'Users', 'icon' => 'album', 'group' => 1, 'subElements' => $tempEl);                  
+    $tempEl[] = array('text' => _('Create'), 'href' => 'user_create.php', 'active' => ($currentPage == 'user_create.php') ? 1 : 0);
+    $tempEl[] = array('text' => _('Modify'), 'href' => 'user_modify.php', 'active' => ($currentPage == 'user_modify.php') ? 1 : 0);
+    $elements[] = array('text' => _('Users'), 'icon' => 'album', 'group' => 1, 'subElements' => $tempEl);                  
     
     return $elements;
 }

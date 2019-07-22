@@ -77,11 +77,11 @@ if ( isset($_GET['id'])) {
 		$langcode = $user_res['lang_code'];
 	
 	} else {
-		$msgs[] = array('state' => 'nok', 'text' => 'No password request found.');
+		$msgs[] = array('state' => 'nok', 'text' => _('No password request found.'));
 	}
 
 } else {
-	$msgs[] = array('state' => 'nok', 'text' => 'No password request found.');
+	$msgs[] = array('state' => 'nok', 'text' => _('No password request found.'));
 }
 
 require_once('includes/languages/'.$langcode.'.php');

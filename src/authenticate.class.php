@@ -34,7 +34,7 @@ class Authenticate {
 
         } else {
             
-            throw new AuthException( "This e-mail address was not found in the database." );
+            throw new AuthException( _("This e-mail address was not found in the database.") );
 
         }
 
@@ -44,7 +44,7 @@ class Authenticate {
 
         if ( !$hasher->CheckPassword( $password, $result["password"] ) ) {
             
-            throw new AuthException( "Invalid password." );
+            throw new AuthException( _("Invalid password.") );
             
         }
         
@@ -68,7 +68,7 @@ class Authenticate {
 
         if ( !setcookie( COOKIE_AUTH, $cookie, $expiration, COOKIE_PATH, COOKIE_DOMAIN, false, true ) ) {
         
-            throw new AuthException( "Could not set cookie." );
+            throw new AuthException( _("Could not set cookie.") );
         
         }
 

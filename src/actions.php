@@ -97,8 +97,8 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
     else if ($action == 'cropImage') {
         if ( !isset($_POST['x1']) || !isset($_POST['x2']) || !isset($_POST['y1']) || !isset($_POST['y2']) ) {
                 $returnData['state'] = 'nok';
-                $returnData['text'] = 'Missing value for cropping.';
-                $returnData['title'] = 'Error';	
+                $returnData['text'] = _('Missing value for cropping.');
+                $returnData['title'] = _('Error');	
                 echo json_encode($returnData);
                 exit();
         }
@@ -134,12 +134,12 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	else if ($action == 'deleteTopic') {
         
         if ( !in_array('IS_ADMIN',$user_rights) || !in_array('CAN_DELETE_TOPICS',$user_rights)) {
-			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No rights.'), _('Error')));
 			exit();
 		}
         
 		if ( !isset($_POST['topicid'])) {
-			echo json_encode(toastFeedback('nok', 'No topic given.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No topic given.'), _('Error')));
 			exit();
 		}
 		
@@ -161,13 +161,13 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		$statement->bindValue(':topicid', $topicid, PDO::PARAM_INT);
 		$statement->execute();
 	
-		echo json_encode(toastFeedback('ok', 'Topic deleted.', 'Success'));
+		echo json_encode(toastFeedback('ok', _('Topic deleted.'), _('Success')));
 		exit();
 	}
 	else if ($action == 'changeUser') {
         
         if ( !in_array('IS_ADMIN',$user_rights) || !in_array('CAN_MODIFY_USERS',$user_rights)) {
-			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No rights.'), _('Error')));
 			exit();
 		}
         
@@ -193,10 +193,10 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 				$statement->execute();
 		
 			} else {
-				$returnData = toastFeedback('nok', 'Please enter an email address and a name with '.$conf['min_length_username'].' characters.', 'Error');				
+				$returnData = toastFeedback('nok', sprintf(_('Please enter an email address and a name with %d characters.'),$conf['min_length_username']), _('Error'));				
 			}
 		} else {
-			$returnData = toastFeedback('nok', 'Please enter all the data', 'Error');				
+			$returnData = toastFeedback('nok', _('Please enter all the data'), _('Error'));				
 		}
 		echo json_encode($returnData);
 		exit();
@@ -216,7 +216,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	
 	else if ($action == 'removeGroup') {
         if ( !in_array('IS_ADMIN',$user_rights)  || !in_array('CAN_DELETE_GROUPS',$user_rights)) {
-			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No rights.'), _('Error')));
 			exit();
 		}
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {		
@@ -229,7 +229,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
                 $statement->execute();
             }
 		} else {
-			$returnData = toastFeedback('nok', 'Please select a user.', 'Error');				
+			$returnData = toastFeedback('nok', _('Please select a user.'), _('Error'));				
 		}
 		echo json_encode($returnData);
 		exit();
@@ -237,7 +237,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	
 	else if ($action == 'addGroup') {
         if ( !in_array('IS_ADMIN',$user_rights)  || !in_array('CAN_ADD_USERS_TO_GROUPS',$user_rights)) {
-			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No rights.'), _('Error')));
 			exit();
 		}
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
@@ -250,7 +250,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
                 $statement->execute();
             }
 		} else {
-			$returnData = toastFeedback('nok', 'Please select a user.', 'Error');			
+			$returnData = toastFeedback('nok', _('Please select a user.'), _('Error'));			
 		}
 		echo json_encode($returnData);
 		exit();
@@ -258,7 +258,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	
 	else if ($action == 'removeRight') {
         if ( !in_array('IS_ADMIN',$user_rights)  || !in_array('CAN_DELETE_USER_RIGHTS',$user_rights)) {
-			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No rights.'), _('Error')));
 			exit();
 		}
 		if ( isset($_POST['userid']) && isset($_POST['t_r']) && is_array($_POST['t_r']) ) {
@@ -271,7 +271,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
                 $statement->execute();
             }
 		} else {
-			$returnData = toastFeedback('nok', 'Please select a user.', 'Error');
+			$returnData = toastFeedback('nok', _('Please select a user.'), _('Error'));
 		}
 		echo json_encode($returnData);
 		exit();
@@ -292,20 +292,20 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 				
 				$returnData['preview'] = $conf['file_folder'].$filename.".png";
 				$returnData['state'] = 'ok';
-				$returnData['text'] = 'Preview generated.';
-				$returnData['title'] = 'Success';
+				$returnData['text'] = _('Preview generated.');
+				$returnData['title'] = _('Success');
 				echo json_encode($returnData);
 			} else {
-				echo json_encode(toastFeedback('nok', 'Not a file, which can be previewed.', 'Error'));
+				echo json_encode(toastFeedback('nok', _('Not a file, which can be previewed.'), _('Error')));
 			}
 		} else {
-			echo json_encode(toastFeedback('nok', 'No attachment given.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No attachment given.'), _('Error')));
 		}	
 		exit();
 	}	
 	else if ($action == 'removeUserFromGoup') {
         if ( !in_array('IS_ADMIN',$user_rights)  || !in_array('CAN_DELETE_USER_FROM_GROUP',$user_rights)) {
-			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No rights.'), _('Error')));
 			exit();
 		}
 		if ( isset($_POST['guid']) ) {
@@ -314,14 +314,14 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
             $statement->bindValue(':group_user', (int)$_POST['guid'], PDO::PARAM_INT);
             $statement->execute();
 		} else {
-			$returnData = toastFeedback('nok', 'Please select a user.', 'Error');
+			$returnData = toastFeedback('nok', _('Please select a user.'), _('Error'));
 		}
 		echo json_encode($returnData);
 		exit();
 	}
 	else if ($action == 'deleteGroup') {
         if ( !in_array('IS_ADMIN',$user_rights)  || !in_array('CAN_DELETE_GROUPS',$user_rights)) {
-			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No rights.'), _('Error')));
 			exit();
 		}
 		if ( isset($_POST['delete_group']) ) {
@@ -339,12 +339,12 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
             $statement->execute();
             
 			if (  $statement->rowCount() ) {
-				$returnData = toastFeedback('ok', 'The group was successfully deleted.', 'Success');
+				$returnData = toastFeedback('ok', _('The group was successfully deleted.'), _('Success'));
 			} else {
-				$returnData = toastFeedback('nok', 'No group was deleted.', 'Error');
+				$returnData = toastFeedback('nok', _('No group was deleted.'), _('Error'));
 			}
 		} else {
-			$returnData = toastFeedback('nok', 'Please select a group.', 'Error');
+			$returnData = toastFeedback('nok', _('Please select a group.'), _('Error'));
 		}
 		echo json_encode($returnData);
 		exit();
@@ -358,14 +358,14 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 		if( isset($_POST['t_email']) ) {
 			
 			if ( !filter_var($_POST['t_email'], FILTER_VALIDATE_EMAIL) ) {
-				$response = array('valid' => false, 'message' => 'Please provide a valid email address.');
+				$response = array('valid' => false, 'message' => _('Please provide a valid email address.'));
 			} else {
 				$statement = $pdo->prepare("select user_id from elo_user where user_email=:t_email");
 				$statement->bindValue(':t_email', filter_input(INPUT_POST, 't_email', FILTER_SANITIZE_EMAIL));
 				$statement->execute();	
 				
 				if ( $statement->rowCount() ) {
-					$response = array('valid' => false, 'message' => 'This email is already registered.');
+					$response = array('valid' => false, 'message' => _('This email is already registered.'));
 				} else {
 					// email not yet registered
 					$response = array('valid' => true);
@@ -373,7 +373,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			}
 		} else if ($_POST['t_email_c']) {
 			if ( !filter_var($_POST['t_email_c'], FILTER_VALIDATE_EMAIL) ) {
-				$response = array('valid' => false, 'message' => 'Please provide a valid email address.');
+				$response = array('valid' => false, 'message' => _('Please provide a valid email address.'));
 			} else {
 				$statement = $pdo->prepare("select user_id from elo_user where user_email=:t_email and user_id<>:user_id");
 				$statement->bindValue(':t_email', filter_input(INPUT_POST, 't_email_c', FILTER_SANITIZE_EMAIL));
@@ -381,7 +381,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 				$statement->execute();	
 				
 				if ( $statement->rowCount() ) {
-					$response = array('valid' => false, 'message' => 'This email is already registered.');
+					$response = array('valid' => false, 'message' => _('This email is already registered.'));
 				} else {
 					// email not yet registered
 					$response = array('valid' => true);
@@ -403,8 +403,8 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
             }
 		} else {
 			$returnData['state'] = 'nok';
-			$returnData['text'] = 'Please select a user.';
-			$returnData['title'] = 'Error';
+			$returnData['text'] = _('Please select a user.');
+			$returnData['title'] = _('Error');
 			
 		}	
 		echo json_encode($returnData);
@@ -412,7 +412,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	else if ($action == 'newGroup' ) {
         if ( !in_array('IS_ADMIN',$user_rights) && !in_array('CREATE_GROUPS',$user_rights)) {
-			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No rights.'), _('Error')));
 			exit();
 		}
 		if ( isset($_POST['t_group']) ) {
@@ -421,11 +421,11 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			$statement->execute();
             $returnData['groupId'] = $pdo->lastInsertId();
             $returnData['state'] = 'ok';
-			$returnData['text'] = 'Successfully created.';
-			$returnData['title'] = 'Success';
+			$returnData['text'] = _('Successfully created.');
+			$returnData['title'] = _('Success');
             echo json_encode($returnData);
 		} else {
-			echo json_encode(toastFeedback('nok', 'No group name given.', 'Error'));	
+			echo json_encode(toastFeedback('nok', _('No group name given.'), _('Error')));	
 		}
         exit();
 	}
@@ -445,7 +445,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 				$returnData['users'][$res['gu_id']] = $res['user_name'];
 			}
 		} else {
-			$returnData = toastFeedback('nok', 'Please select a group', 'Error');
+			$returnData = toastFeedback('nok', _('Please select a group'), _('Error'));
 		}
 		echo json_encode($returnData);
 		exit();
@@ -458,14 +458,14 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
             $statement->bindValue(':group',(int)$_POST['guid'], PDO::PARAM_INT);
             $statement->execute();
 		} else {
-			$returnData = toastFeedback('nok', 'Please select a group and enter a name.', 'Error');
+			$returnData = toastFeedback('nok', _('Please select a group and enter a name.'), _('Error'));
 		}
 		echo json_encode($returnData);
 		exit();
 	}
 	else if ( $action == 'updateTopicTitle') {
 		if ( !isset($_POST['topicid'])) {
-			echo json_encode(toastFeedback('nok', 'No topic given.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No topic given.'), _('Error')));
 			exit();
 		}
 		$topicid = (int)$_POST['topicid'];
@@ -473,7 +473,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
         $statement->bindValue(':topicid',$topicid, PDO::PARAM_INT);
         $statement->execute();
 		if ( $statement->rowCount() < 1 ) {
-			echo json_encode(toastFeedback('nok', 'No topic found.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No topic found.'), _('Error')));
 			exit();
 		}
         $res = $statement->fetch(PDO::FETCH_ASSOC);
@@ -484,9 +484,9 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
             $statement->bindValue(':t_topic_title', $_POST['t_topic_title']);
             $statement->execute();
 
-			echo json_encode(toastFeedback('ok', 'Successfully modified.', 'Success'));			
+			echo json_encode(toastFeedback('ok', _('Successfully modified.'), _('Success')));			
 		} else {
-			echo json_encode(toastFeedback('nok', 'Too late to edit.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('Too late to edit.'), _('Error')));
 		}
 		exit();
 	}
@@ -514,14 +514,14 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 
 						if (  $statement->rowCount()) {						
 							$returnData['state'] = 'ok';
-							$returnData['text'] = "Attachment deleted";
-							$returnData['title'] = "Deleted";
+							$returnData['text'] = _("Attachment deleted");
+							$returnData['title'] = _("Deleted");
 							if ( isset($_GET['ref']) ) {
 								header("Location: edit_reply.php?id=".$replyid);
 								exit();
 							}
 						} else {
-							$returnData = toastFeedback('nok', 'No attachment could be deleted.', 'Error');
+							$returnData = toastFeedback('nok', _('No attachment could be deleted.'), _('Error'));
 						}
 					} else {
 					
@@ -537,7 +537,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
                         $statement->bindValue(':replyid',$replyid, PDO::PARAM_INT);
                         $statement->execute();
 						
-						$returnData = toastFeedback('ok', "Reply deleted", 'Deleted');
+						$returnData = toastFeedback('ok', _("Reply deleted"), _('Deleted'));
 						
 						if ( isset($_GET['ref']) ) {
 							header("Location: topic.php?id=".$res['topic_id']);
@@ -546,14 +546,14 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 					}
 					
 				} else {
-					$returnData = toastFeedback('nok', DELETE_REPLY_NO_RIGHTS, 'Error');	
+					$returnData = toastFeedback('nok', _('No rights to delete the reply.'), _('Error'));	
 				}
 			} else {
-				$returnData = toastFeedback('nok', "Reply not found", 'Error');
+				$returnData = toastFeedback('nok', _("Reply not found"), _('Error'));
 			}
 			
 		} else {
-			$returnData = toastFeedback('nok', DELETE_REPLY_NO_ID, 'Error');
+			$returnData = toastFeedback('nok', _('No ID given.'), _('Error'));
 		}
 		echo json_encode($returnData);
 		exit();
@@ -569,14 +569,14 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
             
 			$returnData['data'] = $statement->fetch(PDO::FETCH_ASSOC);
 		} else {
-			$returnData = toastFeedback('nok', 'Please select a group.', 'Error');
+			$returnData = toastFeedback('nok', _('Please select a group.'), _('Error'));
 		}
 		echo json_encode($returnData);
 		exit();
 	}
 	else if ( $action == 'deleteFileAttachment') {
 		if ( !in_array('IS_ADMIN',$user_rights) ) {
-			echo json_encode(toastFeedback('nok', 'No rights.', 'Error'));
+			echo json_encode(toastFeedback('nok', _('No rights.'), _('Error')));
 			exit();
 		}
 		if ( isset($_GET['aid']) ) {
@@ -590,10 +590,10 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 
 			if (  $statement->rowCount()) {						
 				$returnData['state'] = 'ok';
-				$returnData['text'] = "Attachment deleted";
-				$returnData['title'] = "Deleted";
+				$returnData['text'] = _("Attachment deleted");
+				$returnData['title'] = _("Deleted");
 			} else {
-				$returnData = toastFeedback('nok', 'No attachment could be deleted.', 'Error');
+				$returnData = toastFeedback('nok', _('No attachment could be deleted.'), _('Error'));
 			}	
 			echo json_encode($returnData);
 			exit();
@@ -604,13 +604,13 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
         $returnData = array();
         // check the rights
         if ( !in_array('CREATE_TOPICS', $user_rights) ) {
-			$returnData = toastFeedback('nok', 'No rights to create topics.', 'Error');
+			$returnData = toastFeedback('nok', _('No rights to create topics.'), _('Error'));
             echo json_encode($returnData);
             exit();
         }
         // check if the title and text is given
         if ( strlen($_POST['t_topic_title']) <1 || strlen($_POST['t_topic']) < 1 ) {
-			$returnData = toastFeedback('nok', 'No title and/or text.', 'Error');
+			$returnData = toastFeedback('nok', _('No title and/or text.'), _('Error'));
             echo json_encode($returnData);
             exit();
         }
@@ -693,7 +693,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
             $returnData['html'] = $twig->render("partials/topicblock.twig", $topic);
             
         } else {
-            $returnData['addComment'] = "Your topic is not visible, due to the start and end time you entered.";
+            $returnData['addComment'] = _("Your topic is not visible, due to the start and end time you entered.");
         }
               
 		$returnData['state'] = 'ok';

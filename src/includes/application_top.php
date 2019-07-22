@@ -26,6 +26,7 @@ if ( !isset($jsonMode) ) {
 	));
 	
 	$twig->addExtension(new Twig_Extensions_Extension_I18n());
+    $twig->addExtension(new Twig_Extensions_Extension_Date());
 
 }
  /*, array(
@@ -54,8 +55,7 @@ if(!$auth->validateAuthCookie()) {
 	exit();
 }
 
-$sql = "select varname as config_name, value as config_value from elo_config";
-$statement = $pdo->prepare($sql);
+$statement = $pdo->prepare("select varname as config_name, value as config_value from elo_config");
 $statement->execute();
 		
 $conf = array();

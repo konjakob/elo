@@ -19,7 +19,7 @@ if($action == 'dosave') {
 		$statement->bindValue(':val', $val);
 		$statement->execute();
 	}
-	$msgs[] = array('state' => 'ok', 'text' => 'Die Einstellungen wurden erfolgreich gespeichert.');
+	$msgs[] = array('state' => 'ok', 'text' => _('The settings were saved.'));
 }
 
 $settinggroupid = (int)filter_input(INPUT_GET, 'settinggroupid');

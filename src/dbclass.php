@@ -14,6 +14,6 @@
 				DB_SERVER_PASSWORD
 			);
  } catch (PDOException $e) {
-	echo "Database connection failed.";
+	echo _("Database connection failed.");
 	exit();
  }
