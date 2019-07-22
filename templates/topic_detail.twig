@@ -45,7 +45,7 @@
 					</div>
 					<div class="uk-position-top-right uk-position-small uk-hidden-hover">
 						{% if reply.can_edit %}
-							<a class="uk-link-muted" href='edit_reply.php?id={{ reply.reply_id }}'>{% trans %}Edit{% trans %}</a> | <a href='actions.php?action=delete_reply&ref=1&id={{ reply.reply_id }}' data-id="{{ reply.reply_id }}" class="uk-link-muted reply-delete">{% trans %}Delete{% trans %}</a>
+							<a class="uk-link-muted" href='edit_reply.php?id={{ reply.reply_id }}'>{% trans %}Edit{% endtrans %}</a> | <a href='actions.php?action=delete_reply&ref=1&id={{ reply.reply_id }}' data-id="{{ reply.reply_id }}" class="uk-link-muted reply-delete">{% trans %}Delete{% endtrans %}</a>
 						{% endif %}
 					</div>
 				</header>
