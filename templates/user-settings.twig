@@ -6,7 +6,7 @@
 
 {% block default %}
 
-   <h1>{{ constant('USER_SETTINGS_HEADER') }}</h1>
+   <h1>{% trans %}Change your user settings{% endtrans %}</h1>
 
 {% for m in msgs %}
 
@@ -38,28 +38,28 @@
    <form action="{{ current_url }}" method="post" class="uk-form-stacked">
    
     <div class="uk-margin">
-        <label class="uk-form-label" for="form-element1">{{ constant('USER_SETTINGS_USERNAME') }}</label>
+        <label class="uk-form-label" for="form-element1">{% trans %}Username:{% endtrans %}</label>
         <div class="uk-form-controls">
             <input class="uk-input" id="form-element1" type="text" name="t_name" value="{{ user_name }}">
         </div>
     </div>
 	
 	<div class="uk-margin">
-        <label class="uk-form-label" for="form-element2">{{ constant('USER_SETTINGS_EMAIL') }}</label>
+        <label class="uk-form-label" for="form-element2">{% trans %}Email:{% endtrans %}</label>
         <div class="uk-form-controls">
             <input class="uk-input" id="form-element2" type="text" name="t_email" value="{{ user_email }}">
         </div>
     </div>
 	
 	<div class="uk-margin">
-        <label class="uk-form-label" for="form-element3">{{ constant('USER_SETTINGS_PASSWORD') }}</label>
+        <label class="uk-form-label" for="form-element3">{% trans %}Password:{% endtrans %}</label>
         <div class="uk-form-controls">
-            <input class="uk-input" id="form-element3" type="text" name="t_pass" value=""><small>{{ constant('USER_SETTINGS_PASSWORD_NOT_CHANGE') }}</small>
+            <input class="uk-input" id="form-element3" type="text" name="t_pass" value=""><small>{% trans %}Leave empty for not changing.{% endtrans %}</small>
         </div>
     </div>
 	
 	<div class="uk-margin">
-        <label class="uk-form-label" for="form-element3">{{ constant('USER_SETTINGS_LANGUAGE') }}</label>
+        <label class="uk-form-label" for="form-element3">{% trans %}Language:{% endtrans %}</label>
         <div class="uk-form-controls">
             <select class="uk-select" name="t_lang">
 			{% for l in saved_languages %}

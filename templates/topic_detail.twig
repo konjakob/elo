@@ -21,7 +21,7 @@
 		
 			<div>
 				<div class="uk-card uk-card-default uk-card-primary uk-card-small uk-card-body">
-					<h4 class="uk-card-title">{{ constant('TOPIC_GROUP_OF_TOPIC') }}</h4>
+					<h4 class="uk-card-title">{% trans %}Groups of this topic:{% endtrans %}</h4>
 					<p>{% if ar_group_see_topic|length %}{{ ar_group_see_topic|join(', ', ' and ') }}{% else %}{% trans %}No groups.{% endtrans %}{% endif %}</p>
 				</div>
 			</div>	
@@ -45,7 +45,7 @@
 					</div>
 					<div class="uk-position-top-right uk-position-small uk-hidden-hover">
 						{% if reply.can_edit %}
-							<a class="uk-link-muted" href='edit_reply.php?id={{ reply.reply_id }}'>{{ constant('TOPIC_EDIT') }}</a> | <a href='actions.php?action=delete_reply&ref=1&id={{ reply.reply_id }}' data-id="{{ reply.reply_id }}" class="uk-link-muted reply-delete">{% trans %}Delete{% trans %}</a>
+							<a class="uk-link-muted" href='edit_reply.php?id={{ reply.reply_id }}'>{% trans %}Edit{% trans %}</a> | <a href='actions.php?action=delete_reply&ref=1&id={{ reply.reply_id }}' data-id="{{ reply.reply_id }}" class="uk-link-muted reply-delete">{% trans %}Delete{% trans %}</a>
 						{% endif %}
 					</div>
 				</header>
@@ -63,7 +63,7 @@
 									<div style="display:none"><textarea name="abc{{ a.rm_id }}" id="abc{{ a.rm_id }}" cols="80" rows="15">{{ a.music_text }}</textarea></div>
 									<div id="midi{{ a.rm_id }}"></div><div id="paper0{{ a.rm_id }}"></div><div id="music{{ a.rm_id }}"></div>
 								{% endif %}
-								{{ constant('TOPIC_TEXT_DOWNLOADS') }}: <a href="download.php?type=abc&mid={{ a.music_id }}">ABC</a> | <a href="download.php?type=pdf&mid={{ a.music_id }}">PDF</a> | <a href="download.php?type=midi&mid={{ a.music_id }}">MIDI</a>
+								{% trans %}Downloads{% endtrans %} <a href="download.php?type=abc&mid={{ a.music_id }}">ABC</a> | <a href="download.php?type=pdf&mid={{ a.music_id }}">PDF</a> | <a href="download.php?type=midi&mid={{ a.music_id }}">MIDI</a>
 							{% endfor %}
 						{% endif %}
 					
@@ -91,7 +91,7 @@
 	<div id="newReplyRespond{{ topicid }}" style="display:none; "></div>
 	
 	<div class="uk-card uk-card-default uk-card-body uk-margin" id="newReply{{ topicid }}">
-		<h3>{{ constant('TOPIC_TEXT_REPLY_TEXT') }} <span class="" uk-icon="question"></span><div uk-dropdown>{% trans %}Text rules:{% endtrans %}</div></h3>
+		<h3>{% trans %}Reply to this topic{% endtrans %} <span class="" uk-icon="question"></span><div uk-dropdown>{% trans %}Text rules:{% endtrans %}</div></h3>
 		
         <form action="addreply.php" method="post" enctype="multipart/form-data">
             <input type="hidden" value="{{ topicid }}" name="id">

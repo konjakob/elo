@@ -4,20 +4,20 @@
 				<div id="newMusicSheet" style="display:none">
 		
 					<div class="uk-margin">
-						<label class="uk-form-label" for="newTopicText">{{ constant('TOPIC_TEXT_ADD_MUSIC') }} <span class="" uk-icon="question"></span><div uk-dropdown>{{ constant('TOPIC_SHEET_INFO') }}<hr>{% include 'partials/help_abc.twig' %}</div></label>
+						<label class="uk-form-label" for="newTopicText">{% trans %}Add music sheet{% endtrans %} <span class="" uk-icon="question"></span><div uk-dropdown>{% trans %}ABC music info{% endtrans %}<hr>{% include 'partials/help_abc.twig' %}</div></label>
 						<div class="uk-form-controls">
 							<textarea class="uk-textarea" name="abc" id="abc" cols="80" rows="15"></textarea>
 						</div>
 					</div>		
 		
-					<input type="button" value="Check syntax" onclick="checkAbcSyntax('abc')" class="uk-button" />
+					<input type="button" value="{% trans %}Check syntax{% endtrans %}" onclick="checkAbcSyntax('abc')" class="uk-button" />
 					<div id="midi"></div>
 					<div id="warnings"></div>
 					<div id="music"></div>
 					<div id="paper0"></div>
 				</div>
 				<div id="addmusicdiv">
-					<input type="button" class="uk-button" value="{{ constant('TOPIC_TEXT_ADD_MUSIC') }}" onClick="javascript:tgldiv('addmusicdiv');javascript:tgldiv('newMusicSheet');">
+					<input type="button" class="uk-button" value="{% trans %}Add music sheet{% endtrans %}" onClick="javascript:tgldiv('addmusicdiv');javascript:tgldiv('newMusicSheet');">
 				</div>
 
 

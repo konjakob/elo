@@ -5,14 +5,14 @@
 
 {% block default %}
 
-<h1>FAQ</h1>
-<h2>HTML</h2>
-{% if 'CREATE_TOPICS' in user_rights %}
-	{{ constant('NEW_TEXT_HTML_ALLOWED') }}
+<h1>{% trans %}FAQ{% endtrans %}</h1>
+<h2>{% trans %}HTML{% endtrans %}</h2>
+{% if 'ALLOW_HTML' in user_rights %}
+	{% trans %}You are allowed to post HTML.{% endtrans %}
 {% else %}
 	
 {% endif %}
-<h2>{{ constant('TOPIC_TEXT_BBCODES') }}</h2>
+<h2>{% trans %}Following BB Codes are allowed:{% endtrans %}</h2>
 
 <div class="uk-column-1-6">
 	<ul>
@@ -22,7 +22,7 @@
 	</ul>
 </div>
 
-<h2>{{ constant('TOPIC_SHEET_INFO') }}</h2>
+<h2>{% trans %}ABC music info{% endtrans %}</h2>
 {% include 'partials/help_abc.twig' %}
 
 {% endblock %}		  

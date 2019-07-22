@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block default %}
-<h1>Settings</h1>
+<h1>{% trans %}Settings{% endtrans %}</h1>
 {% for m in msgs %}
 
 <div class="uk-alert-{% if m.state == 'ok' %}success{% else %}danger{% endif %}" uk-alert>
@@ -41,7 +41,7 @@
 	{% endfor %}
 
 	<input type="hidden" name="action" value="dosave">
-	<div class="uk-text-right"><input class="uk-button uk-button-primary" type="submit" value="{{ constant('TOPIC_TEXT_SAVE') }}"></div>
+	<div class="uk-text-right"><input class="uk-button uk-button-primary" type="submit" value="{% trans %}Save{% endtrans %}"></div>
 
 </form>
 

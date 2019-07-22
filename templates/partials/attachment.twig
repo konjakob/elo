@@ -1,11 +1,11 @@
 {# This is used for attachments to topics/replies and also for the upload of the user profile image #}
 		 <div class="js-upload uk-placeholder uk-text-center">
                 <span uk-icon="icon: cloud-upload"></span>
-                <span class="uk-text-middle">Attach binaries by dropping them here or</span>
+                <span class="uk-text-middle">{% trans %}Attach binaries by dropping them here or{% endtrans %}</span>
                 <div uk-form-custom>
                     <input type="file" multiple>
-                    <span class="uk-link">selecting one</span>
-                </div> <span class="" uk-icon="question"></span><div uk-dropdown>{{ constant('TOPIC_MAX_FILESIZE') }}
+                    <span class="uk-link">{% trans %}selecting one{% endtrans %}</span>
+                </div> <span class="" uk-icon="question"></span><div uk-dropdown>{% trans %}Maximum filesize:{% endtrans %}
 				{% if conf.max_filesize < 1024 %}
 					{{ conf.max_filesize }} kB	
 				{% else %}

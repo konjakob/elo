@@ -5,8 +5,8 @@
 
 {% block default %}
 
-<h1>User view</h1>
-See how a specific user will see the topics.
+<h1>{% trans %}User view{% endtrans %}</h1>
+{% trans %}See how a specific user will see the topics.{% endtrans %}
 
 <div class="uk-child-width-1-1 uk-margin-top" uk-grid>
     <div>
@@ -80,7 +80,7 @@ function loadUser(id){
 						start = start + 10;
 					} else {
 						stopscrol = 1;
-						$("#postswrapper").append('<div class="uk-text-center">{{ constant('NO_MORE_POSTS') }}</div>');
+						$("#postswrapper").append('<div class="uk-text-center">{% trans %}No more posts to show.{% endtrans %}</div>');
 						$('div#loadmoreajaxloader').hide();
 					}
 				}

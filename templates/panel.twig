@@ -31,44 +31,44 @@
 
 <div id="edit-user-model" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
-        <h2 class="uk-modal-title" id="modal-headline">Edit User</h2>
+        <h2 class="uk-modal-title" id="modal-headline">{% trans %}Edit User{% endtrans %}</h2>
         <p>
 		
 			<form class="uk-form-stacked" action="actions.php" method="post">
 				<input type="hidden" name="user_id_c" id="user_id_c" value="">
 				<div class="uk-margin">
-					<label class="uk-form-label" for="user_name_c">Name</label>
+					<label class="uk-form-label" for="user_name_c">{% trans %}Name{% endtrans %}</label>
 					<div class="uk-form-controls">
 						<input class="uk-input" id="t_name_c" type="text" name="t_name_c">
 					</div>
 				</div>
 				<div class="uk-margin">
-					<label class="uk-form-label" for="user_email_c">Email</label>
+					<label class="uk-form-label" for="user_email_c">{% trans %}Email{% endtrans %}</label>
 					<div class="uk-form-controls">
 						<input class="uk-input" id="user_email_c" type="text" name="t_email_c">
 					</div>
 				</div>
 				<div class="uk-margin">
-					<label class="uk-form-label" for="date_start">Start showing this topic</label>
+					<label class="uk-form-label" for="date_start">{% trans %}Start showing this topic{% endtrans %}</label>
 					<div class="uk-form-controls">
 						<input class="uk-input" id="date_start_c" type="text" name="date_start">
 					</div>
 				</div>
 				<div class="uk-margin">
-					<label class="uk-form-label" for="date_end">End showing this topic</label>
+					<label class="uk-form-label" for="date_end">{% trans %}End showing this topic{% endtrans %}</label>
 					<div class="uk-form-controls">
 						<input class="uk-input" id="date_end_c" type="text" name="date_end">
 					</div>
 				</div>
 				<div class="uk-margin">
-					<label class="uk-form-label" for="user_pass_c">Password</label>
+					<label class="uk-form-label" for="user_pass_c">{% trans %}Password{% endtrans %}</label>
 					<div class="uk-form-controls">
 							<input class="uk-input" id="user_pass_c" type="text" name="t_pass_c">
 					</div>
-					 {{ constant('PANEL_EXAMPLE_PASSWORD') }} <code id="suggestedPassword_existing"></code> <small><a href="#" id="use-sug-password-existing">Use this password</a></small>
+					 {% endtrans %}For example:{% endtrans %} <code id="suggestedPassword_existing"></code> <small><a href="#" id="use-sug-password-existing">Use this password</a></small>
 				</div>
 				<div class="uk-margin">
-					<label class="uk-form-label" for="user_lang_c">Language</label>
+					<label class="uk-form-label" for="user_lang_c">{% trans %}Language{% endtrans %}</label>
 					<div class="uk-form-controls">
 						<select name="t_lang_c" class="uk-select" id="user_lang_c">
 						{% for l in langs %}
@@ -78,7 +78,7 @@
 					</div>
 				</div>
 				<div class="uk-text-right">
-					<input type="submit" value="Save" name="new_user_c" class="uk-button uk-button-primary" />
+					<input type="submit" value="{% trans %}Save{% endtrans %}" name="new_user_c" class="uk-button uk-button-primary" />
 				</div>
 			</form>
 			
