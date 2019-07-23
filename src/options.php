@@ -53,10 +53,6 @@ while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 $twig_data['settings'] = $settings;
 
 
-$breadcrumb[] = array( 'text' => 'Topics', 'href' => 'topic.php');
-$breadcrumb[] = array( 'text' => 'Admin Panel', 'href' => 'panel.php');
-$breadcrumb[] = array( 'text' => 'Settings', 'href' => '');
-
+$twig_data['navElements'] = createAdminMenu();
 $twig_data['msgs'] = $msgs;
-$twig_data['breadcrumb'] = $breadcrumb;
 echo $twig->render("options.twig", $twig_data);
