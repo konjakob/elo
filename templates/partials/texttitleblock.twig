@@ -1,14 +1,14 @@
 						<div class="uk-margin">
 							<label class="uk-form-label" for="form-topic-1">{% trans %}Title{% endtrans %}</label>
 							<div class="uk-form-controls">
-								<input class="uk-input" id="form-topic-1" type="text" name="t_topic_title" placeholder="{% trans %}Topic title{% endtrans %}" data-validation="length" data-validation-length="min{{ config.min_length_topic_title }}">
+								<input class="uk-input" id="form-topic-1" type="text" name="t_topic_title" placeholder="{% trans %}Topic title{% endtrans %}" data-validation="length" data-validation-length="min{{ conf.min_length_topic_title }}">
 							</div>
 						</div>
 						
 						<div class="uk-margin">
 							<label class="uk-form-label" for="newTopicText">{% trans %}Text{% endtrans %} <span class="" uk-icon="question"></span><div uk-dropdown>{% trans %}Text rules:{% endtrans %} <a href="faq.php">FAQ</a></div></label>
 							<div class="uk-form-controls">
-								<textarea id="newTopicText" class="uk-textarea" name="t_topic" data-validation="length" data-validation-length="min{{ config.min_length_topic_text }}">{{ reply.reply_text }}</textarea>
+								<textarea id="newTopicText" class="uk-textarea" name="t_topic" data-validation="length" data-validation-length="min{{ conf.min_length_topic_text }}">{{ reply.reply_text }}</textarea>
 							</div>
 						</div>
 						
