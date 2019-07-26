@@ -1,15 +1,757 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
+"POT-Creation-Date: 2019-07-25 07:57+0200\n"
+"PO-Revision-Date: 2019-07-25 08:40+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
-"Content-Transfer-Encoding: 8bit\n"
 "Language: de_DE\n"
-"X-Generator: Poedit 2.2.3\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.1\n"
+"X-Poedit-Basepath: ../../../../..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: templates\n"
+"X-Poedit-SearchPath-1: src\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-1: *.css\n"
 
-msgid "password"
-msgstr "Kennwort"
+#: src/actions.php:100
+msgid "Missing value for cropping."
+msgstr "Fehlende Angaben zum Zuschneiden."
+
+#: src/actions.php:101 src/actions.php:137 src/actions.php:142
+#: src/actions.php:170 src/actions.php:196 src/actions.php:199
+#: src/actions.php:219 src/actions.php:232 src/actions.php:240
+#: src/actions.php:253 src/actions.php:261 src/actions.php:274
+#: src/actions.php:299 src/actions.php:302 src/actions.php:308
+#: src/actions.php:317 src/actions.php:324 src/actions.php:344
+#: src/actions.php:347 src/actions.php:407 src/actions.php:415
+#: src/actions.php:428 src/actions.php:448 src/actions.php:461
+#: src/actions.php:468 src/actions.php:476 src/actions.php:489
+#: src/actions.php:524 src/actions.php:549 src/actions.php:552
+#: src/actions.php:556 src/actions.php:572 src/actions.php:579
+#: src/actions.php:596 src/actions.php:607 src/actions.php:613
+msgid "Error"
+msgstr "Fehler"
+
+#: src/actions.php:137 src/actions.php:170 src/actions.php:219
+#: src/actions.php:240 src/actions.php:261 src/actions.php:308
+#: src/actions.php:324 src/actions.php:415 src/actions.php:579
+#: src/addreply.php:11
+msgid "No rights."
+msgstr "Keine Rechte."
+
+#: src/actions.php:142 src/actions.php:468
+msgid "No topic given."
+msgstr "Kein Topic angegeben."
+
+#: src/actions.php:164
+msgid "Topic deleted."
+msgstr "Thema gelöscht."
+
+#: src/actions.php:164 src/actions.php:296 src/actions.php:342
+#: src/actions.php:425 src/actions.php:487
+msgid "Success"
+msgstr "Erfolg"
+
+#: src/actions.php:196
+#, php-format
+msgid "Please enter an email address and a name with %d characters."
+msgstr ""
+"Bitte gib eine Emailadresse und einen Benutzernamen mit %d Zeichen ein."
+
+#: src/actions.php:199
+msgid "Please enter all the data"
+msgstr "Bitte gib alle Daten ein"
+
+#: src/actions.php:232 src/actions.php:253 src/actions.php:274
+#: src/actions.php:317 src/actions.php:406
+msgid "Please select a user."
+msgstr "Bitte wähle einen Benutzer."
+
+#: src/actions.php:295
+msgid "Preview generated."
+msgstr "Voransicht erzeugt."
+
+#: src/actions.php:299
+msgid "Not a file, which can be previewed."
+msgstr "Keine Datei für die eine Voransicht erstellt werden kann."
+
+#: src/actions.php:302
+msgid "No attachment given."
+msgstr "Kein Anhang angegeben."
+
+#: src/actions.php:342
+msgid "The group was successfully deleted."
+msgstr "Die Gruppe wurde erfolgreich gelöscht."
+
+#: src/actions.php:344
+msgid "No group was deleted."
+msgstr "Keine Gruppe wurde gelöscht."
+
+#: src/actions.php:347 src/actions.php:572
+msgid "Please select a group."
+msgstr "Bitte wähle eine Gruppe."
+
+#: src/actions.php:361 src/actions.php:376 src/user_create.php:19
+msgid "Please provide a valid email address."
+msgstr "Bitte gib eine gültige Emailadresse an."
+
+#: src/actions.php:368 src/actions.php:384
+msgid "This email is already registered."
+msgstr "Diese Email Adresse ist schon vorhanden."
+
+#: src/actions.php:424
+msgid "Successfully created."
+msgstr "Erfolgreich erstellt."
+
+#: src/actions.php:428
+msgid "No group name given."
+msgstr "Kein Gruppenname angegeben."
+
+#: src/actions.php:448
+msgid "Please select a group"
+msgstr "Bitte wähle eine Gruppe aus."
+
+#: src/actions.php:461
+msgid "Please select a group and enter a name."
+msgstr "Bitte wähle eine Gruppe und gib einen Namen an."
+
+#: src/actions.php:476
+msgid "No topic found."
+msgstr "Kein Topic gefunden."
+
+#: src/actions.php:487
+msgid "Successfully modified."
+msgstr "Erfolgreich geändert."
+
+#: src/actions.php:489
+msgid "Too late to edit."
+msgstr "Zu spät zum ändern."
+
+#: src/actions.php:517 src/actions.php:593
+msgid "Attachment deleted"
+msgstr "Anhang gelöscht"
+
+#: src/actions.php:518 src/actions.php:540 src/actions.php:594
+msgid "Deleted"
+msgstr "Gelöscht"
+
+#: src/actions.php:524 src/actions.php:596
+msgid "No attachment could be deleted."
+msgstr "Kein Anhang wurde gelöscht"
+
+#: src/actions.php:540
+msgid "Reply deleted"
+msgstr "Antwort gelöscht."
+
+#: src/actions.php:549 src/edit_reply.php:22 src/edit_reply.php:155
+msgid "No rights to delete the reply."
+msgstr "Keine Rechte um Antworten zu löschen."
+
+#: src/actions.php:552
+msgid "Reply not found"
+msgstr "Antwort nicht gefunden."
+
+#: src/actions.php:556 src/edit_reply.php:12
+msgid "No ID given."
+msgstr "Keine ID angegeben."
+
+#: src/actions.php:607
+msgid "No rights to create topics."
+msgstr "Keine Rechte ein Thema zu erstellen."
+
+#: src/actions.php:613
+msgid "No title and/or text."
+msgstr "Kein Titel und/oder Text."
+
+#: src/actions.php:696
+msgid "Your topic is not visible, due to the start and end time you entered."
+msgstr ""
+"Dein Thema ist nicht sichtbar, wegen der Start / Endzeit die du angegeben "
+"hast."
+
+#: src/addreply.php:6
+msgid "No topic ID."
+msgstr "Keine Topic ID."
+
+#: src/addreply.php:32
+msgid "Sorry, there is nothing."
+msgstr "Entschuldigung, hier gibt es nichts."
+
+#: src/addreply.php:38
+msgid "No text."
+msgstr "Kein Text."
+
+#: src/addreply.php:70 src/edit_reply.php:114
+msgid "Reply saved."
+msgstr "Antwort gespeichert."
+
+#: src/authenticate.class.php:37
+msgid "This e-mail address was not found in the database."
+msgstr "Die Emailadresse wurde nicht in der Datenbank gefundnen."
+
+#: src/authenticate.class.php:47
+msgid "Invalid password."
+msgstr "Inkorrektes Passwort."
+
+#: src/authenticate.class.php:71
+msgid "Could not set cookie."
+msgstr "Konnte kein Cookie setzen."
+
+#: src/dashboard.php:16 src/dashboard.php:85 src/functions.php:52
+msgid "Users"
+msgstr "Benutzer"
+
+#: src/dashboard.php:30
+msgid "Posts"
+msgstr "Beiträge"
+
+#: src/dashboard.php:55 src/functions.php:47 templates/user_create.twig:63
+msgid "Groups"
+msgstr "Gruppen"
+
+#: src/dashboard.php:57
+msgid "Most active groups (top 5)"
+msgstr "Aktivsten Gruppen (Top 5)"
+
+#: src/dashboard.php:70 src/dashboard.php:71 src/functions.php:46
+#: templates/edit-reply.twig:94 templates/topic_detail.twig:71
+msgid "Attachments"
+msgstr "Anhänge"
+
+#: src/dashboard.php:72
+msgid "Files per week"
+msgstr "Dateien pro Woche"
+
+#: src/dashboard.php:87
+msgid "Online users per week"
+msgstr "Benutzer pro Woche"
+
+#: src/dbclass.php:17
+msgid "Database connection failed."
+msgstr "Datenbankverbindung konnte nicht erstellt werden."
+
+#: src/edit_reply.php:165 src/faq.php:11 src/topic.php:7
+#: src/user-settings.php:15 src/user_modify.php:68
+msgid "Topics"
+msgstr "Themen"
+
+#: src/edit_reply.php:167 templates/edit-reply.twig:21
+msgid "Change reply"
+msgstr "Antwort ändern"
+
+#: src/functions.php:44
+msgid "Create topic"
+msgstr "Erstelle ein neues Thema"
+
+#: src/functions.php:45 templates/loaduser.twig:8
+msgid "User view"
+msgstr "Benutzeransicht"
+
+#: src/functions.php:50
+msgid "Create"
+msgstr "Erstellen"
+
+#: src/functions.php:51
+msgid "Modify"
+msgstr "Ändern"
+
+#: src/login.php:45
+msgid "Login failed."
+msgstr "Anmeldung fehlgeschlagen."
+
+#: src/login.php:68 templates/login.twig:40
+msgid "Reset password"
+msgstr "Passwort zurücksetzen"
+
+#: src/login.php:73
+msgid "Password reset requested"
+msgstr "Zurücksetzen des Passwortes angefordert"
+
+#: src/login.php:82
+msgid "Email is not known."
+msgstr "Email nicht bekannt."
+
+#: src/new_password.php:80 src/new_password.php:84
+msgid "No password request found."
+msgstr "Keine Passwortanforderung gefunden."
+
+#: src/options.php:22
+msgid "The settings were saved."
+msgstr "Einstellungen gespeichert."
+
+#: src/panel.php:74
+msgid "Saved the new group."
+msgstr "Neue Gruppe gespeichert."
+
+#: src/user-settings.php:16
+msgid "User settings"
+msgstr "Benutzereinstellungen"
+
+#: src/user-settings.php:30 src/user_create.php:40
+msgid ""
+"There is already an user with the given email address. Please use another "
+"email address."
+msgstr ""
+"Es ist schon ein Benutzer mit der angegeben Emailadresse vorhanden. Bitte "
+"verwende eine andere Adresse."
+
+#: src/user-settings.php:53
+msgid "Saved"
+msgstr "Gespeichert"
+
+#: src/user_create.php:23
+msgid "Please provide a password."
+msgstr "Bitte gib ein Passwort an."
+
+#: src/user_create.php:27
+#, php-format
+msgid "Please provide a user name with minimum %d characters."
+msgstr "Bitte gib einen Benutzernamen mit mindestens %d Zeichen ein."
+
+#: src/user_create.php:52
+#, php-format
+msgid "Created new user: %s"
+msgstr "Neuen Benutzer erstellt: %s"
+
+#: src/user_create.php:86
+msgid "Welcome to ELO"
+msgstr "Willkommen auf ELO"
+
+#: src/user_create.php:89
+#, php-format
+msgid "Message could not be sent. Mailer Error: %s"
+msgstr "Nachricht konnte nicht gesendet werden. Error: %s"
+
+#: src/user_create.php:91
+msgid "Sent a registration email with all information to the user."
+msgstr "Sende eine Registrierungsemail mit Informationen an den Benutzer."
+
+#: src/user_modify.php:69
+msgid "Admin Panel"
+msgstr "Admin Oberfläche"
+
+#: templates/404.twig:8
+msgid "Not found"
+msgstr "Nicht gefunden"
+
+#: templates/404.twig:10
+msgid "The requested file was not found."
+msgstr "Die angeforderte Datei wurde nicht gefunden."
+
+#: templates/dashboard.twig:12
+msgid "more than last week."
+msgstr "mehr als letzte Woche."
+
+#: templates/default.twig:28
+msgid "Admin panel"
+msgstr "Admin Oberfläche"
+
+#: templates/default.twig:30
+msgid "Personal data"
+msgstr "Persönliche Daten"
+
+#: templates/default.twig:31
+msgid "Logout"
+msgstr "Abmelden"
+
+#: templates/edit-reply.twig:30 templates/partials/newtopic.twig:10
+msgid "User for this topic"
+msgstr "Benutzer in diesem Topic"
+
+#: templates/edit-reply.twig:44 templates/partials/newtopic.twig:24
+msgid "Groups for this topic"
+msgstr "Gruppen in diesem Thema"
+
+#: templates/edit-reply.twig:57 templates/partials/texttitleblock.twig:9
+#: templates/texttitleblock.twig:9 templates/topic_detail.twig:99
+msgid "Text"
+msgstr "Text"
+
+#: templates/edit-reply.twig:75 templates/partials/cheatsheet.twig:7
+#: templates/partials/cheatsheet.twig:20
+msgid "Add music sheet"
+msgstr "Hinzufügen von Noten"
+
+#: templates/edit-reply.twig:75 templates/faq.twig:25
+#: templates/partials/cheatsheet.twig:7
+msgid "ABC music info"
+msgstr "ABC-Musik-Info"
+
+#: templates/edit-reply.twig:81 templates/partials/cheatsheet.twig:13
+msgid "Check syntax"
+msgstr "Syntax überprüfen"
+
+#: templates/edit-reply.twig:101 templates/topic_detail.twig:48
+msgid "Delete"
+msgstr "Löschen"
+
+#: templates/edit-reply.twig:107 templates/options.twig:44
+#: templates/panel.twig:81 templates/topic_detail.twig:113
+#: templates/user-settings.twig:73 templates/user_create.twig:75
+msgid "Save"
+msgstr "Speichern"
+
+#: templates/edit-reply.twig:137
+msgid "Do you really want to delete this attachment?"
+msgstr "Möchtest du diesen Anhang wirklich löschen?"
+
+#: templates/emails/default.twig:148
+msgid "Don't like these emails?"
+msgstr "Falls du keine weiteren Emails erhalten willst:"
+
+#: templates/emails/default.twig:148
+msgid "Unsubscribe"
+msgstr "Abmelden"
+
+#: templates/emails/email_forgotten.twig:3 templates/emails/email_reset.twig:3
+#: templates/emails/new_user.twig:3
+msgid "Hello %user_name%"
+msgstr "Hallo %user_name%"
+
+#: templates/emails/email_forgotten.twig:5
+msgid ""
+"On ELO it was requested to reset your password. If this action was triggered "
+"by you, please click on following link to receive a new password:"
+msgstr ""
+"Es wurde ein Passwortzurücksetzen-Anfrage auf ELO gestellt. Wenn diese "
+"Aktion von dir ausgelöst wurde, klicke bitte auf den folgenden Link, um ein "
+"neues Passwort zu erhalten:"
+
+#: templates/emails/email_forgotten.twig:8
+msgid ""
+"The new password will be send to you after that step. If you do not want to "
+"reset your password, please igonore this email.<br><br><br>Best regard."
+msgstr ""
+"Das neue Kennwort wird dir nach diesem Schritt zugesendet. Wenn du dein "
+"Passwort nicht zurücksetzen möchtest, ignoriere diese E-Mail."
+"<br><br><br>Viele Grüße."
+
+#: templates/emails/email_reset.twig:5
+msgid ""
+"On ELO it was requested to reset your password. Your new password is:<br>\n"
+"  <br>\n"
+"  <strong>%new_password%</strong>\n"
+"<br>\n"
+"<br>\n"
+"Please log into:"
+msgstr ""
+"Dein neues Passwort lautet:<br>\n"
+"  <br>\n"
+"  <strong>%new_password%</strong>\n"
+"<br>\n"
+"<br>Bitte melde dich an:"
+
+#: templates/emails/email_reset.twig:13
+msgid ""
+"We recommend that you change this password as soon as possible to a new "
+"password choosen by yourself.<br>\n"
+"<br><br>\n"
+"Best regards."
+msgstr ""
+"Wir empfehlen, das Kennwort so schnell wie möglich zu ändern, das du selbst "
+"gewählt hast.<br>\n"
+"<br><br>Viele Grüße."
+
+#: templates/emails/new_user.twig:5
+msgid ""
+"You were registered at ELO by %admin_name%. Please log yourself in on:"
+"<br><br><a href=\"%url%\">%url%</a><br>\n"
+"<br>\n"
+"Your user data to log in is:<br>\n"
+"<br>\n"
+"Email: %user_email%<br>\n"
+"Password: %user_passwort%<br>\n"
+"<br> \n"
+"After you logged into the site, you can change your personal settings like "
+"your user name, your password or your language."
+msgstr ""
+"Du wurdest auf ELO von %admin_name% registriert. Bitte melde dich an:"
+"<br><br><a href=\"%url%\">%url%</a><br>\n"
+"<br>Deine Benutzerdaten zum Anmelden sind:<br>\n"
+"<br>E-Mail: %user_email%<br>Kennwort: %user_passwort%<br>\n"
+"<br>Nachdem du dich auf der Website angemeldest hast, kannst du deine "
+"persönlichen Einstellungen wie dein Benutzernamen, dein Kennwort oder die "
+"Sprache ändern."
+
+#: templates/emails/new_user.twig:17
+msgid ""
+"Best regards.<br>\n"
+"<i>%admin_name%</i><br><br><br><strong>In the case you don't know %admin_name"
+"%, please ignore this email.</strong>"
+msgstr ""
+"Viele Grüsse.<br>\n"
+"<i>%admin_name%</i><br><br><br><strong>Falls du %admin_name% nicht kennst, "
+"ignoriere bitte diese E-Mail.</strong>"
+
+#: templates/faq.twig:8
+msgid "FAQ"
+msgstr "FAQ"
+
+#: templates/faq.twig:9
+msgid "HTML"
+msgstr "HTML"
+
+#: templates/faq.twig:11
+msgid "You are allowed to post HTML."
+msgstr "Du darfst HTML verwenden."
+
+#: templates/faq.twig:15
+msgid "Following BB Codes are allowed:"
+msgstr "Folgende BB-Codes sind zulässig:"
+
+#: templates/help_abc.twig:1
+msgid ""
+"More information about the ABC notation can be found on following websites:"
+msgstr ""
+"Weitere Informationen zur ABC-Notation findest du auf folgenden "
+"Internetseiten:"
+
+#: templates/index.twig:27
+msgid "Please activate JavaScript!"
+msgstr "Bitte aktiviere JavaScript!"
+
+#: templates/layout_dashboard.twig:19
+msgid "Your profile"
+msgstr "Dein Profil"
+
+#: templates/loaduser.twig:9
+msgid "See how a specific user will see the topics."
+msgstr "Siehe, wie ein bestimmter Benutzer die Themen sieht."
+
+#: templates/loaduser.twig:83 templates/topic.twig:157
+msgid "No more posts to show."
+msgstr "Keine weiteren Beiträge vorhanden."
+
+#: templates/login.twig:6 templates/login.twig:50 templates/login.twig:64
+#: templates/new_password.twig:6
+msgid "Login"
+msgstr "Anmelden"
+
+#: templates/login.twig:29
+msgid ""
+"Please insert your email address below. You will receive an email with a "
+"link to reset your password."
+msgstr ""
+"Bitte gib eine E-Mail-Adresse ein. Du erhälst eine E-Mail mit einem Link, um "
+"dein Passwort zurückzusetzen."
+
+#: templates/login.twig:54 templates/panel.twig:46
+#: templates/user_create.twig:24 templates/user_create.twig:26
+msgid "Email"
+msgstr "E-Mail"
+
+#: templates/login.twig:60
+msgid "Passwort"
+msgstr "Password"
+
+#: templates/login.twig:68
+msgid "Password forgotten"
+msgstr "Passwort vergessen"
+
+#: templates/no-access.twig:8
+msgid "No access"
+msgstr "Kein Zugriff"
+
+#: templates/no-access.twig:10
+msgid "You don't have permission to access this page."
+msgstr ""
+"Du verfügst nicht über die notwendige Berechtigung, diese Seite zu sehen."
+
+#: templates/options.twig:7
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: templates/panel.twig:34
+msgid "Edit User"
+msgstr "Benutzer bearbeiten"
+
+#: templates/panel.twig:40 templates/user_create.twig:18
+#: templates/user_create.twig:20
+msgid "Name"
+msgstr "Name"
+
+#: templates/panel.twig:52 templates/partials/texttitleblock.twig:18
+#: templates/texttitleblock.twig:18
+msgid "Start showing this topic"
+msgstr "Anzeige dieses Themas ab dem"
+
+#: templates/panel.twig:58 templates/partials/texttitleblock.twig:24
+#: templates/texttitleblock.twig:24
+msgid "End showing this topic"
+msgstr "Ende dieses Themas"
+
+#: templates/panel.twig:64 templates/user_create.twig:30
+#: templates/user_create.twig:32
+msgid "Password"
+msgstr "Passwort"
+
+#: templates/panel.twig:68 templates/user_create.twig:34
+#: templates/user_modify.twig:32
+msgid "For example:"
+msgstr "Zum Beispiel:"
+
+#: templates/panel.twig:71 templates/user_create.twig:43
+msgid "Language"
+msgstr "Sprache"
+
+#: templates/partials/attachment.twig:4
+msgid "Attach binaries by dropping them here or"
+msgstr "Hinzufügen von Dateien, einfach hier ablegen oder"
+
+#: templates/partials/attachment.twig:7
+msgid "selecting one"
+msgstr "auswählen"
+
+#: templates/partials/attachment.twig:8
+msgid "Maximum filesize:"
+msgstr "Maximale Dateigröße:"
+
+#: templates/partials/newtopic.twig:2
+msgid "New topic"
+msgstr "Neues Thema"
+
+#: templates/partials/newtopic.twig:46
+msgid "You can edit or delete your reply till"
+msgstr "Du kannst deine Antwort bearbeiten oder löschen, bis zum"
+
+#: templates/partials/texttitleblock.twig:2 templates/texttitleblock.twig:2
+msgid "Title"
+msgstr "Titel"
+
+#: templates/partials/texttitleblock.twig:4 templates/texttitleblock.twig:4
+msgid "Topic title"
+msgstr "Thementitel"
+
+#: templates/partials/texttitleblock.twig:9 templates/texttitleblock.twig:9
+#: templates/topic_detail.twig:94 templates/topic_detail.twig:99
+msgid "Text rules:"
+msgstr "Textregeln:"
+
+#: templates/partials/topicblock.twig:20
+msgid "Answers"
+msgstr "Antworten"
+
+#: templates/partials/topicblock.twig:22
+msgid "Created:"
+msgstr "Erstellt:"
+
+#: templates/partials/topicblock.twig:22
+msgid "by"
+msgstr "von"
+
+#: templates/partials/topicblock.twig:24
+msgid "Last response:"
+msgstr "Letzte Antwort:"
+
+#: templates/partials/topicblock.twig:25
+msgid "View"
+msgstr "Anzeigen"
+
+#: templates/topic.twig:14
+msgid "<strong>%user_name%</strong>, welcome back. These are your topics:"
+msgstr ""
+"<strong>%user_name%</strong>, willkommen zurück. Das sind deine Themen:"
+
+#: templates/topic.twig:27
+msgid "Create a new topic"
+msgstr "Erstelle ein neues Thema"
+
+#: templates/topic_detail.twig:17
+msgid "Users of this topic:"
+msgstr "Benutzer in diesem Topic:"
+
+#: templates/topic_detail.twig:18
+msgid "No users."
+msgstr "Keine Benutzer."
+
+#: templates/topic_detail.twig:24
+msgid "Groups of this topic:"
+msgstr "Gruppen zu diesem Thema:"
+
+#: templates/topic_detail.twig:25
+msgid "No groups."
+msgstr "Keine Gruppen."
+
+#: templates/topic_detail.twig:48
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: templates/topic_detail.twig:66
+msgid "Downloads"
+msgstr "Downloads"
+
+#: templates/topic_detail.twig:78
+msgid "Download"
+msgstr "Herunterladen"
+
+#: templates/topic_detail.twig:94
+msgid "Reply to this topic"
+msgstr "Antworte auf dieses Thema"
+
+#: templates/topic_detail.twig:141
+msgid "Change the topic title:"
+msgstr "Ändern des Titels:"
+
+#: templates/topic_detail.twig:169
+msgid "Do you really want to delete the whole topic?"
+msgstr "Möchtest du wirklich das ganze Thema löschen?"
+
+#: templates/topic_detail.twig:187
+msgid "Do you really want to delete this reply?"
+msgstr "Möchtest du diese Antwort wirklich löschen?"
+
+#: templates/user-settings.twig:9
+msgid "Change your user settings"
+msgstr "Ändern der Benutzereinstellungen"
+
+#: templates/user-settings.twig:21
+msgid "Profile picture"
+msgstr "Profilbild"
+
+#: templates/user-settings.twig:23
+msgid "Your current profile image is shown below:"
+msgstr "Dein aktuelles Profilbild wird unten gezeigt:"
+
+#: templates/user-settings.twig:32
+msgid "Crop"
+msgstr "Zuschneiden"
+
+#: templates/user-settings.twig:41
+msgid "Username:"
+msgstr "Benutzername:"
+
+#: templates/user-settings.twig:48
+msgid "Email:"
+msgstr "E-Mail:"
+
+#: templates/user-settings.twig:55
+msgid "Password:"
+msgstr "Passwort:"
+
+#: templates/user-settings.twig:57
+msgid "Leave empty for not changing."
+msgstr "Lasse das Feld leer, um es nicht zu ändern."
+
+#: templates/user-settings.twig:62
+msgid "Language:"
+msgstr "Sprache:"
+
+#: templates/user_create.twig:14
+msgid "New user"
+msgstr "Neuer Benutzer"
+
+#: templates/user_create.twig:34
+msgid "Use this password"
+msgstr "Verwenden Sie dieses Kennwort"
+
+#: templates/user_create.twig:37
+msgid "Send registration email"
+msgstr "Registrierungs E-Mail senden"
+
+#: templates/user_create.twig:53
+msgid "Rights"
+msgstr "Rechte"
