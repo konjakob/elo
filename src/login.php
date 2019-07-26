@@ -1,31 +1,15 @@
 <?php
-require_once("dbclass.php");
-require_once 'ext/Twig/Autoloader.php';
-Twig_Autoloader::register();
 
-$loader = new Twig_Loader_Filesystem('C:\\wamp\www\\elo\\templates'); 
-$twig = new Twig_Environment($loader);
-
-$sql = "select varname as config_name, value as config_value from elo_config";
-$statement = $pdo->prepare($sql);
-$statement->execute();
-		
-$conf = array();
-while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
-	$conf[$res['config_name']] = $res['config_value'];
-
-$twig_data['current_url'] = $_SERVER['PHP_SELF'];
+require_once(__DIR__ . '/includes/application_base.php');
 
 $ref = "";
 $msgs = array();
 
-
-	
 $twig_data['showForgotten'] = (isset($_GET['pass']) && $_GET['pass'] == 'forgotten');
 
 if ( isset($_POST['action_login'])) {
 
-	require("authenticate.class.php");
+	require_once("authenticate.class.php");
 	
 	$auth = new Authenticate;
 	

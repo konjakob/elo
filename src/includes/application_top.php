@@ -1,47 +1,7 @@
 <?php
 
-// Set language
-$language = "de_DE.UTF-8";
-putenv("LANGUAGE=" . $language);
-setlocale(LC_ALL, $language);
+require_once(__DIR__ . '/application_base.php');
 
-// Specify the location of the translation tables
-$domain = "elo";
-bindtextdomain($domain, __DIR__ . '/locale');
-bind_textdomain_codeset($domain, 'UTF-8');	
-// Choose domain
-textdomain($domain);
-
-header("Content-type: text/html; charset=utf-8");
-
-$breadcrumb = array();
-
-if ( !isset($jsonMode) ) {
-	require_once 'ext/Twig/Autoloader.php';
-	Twig_Autoloader::register();
-
-	$loader = new Twig_Loader_Filesystem('C:\\wamp\www\\elo\\templates'); 
-	$twig = new Twig_Environment($loader, array(
-		'cache' => false
-	));
-	
-	$twig->addExtension(new Twig_Extensions_Extension_I18n());
-    $twig->addExtension(new Twig_Extensions_Extension_Date());
-
-}
- /*, array(
-		'cache' => 'ext/twig-cache',
-	));*/
-// $function = new \Twig\TwigFunction('function_name', function () {
-    // $calcFrom = $from;
-	// $calcTo = $to;
-	// $now->diff($calcFrom)->format("%a")
-// });
-// $twig->addFunction($function);
-
-$twig_data['current_url'] = $_SERVER['PHP_SELF'];
-
-require_once("dbclass.php");
 require_once("authenticate.class.php");
 
 $auth = new Authenticate;
@@ -54,15 +14,6 @@ if(!$auth->validateAuthCookie()) {
 	}
 	exit();
 }
-
-$statement = $pdo->prepare("select varname as config_name, value as config_value from elo_config");
-$statement->execute();
-		
-$conf = array();
-while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
-	$conf[$res['config_name']] = $res['config_value'];
-
-$twig_data['conf'] = $conf;
 
 require_once("functions.php");
 
