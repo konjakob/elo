@@ -1,0 +1,32 @@
+{% extends 'layout_dashboard.twig' %}
+
+{% block default %}
+<h1>{% trans %}Upcoming Topics{% endtrans %}</h1>
+{% if topics|length %}
+{% set noTopics = topics|length %}
+{% trans %}There are {{ noTopics }} upcoming topics in the system.{% endtrans %}
+<table class="uk-table uk-table-striped" id="table">
+    <thead>
+        <tr>
+			<th>{% trans %}Topic Title{% endtrans %}</th>
+			<th>{% trans %}Visible from{% endtrans %}</th>
+			<th>{% trans %}Visible till{% endtrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+		{% for t in topics %}
+		<tr>
+			<td>{{ t.topic_title }}</td>
+			<td>{{ t.visible_from }}</td>
+			<td>{{ t.visible_till }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% else %}
+{% trans %}There are no upcoming topics.{% endtrans %}
+{% endif %}
+
+{% endblock %}
+
+

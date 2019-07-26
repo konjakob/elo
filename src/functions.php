@@ -45,6 +45,8 @@ function createAdminMenu() {
     $elements[] = array('text' => _('User view'), 'href' => 'view_user_topics.php', 'icon' => 'users', 'active' => ($currentPage == 'view_user_topics.php') ? 1 : 0);
     $elements[] = array('text' => _('Attachments'), 'href' => 'attachments.php', 'icon' => 'album', 'active' => ($currentPage == 'attachments.php') ? 1 : 0);
     $elements[] = array('text' => _('Groups'), 'href' => 'groups.php', 'icon' => 'users', 'active' => ($currentPage == 'groups.php') ? 1 : 0);
+	$elements[] = array('text' => _('Upcoming Topics'), 'href' => 'topics_not_visible.php', 'icon' => 'album', 'active' => ($currentPage == 'topics_not_visible.php') ? 1 : 0);
+	$elements[] = array('text' => _('Old Topics'), 'href' => 'topics_not_visible_old.php', 'icon' => 'album', 'active' => ($currentPage == 'topics_not_visible_old.php') ? 1 : 0);
     
     $tempEl = array();
     $tempEl[] = array('text' => _('Create'), 'href' => 'user_create.php', 'active' => ($currentPage == 'user_create.php') ? 1 : 0);
