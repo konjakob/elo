@@ -55,7 +55,7 @@ INSERT INTO `elo_config` (`settingid`, `settinggroupid`, `title`, `varname`, `va
 (2, 2, 'Path to abc2midi', 'abc2midi', '/kunden/planetblacknwhite.de/software/abcmidi/abc2midi', 'To create the midi files from an abc file, the program abc2midi can be use. It can be downloaded from <a href="https://github.com/leesavide/abcmidi" target="_blank">https://github.com/leesavide/abcmidi</a>. If the command is not globally available, please specify the exact path, e.g. /local/software/abc2midi/abc2midi.'),
 (3, 2, 'Path to ps2pdf', 'ps2pdf', '/usr/bin/ps2pdf', 'To convert PS files to PDF files, the program ps2pdf from the ghostscript can be used. If the command is not globally available, please specify the exact path, e.g. /local/software/ps2pdf/ps2pdf.'),
 (4, 2, 'Path to abc2abc', 'abc2abc', '/kunden/planetblacknwhite.de/software/abcmidi/abc2abc', 'To check the syntax of the ABC files, the program abc2abc can be used.  It can be downloaded from <a href="https://github.com/leesavide/abcmidi" target="_blank">https://github.com/leesavide/abcmidi</a>. If the command is not globally available, please specify the exact path, e.g. /local/software/abc2abc/abc2abc.'),
-(5, 2, 'Path to convert', 'convert', '"C:\Program Files\ImageMagick-7.0.8-Q16\magick.exe" convert', ''),
+(5, 2, 'Path to convert', 'convert', '"C:\\Program Files\\ImageMagick-7.0.8-Q16\\magick.exe" convert', ''),
 (6, 2, 'Parameters for convert', 'params4img', '-s 1 -w 600', ''),
 (7, 2, 'File folder', 'file_folder', 'files/', 'The folder where files are stored.'),
 (8, 2, 'Parameters for ps', 'params4ps', '', ''),

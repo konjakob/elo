@@ -105,6 +105,8 @@
 						y1: 0.1*ratio, 
 						x2: 0.9*ratio, 
 						y2: 0.9*ratio, 
+						imageHeight: data.height,
+						imageWidth: data.width,
 						onSelectEnd: function (img, selection) { 
 							$('input[name="crop-x1"]').val(selection.x1); 
 							$('input[name="crop-y1"]').val(selection.y1); 

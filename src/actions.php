@@ -110,7 +110,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 
 		$filepath = "images/profile/" . $user_res['user_picture'];
 		list($width, $height, $type, $attr) = getimagesize($filepath);
-		
+		/*
         if ( $width > IMAGE_CROP_MAX_WIDTH_HEIGHT || $height > IMAGE_CROP_MAX_WIDTH_HEIGHT ) {
 			$factor = 1;
 			if ( $height > IMAGE_CROP_MAX_WIDTH_HEIGHT ) {
@@ -122,7 +122,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			$x2 *= $factor;
 			$y1 *= $factor;
 			$y2 *= $factor;			
-		}		
+		}*/		
 		
         exec($conf['convert']." ".$filepath." -crop ".($x2-$x1)."x".($y2-$y1)."+".$x1."+".$y1." ".$filepath); // todo: log output
 		
