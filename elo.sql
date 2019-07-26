@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS `elo_settinggroup` (
 
 INSERT INTO `elo_settinggroup` (`settinggroupid`, `title`, `displayorder`) VALUES
 (1, 'Email', 2),
-(2, 'Einstellungen', 1),
-(3, 'Validierungsanforderungen', 2);
+(2, 'Settings', 1),
+(3, 'Validation', 2);
 
 --
 -- Table structure for table `elo_config`
@@ -51,22 +51,22 @@ CREATE TABLE IF NOT EXISTS `elo_config` (
 --
 
 INSERT INTO `elo_config` (`settingid`, `settinggroupid`, `title`, `varname`, `value`, `description`) VALUES
-(1, 2, 'Path to abc2ps', 'abc2ps', '/kunden/planetblacknwhite.de/software/abcm2ps/abcm2ps', 'To create the PDF from the note sheets, it is necessary to have the program abc2ps. It can be downloaded from http://moinejf.free.fr/. If the command is not globally available, please specify the exact path, e.g. /local/software/abcm2ps/abcm2ps.'),
-(2, 2, 'Path to abc2midi', 'abc2midi', '/kunden/planetblacknwhite.de/software/abcmidi/abc2midi', 'To create the midi files from an abc file, the program abc2midi can be use. It can be downloaded from https://github.com/leesavide/abcmidi. If the command is not globally available, please specify the exact path, e.g. /local/software/abc2midi/abc2midi.'),
+(1, 2, 'Path to abc2ps', 'abc2ps', '/kunden/planetblacknwhite.de/software/abcm2ps/abcm2ps', 'To create the PDF from the note sheets, it is necessary to have the program abc2ps. It can be downloaded from <a href="http://moinejf.free.fr/" target="_blank">http://moinejf.free.fr/</a>. If the command is not globally available, please specify the exact path, e.g. /local/software/abcm2ps/abcm2ps.'),
+(2, 2, 'Path to abc2midi', 'abc2midi', '/kunden/planetblacknwhite.de/software/abcmidi/abc2midi', 'To create the midi files from an abc file, the program abc2midi can be use. It can be downloaded from <a href="https://github.com/leesavide/abcmidi" target="_blank">https://github.com/leesavide/abcmidi</a>. If the command is not globally available, please specify the exact path, e.g. /local/software/abc2midi/abc2midi.'),
 (3, 2, 'Path to ps2pdf', 'ps2pdf', '/usr/bin/ps2pdf', 'To convert PS files to PDF files, the program ps2pdf from the ghostscript can be used. If the command is not globally available, please specify the exact path, e.g. /local/software/ps2pdf/ps2pdf.'),
-(4, 2, 'Path to abc2abc', 'abc2abc', '/kunden/planetblacknwhite.de/software/abcmidi/abc2abc', 'To check the syntax of the ABC files, the program abc2abc can be used.  It can be downloaded from https://github.com/leesavide/abcmidi. If the command is not globally available, please specify the exact path, e.g. /local/software/abc2abc/abc2abc.'),
+(4, 2, 'Path to abc2abc', 'abc2abc', '/kunden/planetblacknwhite.de/software/abcmidi/abc2abc', 'To check the syntax of the ABC files, the program abc2abc can be used.  It can be downloaded from <a href="https://github.com/leesavide/abcmidi" target="_blank">https://github.com/leesavide/abcmidi</a>. If the command is not globally available, please specify the exact path, e.g. /local/software/abc2abc/abc2abc.'),
 (5, 2, 'Path to convert', 'convert', '"C:\Program Files\ImageMagick-7.0.8-Q16\magick.exe" convert', ''),
 (6, 2, 'Parameters for convert', 'params4img', '-s 1 -w 600', ''),
 (7, 2, 'File folder', 'file_folder', 'files/', 'The folder where files are stored.'),
 (8, 2, 'Parameters for ps', 'params4ps', '', ''),
 (9, 2, 'Date format', 'date_format', 'd.m.Y, H:i', 'To format the dates, the formating available in PHP can be used. Please see <a href="https://www.php.net/manual/en/function.date.php" target="_blank">https://www.php.net/manual/en/function.date.php</a>.'),
-(10, 2, 'Parameters for png', 'params4png', '-density 150 -geometry 100%', 'Parameters for generating the PNG files. For all options, please see https://imagemagick.org/script/command-line-options.php.'),
-(12, 1, 'From email', 'from_email', 'elo@christoph-pimpl.de', 'When sending emails out, following email will be set as from email.'),
-(13, 1, 'From name', 'from_name', 'Christoph Pimpl', 'When sending emails out, following name will be set as from name.'),
-(14, 1, 'SMTP server', 'smtp_server', 'smtp.christoph-pimpl.de', 'Address of the SMTP server for sending emails.'),
+(10, 2, 'Parameters for png', 'params4png', '-density 150 -geometry 100%', 'Parameters for generating the PNG files. For all options, please see <a href="https://imagemagick.org/script/command-line-options.php" target="_blank">https://imagemagick.org/script/command-line-options.php</a>.'),
+(12, 1, 'From email', 'from_email', 'root@localhost', 'When sending emails out, following email will be set as from email.'),
+(13, 1, 'From name', 'from_name', 'Jakob Wankel', 'When sending emails out, following name will be set as from name.'),
+(14, 1, 'SMTP server', 'smtp_server', 'localhost', 'Address of the SMTP server for sending emails.'),
 (15, 1, 'SMTP port', 'smtp_port', '25', 'Port of the smtp server for sending emails.'),
-(16, 1, 'SMTP username', 'smtp_username', 'elo@christoph-pimpl.de', 'Username for the SMTP server for sending emails.'),
-(17, 1, 'SMTP password', 'smtp_password', 'rghqJ5S<jswe', 'Password for the SMTP server for sending emails.'),
+(16, 1, 'SMTP username', 'smtp_username', 'root@localhost', 'Username for the SMTP server for sending emails.'),
+(17, 1, 'SMTP password', 'smtp_password', '', 'Password for the SMTP server for sending emails.'),
 (18, 2, 'Maximum time for editing posts', 'max_edit_time', '3600', 'Maximum time a user can edit his post.'),
 (19, 2, 'URL to page', 'url', 'http://localhost/elo/src/', ''),
 (21, 2, 'Maximum file size', 'max_filesize', '2048', ''),
@@ -86,7 +86,7 @@ CREATE TABLE `elo_cron` (
   `cron_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
   `cron_time` int(13) unsigned NOT NULL,
   PRIMARY KEY (`cron_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2083 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -124,11 +124,11 @@ CREATE TABLE `elo_group` (
 --
 
 INSERT INTO `elo_group` (`group_id`, `group_name`) VALUES
-(1, 'Anonyme Alkoholiker'),
-(2, 'Anonyme Gagger'),
-(3, 'Gaggende Anonymiker'),
-(4, 'Die Gebrüder Wurst'),
-(5, 'Elo Kritik');
+(1, 'Brass Band'),
+(2, 'Bläser'),
+(3, 'Kleines Orchester'),
+(4, 'Phil. Orchester'),
+(5, 'Test Gruppe');
 
 -- --------------------------------------------------------
 
@@ -166,8 +166,9 @@ CREATE TABLE `elo_lang` (
 --
 
 INSERT INTO `elo_lang` (`lang_id`, `lang_name`, `lang_code`) VALUES
-(1, 'Deutsch', 'de'),
-(2, 'English', 'en');
+(1, 'German', 'de_DE'),
+(2, 'English', 'en_US'),
+(2, 'Spanish', 'es_ES');
 
 -- --------------------------------------------------------
 
