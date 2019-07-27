@@ -32,7 +32,7 @@ $twig->addExtension(new Twig_Extensions_Extension_Date());
 
 $twig_data['current_url'] = $_SERVER['PHP_SELF'];
 
-require_once("dbclass.php");
+require_once( __DIR__ . '/dbclass.php');
 
 $statement = $pdo->prepare("select varname as config_name, value as config_value from elo_config");
 $statement->execute();

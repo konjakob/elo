@@ -73,7 +73,7 @@ INSERT INTO `elo_config` (`settingid`, `settinggroupid`, `title`, `varname`, `va
 (22, 3, 'Minimum topic title length', 'min_length_topic_title', '5', ''),
 (23, 3, 'Minimum topic/reply text length', 'min_length_topic_text', '5', ''),
 (24, 3, 'Minimum user name length', 'min_length_username', '5', ''),
-(25, 3, 'Date format for start and end date of topics', 'format_dates_topic', 'dd.mm.YY hh:mm', 'To format the dates, the formating available in PHP can be used. Please see <a href="https://www.php.net/manual/en/function.date.php" target="_blank">https://www.php.net/manual/en/function.date.php</a>.');
+(25, 3, 'Date format for start and end date of topics', 'format_dates_topic', 'd.m.yy', 'To format the dates, the formating available in PHP can be used. Please see <a href="https://api.jqueryui.com/datepicker/#utility-formatDate" target="_blank">https://api.jqueryui.com/datepicker/#utility-formatDate</a>.');
 
 update `elo_config` set displayorder=1;
 -- --------------------------------------------------------
