@@ -17,7 +17,7 @@
 			<div class="uk-card-footer">
 				<p class="uk-text-meta uk-margin-remove-top">
                 
-                {{ topic.no_replies }}{% trans %}Answers{% endtrans %}
+                {{ topic.no_replies }} {% trans %}Answer{% plural topic.no_replies %}Answers{% endtrans %}
 
                 | {% trans %}Created:{% endtrans %} {{ topic.reply_date|date(conf.date_format) }} {% trans %}by{% endtrans %} {{ topic.username }}
 					{% if topic.reply_date != topic.last_reply_date %}

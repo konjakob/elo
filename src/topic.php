@@ -1,8 +1,7 @@
 <?php
 
 require_once('includes/application_top.php');
-
-require_once('SBBCodeParser.php');
+require_once('includes/SBBCodeParser.php');
 
 $breadcrumb[] = array( 'text' => _('Topics'), 'href' => 'topic.php');
 
@@ -175,7 +174,7 @@ $breadcrumb[] = array( 'text' => _('Topics'), 'href' => 'topic.php');
 		$res = $statement->fetch(PDO::FETCH_ASSOC);
 		$no_topics = $res['no'];
 
-		include("loadtopic.php");
+		include("includes/loadtopic.php");
 		$twig_data['breadcrumb'] = $breadcrumb;
 		echo $twig->render("topic.twig", $twig_data);
    

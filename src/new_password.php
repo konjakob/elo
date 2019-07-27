@@ -1,22 +1,6 @@
 <?php
 
-$breadcrumb = array();
-
-require_once 'ext/Twig/Autoloader.php';
-Twig_Autoloader::register();
-
-$loader = new Twig_Loader_Filesystem('C:\\wamp\www\\elo\\templates'); 
-$twig = new Twig_Environment($loader);
-
-require_once("dbclass.php");
-
-$sql = "select varname as config_name, value as config_value from elo_config";
-$statement = $pdo->prepare($sql);
-$statement->execute();
-		
-$conf = array();
-while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
-	$conf[$res['config_name']] = $res['config_value'];
+require_once(__DIR__ . '/includes/application_base.php');
 
 $ref = "";
 
@@ -27,8 +11,8 @@ $langcode = "en";
 	
 if ( isset($_GET['id'])) {
 
-	require_once("functions.php");	
-	require_once( "PasswordHash.php" );
+	require_once("includes/functions.php");	
+	require_once("includes/PasswordHash.php");
     $hasher = new PasswordHash( 8, TRUE );
 
 	$statement = $pdo->prepare("select user_id from elo_pass_request where pr_code=:id and pr_time>'".(time()-3600)."' limit 1");
@@ -83,8 +67,6 @@ if ( isset($_GET['id'])) {
 } else {
 	$msgs[] = array('state' => 'nok', 'text' => _('No password request found.'));
 }
-
-require_once('includes/languages/'.$langcode.'.php');
 
 $twig_data['msgs'] = $msgs;
 echo $twig->render("login.twig", $twig_data);

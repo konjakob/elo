@@ -1,7 +1,7 @@
 <?php
 
-require('includes/application_top.php');
-require_once('SBBCodeParser.php');
+require_once('includes/application_top.php');
+require_once('includes/SBBCodeParser.php');
 
 $codes = array();
 $ubbParser = new SBBCodeParser_Document();

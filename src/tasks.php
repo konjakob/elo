@@ -1,11 +1,11 @@
 <?php
 
-require_once("dbclass.php");
+require_once("includes/dbclass.php");
 $db = new db;
 
-require("functions.php");
+require("includes/functions.php");
 
-require_once('SBBCodeParser.php');
+require_once('includes/SBBCodeParser.php');
 
 /*****************************************************************
 *
@@ -17,7 +17,7 @@ $time_last_cron = $db->query_one("select cron_time from elo_cron order by cron_t
 $db->query("insert into elo_cron (cron_time) values ('".time()."')");
 
 date_default_timezone_set('Etc/UTC');
-require 'class.phpmailer.php';
+require 'includes/class.phpmailer.php';
 
 $mail = new PHPMailer;
 
@@ -46,8 +46,6 @@ while ( $res_user = $db->fetch_array($query_user) ) {
 	
 	if ( strlen($langcode) <1 )
 		$langcode = "en";
-	
-	@require('includes/languages/'.$langcode.'.php');
 	
 	// remove the old recipient
 	$mail->ClearAllRecipients();

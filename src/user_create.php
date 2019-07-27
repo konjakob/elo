@@ -29,7 +29,7 @@ if ( isset($_POST['new_user']) ) {
 
 	if ( sizeof($msgs) < 1 ) {	
 		
-		require_once( "PasswordHash.php" );
+		require_once( "includes/PasswordHash.php" );
 		$hasher = new PasswordHash( 8, TRUE );
 
 		$statement = $pdo->prepare("select user_id from elo_user where user_email=:t_email");

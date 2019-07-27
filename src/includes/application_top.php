@@ -1,8 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/application_base.php');
-
-require_once("authenticate.class.php");
+require_once(__DIR__ . '/authenticate.class.php');
 
 $auth = new Authenticate;
 
@@ -15,7 +14,7 @@ if(!$auth->validateAuthCookie()) {
 	exit();
 }
 
-require_once("functions.php");
+require_once(__DIR__ . '/functions.php');
 
 $userid = $auth->getUserId();
 

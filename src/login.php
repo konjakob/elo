@@ -9,7 +9,7 @@ $twig_data['showForgotten'] = (isset($_GET['pass']) && $_GET['pass'] == 'forgott
 
 if ( isset($_POST['action_login'])) {
 
-	require_once("authenticate.class.php");
+	require_once("includes/authenticate.class.php");
 	
 	$auth = new Authenticate;
 	
@@ -37,7 +37,7 @@ if ( isset($_POST['action_login'])) {
 	if ( $statement->rowCount() ) {
 		$user_res = $statement->fetch(PDO::FETCH_ASSOC);
 
-		require_once("functions.php");
+		require_once("includes/functions.php");
 		 
 		 $code = createCode(8);
 		 

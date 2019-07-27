@@ -17,7 +17,7 @@ $sql = "(SELECT
 	elo_user.user_name as username, 
 	elo_user.user_picture,
 	(select count(r.reply_id) from elo_reply r where r.topic_id=elo_topic.topic_id) as no, 
-	(select r.reply_date from elo_reply r where r.topic_id=elo_topic.topic_id order by r.reply_id asc limit 1) as last_reply_date
+	(select r.reply_date from elo_reply r where r.topic_id=elo_topic.topic_id order by r.reply_id desc limit 1) as last_reply_date
 FROM ((elo_user INNER JOIN (elo_topic INNER JOIN elo_reply ON elo_topic.topic_id = elo_reply.topic_id) ON elo_user.user_id = elo_reply.user_id) INNER JOIN elo_topic_group ON elo_topic.topic_id = elo_topic_group.topic_id) INNER JOIN elo_group_user ON elo_topic_group.group_id = elo_group_user.group_id
 WHERE (((elo_group_user.user_id)=:userid) and elo_topic.visible_from<NOW() and elo_topic.visible_till>NOW()) group by elo_topic.topic_id order by elo_reply.reply_date
 ) UNION (SELECT 
@@ -29,7 +29,7 @@ WHERE (((elo_group_user.user_id)=:userid) and elo_topic.visible_from<NOW() and e
 	elo_user.user_name as username, 
 	elo_user.user_picture ,
 	(select count(r.reply_id) from elo_reply r where r.topic_id=elo_topic.topic_id) as no, 
-	(select r.reply_date from elo_reply r where r.topic_id=elo_topic.topic_id order by r.reply_id asc limit 1) as last_reply_date
+	(select r.reply_date from elo_reply r where r.topic_id=elo_topic.topic_id order by r.reply_id desc limit 1) as last_reply_date
 	FROM elo_user INNER JOIN ((elo_topic INNER JOIN elo_topic_user ON elo_topic.topic_id = elo_topic_user.topic_id) INNER JOIN elo_reply ON elo_topic.topic_id = elo_reply.topic_id) ON elo_user.user_id = elo_reply.user_id WHERE (((elo_topic_user.user_id)=:userid) and elo_topic.visible_from<NOW() and elo_topic.visible_till>NOW()) group by elo_topic.topic_id order by elo_reply.reply_date ) order by reply_date DESC limit :row_start, :row_limit";
 
 	$statement = $pdo->prepare($sql);
@@ -51,5 +51,5 @@ WHERE (((elo_group_user.user_id)=:userid) and elo_topic.visible_from<NOW() and e
 							'href' => $conf['url']."topic.php?id=".$res['topic_id']
 						);
 	}
-	
+
 	$twig_data['topics'] = $topics;

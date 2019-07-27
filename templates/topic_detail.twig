@@ -91,14 +91,14 @@
 	<div id="newReplyRespond{{ topicid }}" style="display:none; "></div>
 	
 	<div class="uk-card uk-card-default uk-card-body uk-margin" id="newReply{{ topicid }}">
-		<h3>{% trans %}Reply to this topic{% endtrans %} <span class="" uk-icon="question"></span><div uk-dropdown>{% trans %}Text rules:{% endtrans %}</div></h3>
+		<h3>{% trans %}Reply to this topic{% endtrans %}</h3>
 		
         <form action="addreply.php" method="post" enctype="multipart/form-data">
             <input type="hidden" value="{{ topicid }}" name="id">
             <div class="uk-margin">
-                <label class="uk-form-label" for="newReplyText{{ topicid }}">{% trans %}Text{% endtrans %} <span class="" uk-icon="question"></span><div uk-dropdown>{% trans %}Text rules:{% endtrans %}</div></label>
+                <label class="uk-form-label" for="newReplyText{{ topicid }}">{% trans %}Text{% endtrans %} <span class="" uk-icon="question"></span><div uk-dropdown>{% trans %}Text rules:{% endtrans %} <a href="faq.php">FAQ</a></div></label>
                 <div class="uk-form-controls">
-                    <textarea id="newReplyText{{ topicid }}" class="uk-textarea" name="text"></textarea>
+                    <textarea id="newReplyText{{ topicid }}" class="uk-textarea" name="text" data-validation="length" data-validation-length="min{{ conf.min_length_topic_text }}"></textarea>
                 </div>
             </div>	
             

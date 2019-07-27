@@ -1,6 +1,6 @@
 <?php
-	require_once("dbclass.php");
-	require("authenticate.class.php");
+	require_once("includes/dbclass.php");
+	require_once("includes/authenticate.class.php");
 	
 	$auth = new Authenticate;
 	

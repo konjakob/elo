@@ -176,7 +176,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 			if ( strlen($_POST['t_name']) < $conf['min_length_username'] && strlen($_POST['t_email'])) {
 				$sql_pass = "";
 				
-				require_once( "PasswordHash.php" );
+				require_once( "includes/PasswordHash.php" );
 				$hasher = new PasswordHash( 8, TRUE );
 					
 				if ( isset($_POST['t_pass']) && strlen($_POST['t_pass'])) {
@@ -203,7 +203,7 @@ if(isset($_GET['action']) || isset($_POST['action'])) {
 	}
 	
 	else if ($action == 'loadTopic') {
-		include("loadtopic.php");
+		include("includes/loadtopic.php");
 		$html = "";
 		foreach ( $topics as $topic ) 
 			$html .= $twig->render("partials/topicblock.twig", array('topic' => $topic));

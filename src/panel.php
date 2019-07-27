@@ -12,7 +12,7 @@ $msg_group = "";
 
 if ( in_array('CREATE_NEW_USER', $user_rights) && isset($_POST['new_user']) && isset($_POST['t_name']) && isset($_POST['t_email']) && isset($_POST['t_pass']) )
 {
-	require_once( "PasswordHash.php" );
+	require_once( "includes/PasswordHash.php" );
     $hasher = new PasswordHash( 8, TRUE );
 
 	$error = "";
@@ -31,7 +31,7 @@ if ( in_array('CREATE_NEW_USER', $user_rights) && isset($_POST['new_user']) && i
 			$email_text = str_replace(array("{user_name}", "{user_email}", "{admin_name}", "{user_passwort}", "{url}"), array($_POST['t_name'], $_POST['t_email'], $username, $_POST['t_pass'], $conf['url']), file_get_contents("includes/languages/template_new_user_".$user_lang.".html"));
 	
 			date_default_timezone_set('Etc/UTC');
-			require 'class.phpmailer.php';
+			require 'includes/class.phpmailer.php';
 			
 			$mail = new PHPMailer;
 			
