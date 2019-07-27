@@ -168,7 +168,7 @@ CREATE TABLE `elo_lang` (
 INSERT INTO `elo_lang` (`lang_id`, `lang_name`, `lang_code`) VALUES
 (1, 'German', 'de_DE'),
 (2, 'English', 'en_US'),
-(2, 'Spanish', 'es_ES');
+(3, 'Spanish', 'es_ES');
 
 -- --------------------------------------------------------
 

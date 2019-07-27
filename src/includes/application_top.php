@@ -42,9 +42,13 @@ $langcode = $user_res['lang_code'];
 $twig_data['user_picture'] = $user_res['user_picture'];
 
 if ( strlen($langcode) <1 )
-	$langcode = "en";
+	$langcode = "en_US";
 
 $twig_data['langcode'] = $langcode;
+
+$language = $langcode.".UTF-8";
+putenv("LANGUAGE=" . $language);
+setlocale(LC_ALL, $language);
 
 $time = time();
 

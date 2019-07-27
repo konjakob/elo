@@ -4,7 +4,7 @@ require('includes/application_top.php');
 
 $saved_languages = array();
 
-$statement = $pdo->prepare("select * from elo_lang order by lang_name desc");
+$statement = $pdo->prepare("select * from elo_lang order by lang_name asc");
 $statement->execute();
 	
 while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
@@ -30,7 +30,7 @@ if (isset($_POST['action'])) {
         $msgs[] = array('state' => 'nok', 'text' => _('There is already an user with the given email address. Please use another email address.'));
     } else {
         
-		require_once( "PasswordHash.php" );
+		require_once( "includes/PasswordHash.php" );
 		$hasher = new PasswordHash( 8, TRUE );
 			
         if ( isset($_POST['t_pass']) && strlen($_POST['t_pass'])) {
