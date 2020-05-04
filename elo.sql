@@ -483,17 +483,4 @@ CREATE TABLE `elo_user` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
---
--- Dumping data for table `elo_user`
---
 
-INSERT INTO `elo_user` (`user_id`, `user_name`, `user_email`, `user_password`, `lang_id`, `user_lastvisit`) VALUES
-(1, 'Jakob test', 'jw@envire.de', '$P$BsZgZ43VxjNPZ3V4p5eqskHa5PaDWw/', 2, 1380638758),
-(2, 'Christoph Pimpl', 'ich@christoph-pimpl.de', '$P$BGVpXbUzntkaf.OzpqHKA/iwTc7mIi1', 0, 1375193388),
-(3, 'Gag Test', 'sl1der@web.de', '$P$BuRfns/7niA2gs6wvToYwlbzHsujGJ.', 1, 1374933061),
-(4, 'Soy Test', '', '$P$B18tLHZamAtMfjcsFfip64Ti1OB4MT/', 1, 1374934630),
-(5, 'Homo Test', 'soy@homo.gag', '$P$B7Kl2QnTUwCGRDDfP70G0WWN8otcU90', 2, 1374933138),
-(6, 'Hans Wurst', 'hanswurst@sausage.net', '$P$BOlf492ufabEqC7W1/eeIYKuF3QuNo1', 1, 1374935085),
-(7, 'Peter Wurst', 'peterwurst@sausage.net', '$P$B0FecEMBqkvO8DysGUEs1Ezwm8xQyi0', 1, 1374935097),
-(8, 'Georg Wurst', 'georgwurst@sausage.net', '$P$BccBzAzkXb5oCUKqC3f2kE.ONhOrDe1', 1, 1374935112),
-(9, 'Bruns WUrst', 'brunswurst@sausage.net', '$P$BpN.dl0txp3hMvx9FWqMOjtCCArWM60', 1, 1374935127);
