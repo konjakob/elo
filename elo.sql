@@ -182,18 +182,7 @@ CREATE TABLE `elo_music` (
   PRIMARY KEY (`music_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
---
--- Dumping data for table `elo_music`
---
-
-INSERT INTO `elo_music` (`music_id`, `music_text`) VALUES
-(1, 'X: 1\r\nT: Cooley''s\r\nM: 4/4\r\nL: 1/8\r\nR: reel\r\nK: Emin\r\n|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|\r\nEBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|\r\n|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|\r\neB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|'),
-(2, 'acde|fgab|'),
-(3, 'gag gay fag'),
-(4, 'X: 1\r\nT: Cooley''s\r\nM: 4/4\r\nL: 1/8\r\nR: reel\r\nK: Emin\r\n|FDAA BDAD|FDAD dAFD|'),
-(5, 'X:1\r\nT:Alle meine Entchen\r\nM:2/4\r\nL:1/8\r\nK:C\r\nCDEF|G2G2|AAAA|G4|\r\nFFFF|E2E2|GGGG|C4|]');
-
--- --------------------------------------------------------
+----------------------------------------------------
 
 --
 -- Table structure for table `elo_reply`
@@ -208,33 +197,6 @@ CREATE TABLE `elo_reply` (
   PRIMARY KEY (`reply_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
---
--- Dumping data for table `elo_reply`
---
-
-INSERT INTO `elo_reply` (`reply_id`, `user_id`, `topic_id`, `reply_date`, `reply_text`) VALUES
-(1, 1, 1, 1369061019, 'halloooo'),
-(2, 1, 2, 1369515645, 'asdfasdf'),
-(3, 1, 2, 1369515709, 'next day'),
-(5, 2, 1, 1370739933, 'ziemlich cool, das man die Noten einfach so eingeben kann.'),
-(7, 1, 2, 1373539796, 'test'),
-(8, 1, 2, 1373539943, 'music'),
-(9, 2, 4, 1374934237, ''),
-(10, 2, 5, 1374934342, 'this is one!!!!'),
-(11, 4, 4, 1374934586, 'Diese Gruppe seh ''ich auf der Haptseite nicht. Nur unter Admin panel. Aber ich bin doch ein fucking admin!\r\n\r\nKann man user permanent in eine Gruppe einteilen oder muss ich das bei einem neuen erstellten Topic immer neu zu ordnen?'),
-(12, 2, 6, 1374934963, ''),
-(13, 2, 7, 1374935225, 'Herzlich Willkommen zu der Gebrüder Wurst Mainbase! Hier findet ihr nützliche Sachen um eure Skills zu verbessern, yo! '),
-(14, 2, 7, 1374936786, 'Video Game Soundtrack Multitracking\r\n\r\n[youtube]vn0nZW4W-6Y[/youtube]'),
-(15, 2, 7, 1374936839, 'Winter is coming.\r\n\r\n[youtube]yj7YNeutcxM[/youtube]'),
-(16, 2, 8, 1374937764, 'Vollbild Youtube Videos nicht möglich. Generell bei BB code nicht möglich?'),
-(17, 2, 8, 1374937943, 'Topics löschen noch nicht möglich?'),
-(18, 2, 8, 1374937974, 'User im Nachhinein zu Gruppen/Topics hinzufügen möglich?'),
-(19, 2, 7, 1374938213, '20 Minuten Routine- Täglich üben!!'),
-(20, 2, 7, 1374938262, 'Kurzzeit Routine - Wenn man mal nicht zu viel Zeit hat!'),
-(21, 2, 7, 1374938562, 'Lied auswendig lernen und jeden Tag in einer anderen Tonart!!'),
-(23, 1, 8, 1375170307, '- Youtube-Vollbild: Generell möglich, muss im Code noch etwas ändern. \r\n\r\n- Für Topics löschen müssen im Moment alle Antworten gelöscht werden.\r\n\r\n- User im Nachhinein hinzufügen geht unter Edit und dann am Ende der Seite.'),
-(24, 1, 8, 1379627190, 'Vollbild geht jetzt');
-
 -- --------------------------------------------------------
 
 --
@@ -247,20 +209,6 @@ CREATE TABLE `elo_reply_attachment` (
   `attachment_id` int(8) unsigned NOT NULL,
   PRIMARY KEY (`ra_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
-
---
--- Dumping data for table `elo_reply_attachment`
---
-
-INSERT INTO `elo_reply_attachment` (`ra_id`, `reply_id`, `attachment_id`) VALUES
-(1, 1, 1),
-(2, 2, 2),
-(3, 3, 3),
-(6, 7, 6),
-(7, 9, 7),
-(8, 10, 8),
-(9, 19, 9),
-(10, 20, 10);
 
 -- --------------------------------------------------------
 
@@ -275,15 +223,6 @@ CREATE TABLE `elo_reply_music` (
   PRIMARY KEY (`rm_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
---
--- Dumping data for table `elo_reply_music`
---
-
-INSERT INTO `elo_reply_music` (`rm_id`, `reply_id`, `music_id`) VALUES
-(1, 1, 1),
-(2, 2, 2),
-(4, 8, 4),
-(5, 21, 5);
 
 -- --------------------------------------------------------
 
@@ -336,27 +275,6 @@ CREATE TABLE `elo_right_user` (
   PRIMARY KEY (`ru_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
---
--- Dumping data for table `elo_right_user`
---
-
-INSERT INTO `elo_right_user` (`ru_id`, `user_id`, `right_id`) VALUES
-(6, 1, 5),
-(8, 1, 3),
-(11, 1, 2),
-(13, 1, 4),
-(14, 1, 9),
-(15, 1, 12),
-(16, 1, 1),
-(17, 2, 5),
-(18, 2, 8),
-(19, 2, 9),
-(20, 2, 3),
-(21, 2, 10),
-(22, 2, 1),
-(23, 2, 4),
-(24, 2, 12);
-
 -- --------------------------------------------------------
 
 --
@@ -371,21 +289,6 @@ CREATE TABLE `elo_topic` (
   PRIMARY KEY (`topic_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
---
--- Dumping data for table `elo_topic`
---
-
-INSERT INTO `elo_topic` (`topic_id`, `topic_title`) VALUES
-(1, 'Test für uns beide :)'),
-(2, 'Next week'),
-(3, 'Ein Gay auf der Suche nach einem Loch.'),
-(4, 'Gagging around the world!'),
-(5, 'wtf is anonymiker?!'),
-(6, 'Django stole my bike!'),
-(7, 'Die Gebrüder Wurst Main Base'),
-(8, 'Fragen, Anregungen, Bugreport, etc.'),
-(9, 'test');
-
 -- --------------------------------------------------------
 
 --
@@ -398,16 +301,6 @@ CREATE TABLE `elo_topic_group` (
   `topic_id` int(8) unsigned NOT NULL,
   PRIMARY KEY (`tg_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
-
---
--- Dumping data for table `elo_topic_group`
---
-
-INSERT INTO `elo_topic_group` (`tg_id`, `group_id`, `topic_id`) VALUES
-(1, 2, 4),
-(2, 3, 5),
-(3, 3, 6),
-(5, 4, 7);
 
 -- --------------------------------------------------------
 
@@ -422,34 +315,7 @@ CREATE TABLE `elo_topic_user` (
   PRIMARY KEY (`tu_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
 
---
--- Dumping data for table `elo_topic_user`
---
 
-INSERT INTO `elo_topic_user` (`tu_id`, `user_id`, `topic_id`) VALUES
-(1, 1, 1),
-(2, 2, 1),
-(3, 1, 2),
-(4, 2, 3),
-(5, 5, 4),
-(6, 4, 4),
-(7, 1, 4),
-(8, 1, 5),
-(9, 3, 5),
-(10, 2, 5),
-(11, 3, 6),
-(12, 1, 6),
-(13, 4, 6),
-(14, 2, 6),
-(20, 2, 8),
-(21, 1, 8),
-(22, 1, 9),
-(23, 1, 7),
-(24, 9, 7),
-(25, 2, 7),
-(26, 8, 7),
-(27, 6, 7),
-(28, 7, 7);
 
 -- --------------------------------------------------------
 
