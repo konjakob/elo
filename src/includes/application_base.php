@@ -7,7 +7,7 @@ setlocale(LC_ALL, $language);
 // Specify the location of the translation tables
 $domain = "elo";
 bindtextdomain($domain, __DIR__ . '/locale');
-bind_textdomain_codeset($domain, 'UTF-8');	
+bind_textdomain_codeset($domain, 'UTF-8');
 // Choose domain
 textdomain($domain);
 
@@ -36,7 +36,7 @@ require_once( __DIR__ . '/dbclass.php');
 
 $statement = $pdo->prepare("select varname as config_name, value as config_value from elo_config");
 $statement->execute();
-		
+
 $conf = array();
 while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
 	$conf[$res['config_name']] = $res['config_value'];
