@@ -12,8 +12,9 @@ $statement = $pdo->prepare("select * from elo_group order by group_name");
 $statement->execute();
 
 $groups = array();
-while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
-	$groups[] = $res;
+while (($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false) {
+    $groups[] = $res;
+}
 
 $twig_data['groups'] = $groups;
 
@@ -22,8 +23,9 @@ $statement = $pdo->prepare("select * from elo_lang");
 $statement->execute();
 
 $langs = array();
-while ( ($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false )
-	$langs[] = $res;
+while (($res = $statement->fetch(PDO::FETCH_ASSOC)) !== false) {
+    $langs[] = $res;
+}
 $twig_data['langs'] = $langs;	
 
 /* Get the rights */
@@ -31,8 +33,9 @@ $query_right = $pdo->prepare("select * from elo_right order by right_name");
 $query_right->execute();
 
 $rights = array();
-while ( ($res = $query_right->fetch(PDO::FETCH_ASSOC)) !== false )
-	$rights[] = $res;
+while (($res = $query_right->fetch(PDO::FETCH_ASSOC)) !== false) {
+    $rights[] = $res;
+}
 
 $twig_data['rights'] = $rights;
 $twig_data['pages'] = array();

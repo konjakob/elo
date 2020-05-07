@@ -29,7 +29,7 @@
 				ELO Dashboard
 			</div>
 			<div class="left-content-box  content-box-dark">
-				<img src="images/profile/{% if user_picture|length %}{{ user_picture }}{% else %}default.png{% endif %}" alt="" class="uk-border-circle profile-img">
+				{% if user_picture|length %}<img src="images/profile/{{ user_picture }}" alt="" class="uk-border-circle profile-img">{% endif %}
 				<h4 class="uk-text-center uk-margin-remove-vertical text-light">{{ user_name }}</h4>
 				
 				<div class="uk-position-relative uk-text-center uk-display-block">

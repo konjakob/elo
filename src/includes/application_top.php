@@ -1,7 +1,15 @@
 <?php
 
+require __DIR__ . '/../vendor/autoload.php'; 
+
 require_once(__DIR__ . '/application_base.php');
 require_once(__DIR__ . '/authenticate.class.php');
+
+if ( DEBUG_MODE_ON ) {
+    $whoops = new \Whoops\Run;
+    $whoops->prependHandler(new \Whoops\Handler\PrettyPageHandler);
+    $whoops->register();
+}
 
 $auth = new Authenticate;
 

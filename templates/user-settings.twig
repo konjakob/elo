@@ -6,134 +6,134 @@
 
 {% block default %}
 
-   <h1>{% trans %}Change your user settings{% endtrans %}</h1>
+    <h1>{% trans %}Change your user settings{% endtrans %}</h1>
 
-{% for m in msgs %}
+    {% for m in msgs %}
 
-<div class="uk-alert-{% if m.state == 'ok' %}success{% else %}danger{% endif %}" uk-alert>
-    <a class="uk-alert-close" uk-close></a>
-    <p>{{ m.text }}</p>
-</div>
+        <div class="uk-alert-{% if m.state == 'ok' %}success{% else %}danger{% endif %}" uk-alert>
+            <a class="uk-alert-close" uk-close></a>
+            <p>{{ m.text }}</p>
+        </div>
 
-{% endfor %}   
-   
+    {% endfor %}   
 
-	<h2>{% trans %}Profile picture{% endtrans %}</h2>
-   
-	{% trans %}Your current profile image is shown below:{% endtrans %}
-	{% if user_picture|length > 0 %}
-	
-	{% endif %}
-	<div id="userImage"><img class="uk-border-circle uk-box-shadow-medium" src="images/profile/{% if user_picture|length %}{{ user_picture }}{% else %}default.png{% endif %}" id="profile-image" alt="" width="100"></div>
 
-<div id="div-image-crop"  style="display:none; " class="uk-background-muted">
-	<div id="userImageCrop">
-		<img src="" id="profile-image-crop"></div><input type="hidden" value="" name="crop-x1"><input type="hidden" value="" name="crop-x2"><input type="hidden" value="" name="crop-y1"><input type="hidden" value="" name="crop-y2">
-<p class="uk-text-left"><button class="uk-button uk-button-primary" id="btnCropImage">{% trans %}Crop{% endtrans %}</button></p>
-</div>	
-   
-   {% include 'partials/attachment.twig' %}
-   
-   <h2>Profile data</h2>
-   <form action="{{ current_url }}" method="post" class="uk-form-stacked">
-   
-    <div class="uk-margin">
-        <label class="uk-form-label" for="form-element1">{% trans %}Username:{% endtrans %}</label>
-        <div class="uk-form-controls">
-            <input class="uk-input" id="form-element1" type="text" name="t_name" value="{{ user_name }}">
+    <h2>{% trans %}Profile picture{% endtrans %}</h2>
+
+    {% trans %}Your current profile image is shown below:{% endtrans %}
+    {% if user_picture|length > 0 %}
+
+    {% endif %}
+    <div id="userImage"><img class="uk-border-circle uk-box-shadow-medium" src="images/profile/{% if user_picture|length %}{{ user_picture }}{% else %}default.png{% endif %}" id="profile-image" alt="" width="100"></div>
+
+    <div id="div-image-crop"  style="display:none; " class="uk-background-muted">
+        <div id="userImageCrop">
+            <img src="" id="profile-image-crop"></div><input type="hidden" value="" name="crop-x1"><input type="hidden" value="" name="crop-x2"><input type="hidden" value="" name="crop-y1"><input type="hidden" value="" name="crop-y2">
+        <p class="uk-text-left"><button class="uk-button uk-button-primary" id="btnCropImage">{% trans %}Crop{% endtrans %}</button></p>
+    </div>	
+
+    {% include 'partials/attachment.twig' %}
+
+    <h2>Profile data</h2>
+    <form action="{{ current_url }}" method="post" class="uk-form-stacked">
+
+        <div class="uk-margin">
+            <label class="uk-form-label" for="form-element1">{% trans %}Username:{% endtrans %}</label>
+            <div class="uk-form-controls">
+                <input class="uk-input" id="form-element1" type="text" name="t_name" value="{{ user_name }}">
+            </div>
+        </div>
+
+        <div class="uk-margin">
+            <label class="uk-form-label" for="form-element2">{% trans %}Email:{% endtrans %}</label>
+            <div class="uk-form-controls">
+                <input class="uk-input" id="form-element2" type="text" name="t_email" value="{{ user_email }}">
+            </div>
+        </div>
+
+        <div class="uk-margin">
+            <label class="uk-form-label" for="form-element3">{% trans %}Password:{% endtrans %}</label>
+            <div class="uk-form-controls">
+                <input class="uk-input" id="form-element3" type="text" name="t_pass" value=""><small>{% trans %}Leave empty for not changing.{% endtrans %}</small>
+            </div>
+        </div>
+
+        <div class="uk-margin">
+            <label class="uk-form-label" for="form-element3">{% trans %}Language:{% endtrans %}</label>
+            <div class="uk-form-controls">
+                <select class="uk-select" name="t_lang">
+                    {% for l in saved_languages %}
+                        <option value="{{ l.lang_id }}" {% if l.lang_id == lang_id %}selected{% endif %}>{{ l.lang_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+
+        <div class="uk-text-right"><input class="uk-button uk-button-primary" type="submit" value="{% trans %}Save{% endtrans %}" name="action"></div>
+    </form>
+
+    {# Modal for image cropping #}
+    <div id="modal-image-crop" uk-modal>
+        <div class="uk-modal-dialog">
+
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+
+            <div class="uk-modal-header">
+                <h2 class="uk-modal-title">Crop you profile image</h2>
+            </div>
+
+            <div class="uk-modal-body">
+
+                <p></p>
+
+            </div>
+
         </div>
     </div>
-	
-	<div class="uk-margin">
-        <label class="uk-form-label" for="form-element2">{% trans %}Email:{% endtrans %}</label>
-        <div class="uk-form-controls">
-            <input class="uk-input" id="form-element2" type="text" name="t_email" value="{{ user_email }}">
-        </div>
-    </div>
-	
-	<div class="uk-margin">
-        <label class="uk-form-label" for="form-element3">{% trans %}Password:{% endtrans %}</label>
-        <div class="uk-form-controls">
-            <input class="uk-input" id="form-element3" type="text" name="t_pass" value=""><small>{% trans %}Leave empty for not changing.{% endtrans %}</small>
-        </div>
-    </div>
-	
-	<div class="uk-margin">
-        <label class="uk-form-label" for="form-element3">{% trans %}Language:{% endtrans %}</label>
-        <div class="uk-form-controls">
-            <select class="uk-select" name="t_lang">
-			{% for l in saved_languages %}
-				<option value="{{ l.lang_id }}" {% if l.lang_id == lang_id %}selected{% endif %}>{{ l.lang_name }}</option>
-			{% endfor %}
-			</select>
-        </div>
-    </div>
-
-		
-<div class="uk-text-right"><input class="uk-button uk-button-primary" type="submit" value="{% trans %}Save{% endtrans %}" name="action"></div>
-</form>
-
-{# Modal for image cropping #}
-<div id="modal-image-crop" uk-modal>
-    <div class="uk-modal-dialog">
-
-        <button class="uk-modal-close-default" type="button" uk-close></button>
-
-        <div class="uk-modal-header">
-            <h2 class="uk-modal-title">Crop you profile image</h2>
-        </div>
-
-        <div class="uk-modal-body">
-
-            <p></p>
-			
-        </div>
-
-    </div>
-</div>
 
 
 
-<script>
+    <script>
 
-    $('#btnCropImage').click(function(e) {
-		e.preventDefault();
-		
-		$.ajax({
-			url: 'actions.php',
-			dataType: 'json',
-			method: 'POST',
-			data: 
-			{	  
-			  x1:$('input[name="crop-x1"]').val(),
-              x2:$('input[name="crop-x2"]').val(),
-              y1:$('input[name="crop-y1"]').val(),
-              y2:$('input[name="crop-y2"]').val(),
-			  action:'cropImage'
-			},
-			success: function(data){
-				if ( data.state == 'ok' ) {
-					$("#profile-image").attr("src", data.filePath + '?timestamp=' + Date.now());
-					$('#profile-image-crop').imgAreaSelect({remove:true});
-					$('#div-image-crop').toggle();
-					toastr["success"]("Image saved", "Success");
-				} else {
-					toastr["error"]("Error", "Error");
-				}
-			}
-		});
-		
-	});
-	
-	
-    
+        $('#btnCropImage').click(function (e) {
+            e.preventDefault();
 
-</script>		
-        
-        
+            $.ajax({
+                url: 'actions.php',
+                dataType: 'json',
+                method: 'POST',
+                data:
+                        {
+                            x1: $('input[name="crop-x1"]').val(),
+                            x2: $('input[name="crop-x2"]').val(),
+                            y1: $('input[name="crop-y1"]').val(),
+                            y2: $('input[name="crop-y2"]').val(),
+                            action: 'cropImage'
+                        },
+                success: function (data) {
+                    if (data.state == 'ok') {
+                        $("#profile-image").attr("src", data.filePath + '?timestamp=' + Date.now());
+                        $('#profile-image-crop').imgAreaSelect({remove: true});
+                        $('#div-image-crop').toggle();
+                        toastr["success"]("Image saved", "Success");
+                    } else {
+                        toastr["error"]("Error", "Error");
+                    }
+                }
+            });
+
+        });
+
+
+
+
+    </script>		
+
+
 {% endblock %}		  
 
 {% block footerInjection %}
-  <link rel="stylesheet" type="text/css" href="css/imgareaselect-default.css" />
-  <script type="text/javascript" src="js/jquery.imgareaselect.pack.js"></script>	
+    <link rel="stylesheet" type="text/css" href="css/imgareaselect-default.css" />
+    <script type="text/javascript" src="js/jquery.imgareaselect.pack.js"></script>	
 {% endblock %}	

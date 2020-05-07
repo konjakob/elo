@@ -18,7 +18,7 @@ $breadcrumb = array();
 require_once 'ext/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
-$loader = new Twig_Loader_Filesystem('C:\\wamp\www\\elo\\templates'); 
+$loader = new Twig_Loader_Filesystem(__DIR__ . '/../../templates'); 
 $twig = new Twig_Environment($loader, array(
 	'cache' => false
 ));

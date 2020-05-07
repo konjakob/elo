@@ -2,7 +2,8 @@
 
 $cookiedomain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
 
-define( 'COOKIE_DOMAIN', $cookiedomain );
+
+define( 'COOKIE_DOMAIN', 'localhost' );
 define( 'COOKIE_PATH', '/' );
 define( 'COOKIE_AUTH', 'auth_elo' );
 

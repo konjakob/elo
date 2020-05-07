@@ -5,368 +5,369 @@
 
 {% block default %}
 
-<div id="edit-user-model" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body">
-        <h2 class="uk-modal-title" id="modal-headline">Edit User</h2>
-        <p>
-		
-			<form class="uk-form-stacked" action="actions.php" method="post">
-				<input type="hidden" name="user_id_c" id="user_id_c" value="">
-				<div class="uk-margin">
-					<label class="uk-form-label" for="user_name_c">Name</label>
-					<div class="uk-form-controls">
-						<input class="uk-input" id="t_name_c" type="text" name="t_name_c" data-validation="length" data-validation-length="min{{ conf.min_length_username }}">
-					</div>
-				</div>
-				<div class="uk-margin">
-					<label class="uk-form-label" for="user_email_c">Email</label>
-					<div class="uk-form-controls">
-						<input class="uk-input" id="user_email_c" type="text" name="t_email_c" data-validation="server" data-validation-url="actions.php?action=validate" data-validation-req-params="">
-					</div>
-				</div>
-				<div class="uk-margin">
-					<label class="uk-form-label" for="user_pass_c">Password</label>
-					<div class="uk-form-controls">
-							<input class="uk-input" id="user_pass_c" type="text" name="t_pass_c">
-					</div>
-					 {% trans %}For example:{% endtrans %} <code id="suggestedPassword_existing"></code> <small><a href="#" id="use-sug-password-existing">Use this password</a></small>
-				</div>
-				<div class="uk-margin">
-					<label class="uk-form-label" for="user_lang_c">Language</label>
-					<div class="uk-form-controls">
-						<select name="t_lang_c" class="uk-select" id="user_lang_c" data-validation="required">
-						{% for l in langs %}
-							<option value="{{ l.lang_id }}">{{ l.lang_name }}</option>
-						{% endfor %}
-						</select>
-					</div>
-				</div>
-				<div class="uk-text-right">
-					<input type="submit" value="Save" name="new_user_c" class="uk-button uk-button-primary" />
-				</div>
-			</form>
-			
-			<div class="uk-child-width-1-1" uk-grid>
-				<div>
+    <div id="edit-user-model" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title" id="modal-headline">Edit User</h2>
+            <p>
 
-					<table>
-						<tr>
-							<td>Existing rights:</td>
-							<td></td>
-							<td>User rights:</td>
-						</tr>
-						<tr>
-							<td>
-								<select id='ex_rights_c' size='5' multiple='multiple' class="uk-select">
+            <form class="uk-form-stacked" action="actions.php" method="post" id="frmUpdateUser">
+                <input type="hidden" name="user_id_c" id="user_id_c" value="">
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="user_name_c">Name</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="t_name_c" type="text" name="t_name_c" data-validation="length" data-validation-length="min{{ conf.min_length_username }}">
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="user_email_c">Email</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="user_email_c" type="text" name="t_email_c" data-validation="server" data-validation-url="actions.php?action=validate" data-validation-req-params="">
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="user_pass_c">Password</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="user_pass_c" type="text" name="t_pass_c">
+                    </div>
+                    {% trans %}For example:{% endtrans %} <code id="suggestedPassword_existing"></code> <small><a href="#" id="use-sug-password-existing">Use this password</a></small>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="user_lang_c">Language</label>
+                    <div class="uk-form-controls">
+                        <select name="t_lang_c" class="uk-select" id="user_lang_c" data-validation="required">
+                            {% for l in langs %}
+                                <option value="{{ l.lang_id }}">{{ l.lang_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="uk-text-right">
+                    <input type="hidden" name="action" value="changeUser">
+                    <input type="submit" value="Save" class="uk-button uk-button-primary" />
+                </div>
+            </form>
 
-								</select>
-							</td>
-							<td>
-								<input type="button" value=">>" onClick="javascript:addRight();"><br><input type="button" value="<<" onClick="javascript:removeRight();">
-							</td>
-							<td>
-								<select id='us_rights_c' size='5' multiple='multiple' class="uk-select"></select>
-							</td>
-						</tr>
-					</table>
-					
-				</div>
-				<div>
-					<table>
-						<tr>
-							<td>Existing groups:</td>
-							<td></td>
-							<td>User groups:</td>
-						</tr>
-						<tr>
-							<td>
-								<select id='ex_groups_c' size='5' multiple='multiple' class="uk-select"></select>
-							</td>
-							<td>
-								<input type="button" value=">>" onClick="javascript:addGroup();"><br><input type="button" value="<<" onClick="javascript:removeGroup();">
-							</td>
-							<td>
-								<select id='us_groups_c' size='5' multiple='multiple' class="uk-select"></select>
-							</td>				
-						</tr>
-					</table>
-				</div>
-			</div>
-		
-		</p>
+            <div class="uk-child-width-1-1" uk-grid>
+                <div>
+
+                    <table>
+                        <tr>
+                            <td>Existing rights:</td>
+                            <td></td>
+                            <td>User rights:</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select id='ex_rights_c' size='5' multiple='multiple' class="uk-select">
+
+                                </select>
+                            </td>
+                            <td>
+                                <input type="button" value=">>" onClick="javascript:addRight();"><br><input type="button" value="<<" onClick="javascript:removeRight();">
+                            </td>
+                            <td>
+                                <select id='us_rights_c' size='5' multiple='multiple' class="uk-select"></select>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div>
+                    <table>
+                        <tr>
+                            <td>Existing groups:</td>
+                            <td></td>
+                            <td>User groups:</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select id='ex_groups_c' size='5' multiple='multiple' class="uk-select"></select>
+                            </td>
+                            <td>
+                                <input type="button" value=">>" onClick="javascript:addGroup();"><br><input type="button" value="<<" onClick="javascript:removeGroup();">
+                            </td>
+                            <td>
+                                <select id='us_groups_c' size='5' multiple='multiple' class="uk-select"></select>
+                            </td>				
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            </p>
+        </div>
     </div>
-</div>
 
-{% for m in msgs %}
+    {% for m in msgs %}
 
-<div class="uk-alert-{% if m.state == 'ok' %}success{% else %}danger{% endif %}" uk-alert>
-    <a class="uk-alert-close" uk-close></a>
-    <p>{{ m.text }}</p>
-</div>
+        <div class="uk-alert-{% if m.state == 'ok' %}success{% else %}danger{% endif %}" uk-alert>
+            <a class="uk-alert-close" uk-close></a>
+            <p>{{ m.text }}</p>
+        </div>
 
-{% endfor %}
+    {% endfor %}
 
-<div class="uk-child-width-1-1 uk-margin-top" uk-grid>
-	<div>
-		<div class="uk-card uk-card-default uk-card-body uk-margin">
-			<h2 class="uk-card-title">Edit users</h2>
-			<div class="uk-column-1-2@s uk-column-1-3@m uk-column-1-4@l">
-				<ul class="uk-list">
-				{% for u in users %}
-					<li><a onclick="javascript:loadUserData({{ u.user_id }});">{{ u.user_name }}</a></li>
-				{% endfor %}
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
+    <div class="uk-child-width-1-1 uk-margin-top" uk-grid>
+        <div>
+            <div class="uk-card uk-card-default uk-card-body uk-margin">
+                <h2 class="uk-card-title">Edit users</h2>
+                <div class="uk-column-1-2@s uk-column-1-3@m uk-column-1-4@l">
+                    <ul class="uk-list">
+                        {% for u in users %}
+                            <li><a onclick="javascript:loadUserData({{ u.user_id }});">{{ u.user_name }}</a></li>
+                            {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
-{% include 'partials/pagination.twig' %}	
-	
+    {% include 'partials/pagination.twig' %}	
+
 {% endblock %}		  
 
 {% block footerInjection %}
 
 
-<script language="javascript">  
+    <script language="javascript">
 
-	function deleteGroup(groupId) {
-		var el = $(this);
-		UIkit.modal.confirm('Confirm deletion').then(function() {
-			$.post("actions.php",
-			{	  
-			  delete_group:groupId,
-			  action:'deleteGroup'
-			},
-			function(data,status){
-				if ( data.state == 'ok' ) {
-					el.parent().remove();
-					toastr["success"]("Group deleted", "Success");
-				} else {
-					toastr["error"]("Error", "Error");
-				}
-			});
-		}, function () {
-			
-		});
-	}
+        function deleteGroup(groupId) {
+            var el = $(this);
+            UIkit.modal.confirm('Confirm deletion').then(function () {
+                $.post("actions.php",
+                        {
+                            delete_group: groupId,
+                            action: 'deleteGroup'
+                        },
+                        function (data, status) {
+                            if (data.state == 'ok') {
+                                el.parent().remove();
+                                toastr["success"]("Group deleted", "Success");
+                            } else {
+                                toastr["error"]("Error", "Error");
+                            }
+                        });
+            }, function () {
 
-   	function removeRight() {
-		$.post("actions.php",
-		{	  
-		  userid:$('#user_id_c').val(),
-		  action:'removeRight',
-		  t_r:$("#us_rights_c").val()
-		},
-		function(data,status){
-			$('#us_rights_c option:selected').each(function(){
-				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#ex_rights_c");
-				$("#us_rights_c option[value="+$(this).val()+"]").remove();
-			});
-		});
-	}
-	function addRight() {
-		$.post("actions.php",
-		{	  
-		  userid:$('#user_id_c').val(),
-		  action:'addRight',
-		  t_r:$("#ex_rights_c").val()
-		},
-		function(data,status){
-			$('#ex_rights_c option:selected').each(function(){
-				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#us_rights_c");
-				$("#ex_rights_c option[value="+$(this).val()+"]").remove();
-			});
-		});
-	}
-	function removeGroup() {
-		$.post("actions.php",
-		{	  
-		  userid:$('#user_id_c').val(),
-		  action:'removeGroup',
-		  t_r:$("#us_groups_c").val()
-		},
-		function(data,status){
-			$('#us_groups_c option:selected').each(function(){
-				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#ex_groups_c");
-				$("#us_groups_c option[value="+$(this).val()+"]").remove();
-			});
-		});
-	}
-	function addGroup() {
-		$.post("actions.php",
-		{	  
-		  userid:$('#user_id_c').val(),
-		  action:'addGroup',
-		  t_r:$("#ex_groups_c").val()
-		},
-		function(data,status){
-			$('#ex_groups_c option:selected').each(function(){
-				$("<option/>").val($(this).val()).text($(this).text()).prependTo("#us_groups_c");
-				$("#ex_groups_c option[value="+$(this).val()+"]").remove();
-			});
-		});
-	}
+            });
+        }
 
-	$('#use-sug-password').click(function(e) {
-		e.preventDefault();
-		$('#user_pass').val($('#suggestedPassword').text());
-	});
-	
-	$('#use-sug-password-existing').click(function(e) {
-		e.preventDefault();
-		$('#user_pass_c').val($('#suggestedPassword_existing').text());
-	});
-	
-	$('#remove-group-user').click(function() {
-		$('#users-of-group option:selected').each(function(){
-			var el = $(this);
-			$.ajax({
-				url: 'actions.php',
-				dataType: 'json',
-				method: 'POST',
-				data: 
-				{	  
-					guid:$(this).val(),
-					action:'removeUserFromGoup',
-				},
-				success: function(respond){
-					if ( respond.state == 'ok' ) {
-						$("#users-of-group option[value="+el.val()+"]").remove();
-					} else {
-						toastr["error"]("Error", "Error");
-					}
-				}
-			});			
-		});
-	});
-	
+        function removeRight() {
+            $.post("actions.php",
+                    {
+                        userid: $('#user_id_c').val(),
+                        action: 'removeRight',
+                        t_r: $("#us_rights_c").val()
+                    },
+                    function (data, status) {
+                        $('#us_rights_c option:selected').each(function () {
+                            $("<option/>").val($(this).val()).text($(this).text()).prependTo("#ex_rights_c");
+                            $("#us_rights_c option[value=" + $(this).val() + "]").remove();
+                        });
+                    });
+        }
+        function addRight() {
+            $.post("actions.php",
+                    {
+                        userid: $('#user_id_c').val(),
+                        action: 'addRight',
+                        t_r: $("#ex_rights_c").val()
+                    },
+                    function (data, status) {
+                        $('#ex_rights_c option:selected').each(function () {
+                            $("<option/>").val($(this).val()).text($(this).text()).prependTo("#us_rights_c");
+                            $("#ex_rights_c option[value=" + $(this).val() + "]").remove();
+                        });
+                    });
+        }
+        function removeGroup() {
+            $.post("actions.php",
+                    {
+                        userid: $('#user_id_c').val(),
+                        action: 'removeGroup',
+                        t_r: $("#us_groups_c").val()
+                    },
+                    function (data, status) {
+                        $('#us_groups_c option:selected').each(function () {
+                            $("<option/>").val($(this).val()).text($(this).text()).prependTo("#ex_groups_c");
+                            $("#us_groups_c option[value=" + $(this).val() + "]").remove();
+                        });
+                    });
+        }
+        function addGroup() {
+            $.post("actions.php",
+                    {
+                        userid: $('#user_id_c').val(),
+                        action: 'addGroup',
+                        t_r: $("#ex_groups_c").val()
+                    },
+                    function (data, status) {
+                        $('#ex_groups_c option:selected').each(function () {
+                            $("<option/>").val($(this).val()).text($(this).text()).prependTo("#us_groups_c");
+                            $("#ex_groups_c option[value=" + $(this).val() + "]").remove();
+                        });
+                    });
+        }
 
-	function tgldiv(divname){
-		$("#"+divname).slideToggle("slow");
-	 };
-  
-	function loadUserData(id) {
-		$.ajax({
-				url: "actions.php?action=getUser&userid="+id,
-				dataType: 'json',
-				success: function(respond)
-				{
-					if ( respond.state == 'ok' ) {
-						$('#t_name_c').val(respond.user_data.user_name);
-						$('#user_pass_c').val("");
-						$('#user_email_c').val(respond.user_data.user_email);
-						$('#user_email_c').attr('data-validation-req-params', '{"userid": ' + respond.user_data.user_id +'}' );
-						$("#user_lang_c option[id='" + respond.user_data.lang_id + "']").attr("selected", "selected");
-						$('#user_id_c').val(respond.user_data.user_id);
-						$('#suggestedPassword_existing').text(respond.exampleCode);
-						$('#ex_rights_c').empty();
-						$.each(respond.option_right_no,function(key, value) {
-							$('#ex_rights_c').append('<option value=' + key + '>' + value + '</option>');
-						});
-						
-						$('#us_rights_c').empty();
-						$.each(respond.option_right_yes,function(key, value) {
-							$('#us_rights_c').append('<option value=' + key + '>' + value + '</option>');
-						});
-						
-						$('#ex_groups_c').empty();
-						$.each(respond.option_group_no,function(key, value) {
-							$('#ex_groups_c').append('<option value=' + key + '>' + value + '</option>');
-						});
-						
-						$('#us_groups_c').empty();
-						$.each(respond.option_group_yes,function(key, value) {
-							$('#us_groups_c').append('<option value=' + key + '>' + value + '</option>');
-						});
-						
-						//$('#modal-body').html(respond);
-						UIkit.modal($('#edit-user-model')).show();
-					} else {
-						toastr["error"]("Error", "Error");
-					}
-				}
-		});
-	}
-  
-  function loadGroupData(id) {
-	  $.ajax({
-				url: "actions.php?action=getGroupUser&group_id="+id,
-				dataType: 'json',
-				success: function(respond)
-				{
-					if ( respond.state == 'ok' ) {
-						$('#users-of-group').empty();
-						$.each(respond.users,function(key, value) {
-							$('#users-of-group').append('<option value=' + key + '>' + value + '</option>');
-						});
-						UIkit.modal($('#modal-group-users')).show();
-					} else {
-						toastr["error"](respond.text, respond.title);
-					}
-				}
-		});
-  }
-  
-  function changeGroupData(id) {
-	var el = $(this);
-	var ael = $('#group-list-' + id);
-	UIkit.modal.prompt('Group:', ael.text()).then(function (name) {
-		if ( name ) {
-			var strName = name;
-			$.ajax({
-				url: 'actions.php',
-				dataType: 'json',
-				method: 'POST',
-				data: 
-				{	  
-				  guid: id,
-				  action: 'changeGoup',
-				  t_name: strName
-				},
-				success: function(respond){
-					if ( respond.state == 'ok' ) {
-						ael.text(strName);
-						toastr["success"]("Group modified", "Success");
-					} else {
-						toastr["error"]("Error", "Error");
-					}
-				}
-			});
-		}
-	});
+        $('#use-sug-password').click(function (e) {
+            e.preventDefault();
+            $('#user_pass').val($('#suggestedPassword').text());
+        });
 
-  }
-  
+        $('#use-sug-password-existing').click(function (e) {
+            e.preventDefault();
+            $('#user_pass_c').val($('#suggestedPassword_existing').text());
+        });
 
-	function selectAllOptions(selStr)
-	{
-	  var selObj = document.getElementById(selStr);
-	  for (var i=0; i<selObj.options.length; i++) {
-		selObj.options[i].selected = true;
-	  }
-	}
-	
-	$("#frmNewTopic").submit(function(e){
-        e.preventDefault();
-		$.ajax({
-			url: 'actions.php',
-			dataType: 'json',
-			method: 'POST',
-			data: $('#frmNewTopic').serialize(),
-			success: function(respond){
-				if ( respond.state == 'ok' ) {
-					$("#submitTopic").closest('form').find("input[type=text], textarea").val("");
-					toastr["success"]("Successfully posted", "Success");
-				} else {
-					toastr["error"]("Error", "Error");
-				}
-			}
-		});		  
-  
-  });
-	
-</script>
+        $('#remove-group-user').click(function () {
+            $('#users-of-group option:selected').each(function () {
+                var el = $(this);
+                $.ajax({
+                    url: 'actions.php',
+                    dataType: 'json',
+                    method: 'POST',
+                    data:
+                            {
+                                guid: $(this).val(),
+                                action: 'removeUserFromGoup',
+                            },
+                    success: function (respond) {
+                        if (respond.state == 'ok') {
+                            $("#users-of-group option[value=" + el.val() + "]").remove();
+                        } else {
+                            toastr["error"]("Error", "Error");
+                        }
+                    }
+                });
+            });
+        });
 
-			
+
+        function tgldiv(divname) {
+            $("#" + divname).slideToggle("slow");
+        }
+        ;
+
+        function loadUserData(id) {
+            $.ajax({
+                url: "actions.php?action=getUser&userid=" + id,
+                dataType: 'json',
+                success: function (respond)
+                {
+                    if (respond.state == 'ok') {
+                        $('#t_name_c').val(respond.user_data.user_name);
+                        $('#user_pass_c').val("");
+                        $('#user_email_c').val(respond.user_data.user_email);
+                        $('#user_email_c').attr('data-validation-req-params', '{"userid": ' + respond.user_data.user_id + '}');
+                        $("#user_lang_c option[id='" + respond.user_data.lang_id + "']").attr("selected", "selected");
+                        $('#user_id_c').val(respond.user_data.user_id);
+                        $('#suggestedPassword_existing').text(respond.exampleCode);
+                        $('#ex_rights_c').empty();
+                        $.each(respond.option_right_no, function (key, value) {
+                            $('#ex_rights_c').append('<option value=' + key + '>' + value + '</option>');
+                        });
+
+                        $('#us_rights_c').empty();
+                        $.each(respond.option_right_yes, function (key, value) {
+                            $('#us_rights_c').append('<option value=' + key + '>' + value + '</option>');
+                        });
+
+                        $('#ex_groups_c').empty();
+                        $.each(respond.option_group_no, function (key, value) {
+                            $('#ex_groups_c').append('<option value=' + key + '>' + value + '</option>');
+                        });
+
+                        $('#us_groups_c').empty();
+                        $.each(respond.option_group_yes, function (key, value) {
+                            $('#us_groups_c').append('<option value=' + key + '>' + value + '</option>');
+                        });
+
+                        //$('#modal-body').html(respond);
+                        UIkit.modal($('#edit-user-model')).show();
+                    } else {
+                        toastr["error"]("Error", "Error");
+                    }
+                }
+            });
+        }
+
+        function loadGroupData(id) {
+            $.ajax({
+                url: "actions.php?action=getGroupUser&group_id=" + id,
+                dataType: 'json',
+                success: function (respond)
+                {
+                    if (respond.state == 'ok') {
+                        $('#users-of-group').empty();
+                        $.each(respond.users, function (key, value) {
+                            $('#users-of-group').append('<option value=' + key + '>' + value + '</option>');
+                        });
+                        UIkit.modal($('#modal-group-users')).show();
+                    } else {
+                        toastr["error"](respond.text, respond.title);
+                    }
+                }
+            });
+        }
+
+        function changeGroupData(id) {
+            var el = $(this);
+            var ael = $('#group-list-' + id);
+            UIkit.modal.prompt('Group:', ael.text()).then(function (name) {
+                if (name) {
+                    var strName = name;
+                    $.ajax({
+                        url: 'actions.php',
+                        dataType: 'json',
+                        method: 'POST',
+                        data:
+                                {
+                                    guid: id,
+                                    action: 'changeGoup',
+                                    t_name: strName
+                                },
+                        success: function (respond) {
+                            if (respond.state == 'ok') {
+                                ael.text(strName);
+                                toastr["success"]("Group modified", "Success");
+                            } else {
+                                toastr["error"]("Error", "Error");
+                            }
+                        }
+                    });
+                }
+            });
+
+        }
+
+
+        function selectAllOptions(selStr)
+        {
+            var selObj = document.getElementById(selStr);
+            for (var i = 0; i < selObj.options.length; i++) {
+                selObj.options[i].selected = true;
+            }
+        }
+
+        $("#frmUpdateUser").submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: 'actions.php',
+                dataType: 'json',
+                method: 'POST',
+                data: $('#frmUpdateUser').serialize(),
+                success: function (respond) {
+                    if (respond.state == 'ok') {
+                        toastr["success"]("Successfully updated", "Success");
+                    } else {
+                        toastr["error"]("Error", "Error");
+                    }
+                }
+            });
+
+        });
+
+    </script>
+
+
 {% endblock %}	

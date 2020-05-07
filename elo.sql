@@ -4,7 +4,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Table structure for table `elo_attachment`
 --
-drop table `elo_attachment`;
+drop table if exists `elo_attachment`;
 
 CREATE TABLE `elo_attachment` (
   `attachment_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -182,7 +182,7 @@ CREATE TABLE `elo_music` (
   PRIMARY KEY (`music_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
-----------------------------------------------------
+-- --------------------------------------------------
 
 --
 -- Table structure for table `elo_reply`
